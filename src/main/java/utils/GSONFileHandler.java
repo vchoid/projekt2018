@@ -55,13 +55,13 @@ public class GSONFileHandler {
 	// --> Datei-Handling ------------------------------------------------------
 	private Gson gson;
 	private final static String FILE = System.getProperty("user.dir")
-			+ "/src/resources/Server_Ports.JSON";
+			+ "/src/main/resources/Server_Ports.JSON";
 	private BufferedReader reader;
 	private FileInputStream input;
 	private BufferedWriter writer;
 	private FileOutputStream out;
 	// --> json-Handling -------------------------------------------------------
-	private EmptyPortServerTemplate emptyPSTemplate;
+	private EmptyPortServerTemplate emptyPSTemplate = new EmptyPortServerTemplate();
 	private JsonObject newPort = new JsonObject();
 	private JsonObject newServer = new JsonObject();
 	private JsonObject jsonObj;
