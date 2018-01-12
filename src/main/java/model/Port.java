@@ -2,8 +2,8 @@ package main.java.model;
 
 /**
  * 
- * @author up40008
- *
+ * @author Christoph Kiank
+ * @version 0.0.1
  */
 public class Port {
 
