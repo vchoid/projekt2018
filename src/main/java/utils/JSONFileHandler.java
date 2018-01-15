@@ -14,6 +14,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import javafx.beans.property.SimpleStringProperty;
 import main.java.model.EmptyPortServerTemplate;
 import main.java.model.Port;
 
@@ -35,6 +36,8 @@ public class JSONFileHandler {
 	private JsonArray portsArray;
 	private JsonElement searchElement;
 	private int positionInArray;
+
+	
 	// --> add Methoden --------------------------------------------------------
 	private JsonObject newPort = new JsonObject();
 
@@ -67,7 +70,7 @@ public class JSONFileHandler {
 			setJsonObj(gson.fromJson(reader, JsonObject.class));
 			// PortsArray und ServerArray setzen
 			setPortsArray(getJsonObj().getAsJsonArray("ports"));
-//			setServerArray(getJsonObj().getAsJsonArray("server"));
+			// setServerArray(getJsonObj().getAsJsonArray("server"));
 		} catch (FileNotFoundException e) {
 			addEmptyJsonFileTemplate();
 			readAndParseJSONFileToJsonArray();
@@ -128,6 +131,7 @@ public class JSONFileHandler {
 		}
 		return false;
 	}
+
 	/**
 	 * Prüft ob der Port bereits im Array vorhanden ist und gibt ein true
 	 * zurück.
@@ -210,16 +214,16 @@ public class JSONFileHandler {
 			addObjectInArrayAndWriteInFile(getPortsArray(), newPort, "ports");
 		}
 	}
-	
-	
+
 	// ## Getter und Setter ####################################################
 	/**
-	 * Werte aus dem Port Array an einer bestimmten Position in ein neues Port Objekt speichern.
+	 * Werte aus dem Port Array an einer bestimmten Position in ein neues Port
+	 * Objekt speichern.
 	 * 
 	 * @param posInArray
 	 * @return
 	 */
-	public Port getPortElementFrom(int posInArray) {
+	public Port getValueAndSetAsSimpleProperty(int posInArray) {
 		Port p = new Port();
 		try {
 			JsonObject temp = new JsonObject();
@@ -228,7 +232,7 @@ public class JSONFileHandler {
 			p.setPort(temp.get("port").getAsString());
 		} catch (IndexOutOfBoundsException e) {
 			// TODO: handle exception
-			
+
 		}
 		return p;
 	}
@@ -249,7 +253,7 @@ public class JSONFileHandler {
 	public void setPortsArray(JsonArray portsArray) {
 		this.portsArray = portsArray;
 	}
-	
+
 	public JsonElement getSearchElement() {
 		return searchElement;
 	}
@@ -265,6 +269,5 @@ public class JSONFileHandler {
 	public void setPositionInArray(int positionInArray) {
 		this.positionInArray = positionInArray;
 	}
-
 
 }

@@ -13,10 +13,10 @@ public class Test {
 		JSONFileHandler jFile = new JSONFileHandler(filePath);
 
 		Port portDB = new Port();
-		jFile.addPort(portDB.createPort("Tom", "2408"));
+		portDB.createPort("SE", "2409");
 		
 		System.out.println("");
-		System.out.println(jFile.getPortElementFrom(4).getName());
+		System.out.println(portDB.getsPort());
 	}
 
 }

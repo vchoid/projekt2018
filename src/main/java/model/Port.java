@@ -1,7 +1,6 @@
 package main.java.model;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * 
@@ -12,21 +11,57 @@ public class Port {
 
 	private String name;
 	private String port;
-	
+
+	private SimpleStringProperty sName;
+	private SimpleStringProperty sPort;
+
 	public Port() {
 		super();
 	}
-	
-	public static Port createPort(String name, String port) {
+
+	/**
+	 * Ein Port-Element erzeugen, die Elemente zusätzlich als
+	 * {@link SimpleStringProperty}-Variablen speichern und den Port zurück
+	 * geben.
+	 * 
+	 * @param name
+	 * @param port
+	 * @return
+	 */
+	public Port createPort(String name, String port) {
 		Port p = new Port();
-		
 		p.name = name;
 		p.port = port;
-		
+		createSimpleStringProperty(p);
 		return p;
 	}
-	
-	
+
+
+	/**
+	 * Den Name und den Port in {@link SimpleStringProperty}-Variable speichern
+	 * 
+	 * @param p
+	 */
+	private void createSimpleStringProperty(Port p) {
+		this.sName = new SimpleStringProperty(p.getName());
+		this.sPort = new SimpleStringProperty(p.getPort());
+
+	}
+	public SimpleStringProperty getsName() {
+		return sName;
+	}
+
+	public void setsName(SimpleStringProperty sName) {
+		this.sName = sName;
+	}
+
+	public SimpleStringProperty getsPort() {
+		return sPort;
+	}
+
+	public void setsPort(SimpleStringProperty sPort) {
+		this.sPort = sPort;
+	}
 	public String getName() {
 		return name;
 	}
@@ -39,6 +74,5 @@ public class Port {
 	public void setPort(String port) {
 		this.port = port;
 	}
-	
-	
+
 }
