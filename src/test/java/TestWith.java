@@ -38,14 +38,14 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				GSONFileHandler jFile = new GSONFileHandler();
-				Port portSE = new Port("SE", "2409");
-				Port portRemoteServer = new Port("RemoteServer", "8084");
-				Port portTomcat = new Port("Tomcat", "8080");
-				Port portFirstSpirit= new Port("FirstSpirit", "8000");
-				jFile.addPort(portRemoteServer);
-				jFile.addPort(portTomcat);
-				jFile.addPort(portFirstSpirit);
-				jFile.addPort(portSE);
+				Port portSE = new Port();
+				jFile.addPort(portSE.createPort("SE", "2409"));
+//				Port portRemoteServer = new Port("RemoteServer", "8084");
+//				Port portTomcat = new Port("Tomcat", "8080");
+//				Port portFirstSpirit= new Port("FirstSpirit", "8000");
+//				jFile.addPort(portRemoteServer);
+//				jFile.addPort(portTomcat);
+//				jFile.addPort(portFirstSpirit);
 //				jFile.addServerViaHost("Auslieferungsserver","lk101sw0395.ew1intra.de");
 //				jFile.addPort("tom", "1234");
 //				jFile.addPort("Chris", "5678");

@@ -56,7 +56,7 @@ public class GSONFileHandler {
 	
 	// --> Datei-Handling ------------------------------------------------------
 	private Gson gson;
-	private final static String FILE_PATH = System.getProperty("user.dir")
+	private final static String FILE = System.getProperty("user.dir")
 			+ "/src/main/resources/Server_Ports.JSON";
 	private BufferedReader reader;
 	private FileInputStream input;
@@ -78,9 +78,8 @@ public class GSONFileHandler {
 
 	// ## Konstruktor ##########################################################
 
-	public GSONFileHandler(String path) {
+	public GSONFileHandler() {
 		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
-		
 		gson = new Gson();
 		readAndParseFileToJsonArrays();
 	}
@@ -94,7 +93,7 @@ public class GSONFileHandler {
 	private void readAndParseFileToJsonArrays() {
 		try {
 			// Datei über einen Stream einlesen
-			input = new FileInputStream(getFilePath());
+			input = new FileInputStream(getFile());
 			reader = new BufferedReader(new InputStreamReader(input));
 			// Datei als JSON-Objekt einlesen
 			setJsonObj(gson.fromJson(reader, JsonObject.class));
@@ -121,7 +120,7 @@ public class GSONFileHandler {
 	 */
 	private void writeInFile(String content) {
 		try {
-			out = new FileOutputStream(getFilePath());
+			out = new FileOutputStream(getFile());
 			writer = new BufferedWriter(new OutputStreamWriter(out));
 			writer.write(content);
 			// TODO löschen!
@@ -473,8 +472,8 @@ public class GSONFileHandler {
 	}
 
 	// --> Datei-Handling ------------------------------------------------------
-	public static String getFilePath() {
-		return FILE_PATH;
+	public static String getFile() {
+		return FILE;
 	}
 	// --> Exception Handling --------------------------------------------------
 	public Exception getE() {

@@ -10,10 +10,17 @@ public class Port {
 	private String name;
 	private String port;
 	
-	public Port(String name, String port) {
+	public Port() {
 		super();
-		this.name = name;
-		this.port = port;
+	}
+	
+	public static Port createPort(String name, String port) {
+		Port p = new Port();
+		
+		p.name = name;
+		p.port = port;
+		
+		return p;
 	}
 	
 	public String getName() {
