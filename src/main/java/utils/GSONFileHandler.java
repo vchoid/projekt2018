@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import main.java.model.EmptyPortServerTemplate;
+import main.java.model.Port;
 
 
 
@@ -48,13 +49,14 @@ import main.java.model.EmptyPortServerTemplate;
  * @author Christoph Kiank
  * @version 1.0.0
  */
+
 public class GSONFileHandler {
 
 	// ## Variablen ############################################################
 	
 	// --> Datei-Handling ------------------------------------------------------
 	private Gson gson;
-	private final static String FILE = System.getProperty("user.dir")
+	private final static String FILE_PATH = System.getProperty("user.dir")
 			+ "/src/main/resources/Server_Ports.JSON";
 	private BufferedReader reader;
 	private FileInputStream input;
@@ -76,11 +78,13 @@ public class GSONFileHandler {
 
 	// ## Konstruktor ##########################################################
 
-	public GSONFileHandler() {
+	public GSONFileHandler(String path) {
 		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
+		
 		gson = new Gson();
 		readAndParseFileToJsonArrays();
 	}
+	
 	// ## JSON-Datei Methoden ##################################################
 	/**
 	 * Parst Datei als JSON-Objekt und referenziert ein Array für Ports und
@@ -90,7 +94,7 @@ public class GSONFileHandler {
 	private void readAndParseFileToJsonArrays() {
 		try {
 			// Datei über einen Stream einlesen
-			input = new FileInputStream(getFile());
+			input = new FileInputStream(getFilePath());
 			reader = new BufferedReader(new InputStreamReader(input));
 			// Datei als JSON-Objekt einlesen
 			setJsonObj(gson.fromJson(reader, JsonObject.class));
@@ -117,11 +121,11 @@ public class GSONFileHandler {
 	 */
 	private void writeInFile(String content) {
 		try {
-			out = new FileOutputStream(getFile());
+			out = new FileOutputStream(getFilePath());
 			writer = new BufferedWriter(new OutputStreamWriter(out));
 			writer.write(content);
 			// TODO löschen!
-			System.out.println("... gespeichert.");
+			System.out.println(" -> gespeichert in Datei.");
 			writer.close();
 		} catch (IOException e) {
 			setE(e);
@@ -167,9 +171,9 @@ public class GSONFileHandler {
 	 * @param port
 	 * @return
 	 */
-	private Boolean isPortAvailable(String name, String port) {
-		if (isValueInArray(getPortsArray(), "port", port)
-				|| isValueInArray(getPortsArray(), "name", name)) {
+	private Boolean isPortAvailable(Port port) {
+		if (isValueInArray(getPortsArray(), "port", port.getPort())
+				|| isValueInArray(getPortsArray(), "name", port.getName())) {
 			// TODO löschen !
 			System.out.print("\n  -> vorhanden");
 			return true;
@@ -209,7 +213,7 @@ public class GSONFileHandler {
 	}
 	// ## add-Methode ##########################################################
 	/**
-	 * Fügt das Object in das Array ein und schreibt es in die Datei
+	 * Fügt das Objekt in das Array ein und schreibt es in die Datei
 	 * 
 	 * @param array
 	 * @param newObject
@@ -262,11 +266,11 @@ public class GSONFileHandler {
 	 * @param name
 	 * @param port
 	 */
-	public void addPort(String name, String port) {
+	public void addPort(Port port) {
 		// neues Objekt mit zwei Key-Value-Paare anlegen
-		addPortValues(name, port);
+		addPortValues(port.getName(), port.getPort());
 		// prüfen ob bereits vorhanden
-		if (!isPortAvailable(name, port)) {
+		if (!isPortAvailable(port)){
 			// neuen validen Wert schreiben
 			addObjectInArrayAndWriteInFile(getPortsArray(), newPort, "ports");
 		}
@@ -469,8 +473,8 @@ public class GSONFileHandler {
 	}
 
 	// --> Datei-Handling ------------------------------------------------------
-	public static String getFile() {
-		return FILE;
+	public static String getFilePath() {
+		return FILE_PATH;
 	}
 	// --> Exception Handling --------------------------------------------------
 	public Exception getE() {

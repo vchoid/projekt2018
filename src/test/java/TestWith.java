@@ -1,12 +1,11 @@
 package test.java;
 
+import main.java.model.Port;
 import main.java.utils.GSONFileHandler;
 
 public class TestWith {
 
 	public static void main(String[] args) {
-		
-		
 
 		// ## JSON SIMPLE #####################################################
 				// JSONSimpleFileHandler port = new JSONSimpleFileHandler("PortsDB");
@@ -39,9 +38,17 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				GSONFileHandler jFile = new GSONFileHandler();
+				Port portSE = new Port("SE", "2409");
+				Port portRemoteServer = new Port("RemoteServer", "8084");
+				Port portTomcat = new Port("Tomcat", "8080");
+				Port portFirstSpirit= new Port("FirstSpirit", "8000");
+				jFile.addPort(portRemoteServer);
+				jFile.addPort(portTomcat);
+				jFile.addPort(portFirstSpirit);
+				jFile.addPort(portSE);
 //				jFile.addServerViaHost("Auslieferungsserver","lk101sw0395.ew1intra.de");
-				jFile.addPort("tom", "1234");
-				jFile.addPort("Chris", "5678");
+//				jFile.addPort("tom", "1234");
+//				jFile.addPort("Chris", "5678");
 //				jFile.editPort("port", "5678", "1234");
 //				jFile.editPort("name", "tom", "jens");
 				// jFile.addPort("DB3", "1527");
