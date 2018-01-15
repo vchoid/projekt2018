@@ -181,7 +181,7 @@ public class GSONFileHandler {
 
 	}
 	/**
-	 * Prüft ob der Server bereits im Array vorhanden ist und gibt eib true
+	 * Prüft ob der Server bereits im Array vorhanden ist und gibt true
 	 * zurück.
 	 * 
 	 * @param name
@@ -199,6 +199,7 @@ public class GSONFileHandler {
 		return false;
 	}
 
+	// ## add-Methode ##########################################################
 	private void addNewObjectInArray(JsonArray array, JsonObject newObject) {
 		// Objekt in Array anfügen
 		array.add(newObject);
@@ -208,9 +209,8 @@ public class GSONFileHandler {
 		getJsonObj().add(key, array);
 		// verändertes Objekt als String in Datei schreiben
 		writeInFile(getJsonObj().toString());
-
+		
 	}
-	// ## add-Methode ##########################################################
 	/**
 	 * Fügt das Objekt in das Array ein und schreibt es in die Datei
 	 * 

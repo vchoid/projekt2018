@@ -1,5 +1,8 @@
 package main.java.model;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 /**
  * 
  * @author Christoph Kiank
@@ -22,6 +25,7 @@ public class Port {
 		
 		return p;
 	}
+	
 	
 	public String getName() {
 		return name;
