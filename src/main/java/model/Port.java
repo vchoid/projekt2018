@@ -35,8 +35,6 @@ public class Port {
 		createSimpleStringProperty(p);
 		return p;
 	}
-
-
 	/**
 	 * Den Name und den Port in {@link SimpleStringProperty}-Variable speichern
 	 * 
