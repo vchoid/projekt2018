@@ -5,21 +5,18 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import main.java.model.Port;
+import main.java.utils.TableHandler;
 
 public class ViewController implements Initializable{
 
-	@FXML private TableView<Port> table;
-	@FXML private TableColumn<Port, String> tName;
-	
-	
+	@FXML private TableView tab1;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
 		
+		TableHandler port1 = new TableHandler(tab1, "SE");
+		TableHandler port1 = new TableHandler(tab1, "SE");
 	}
 	
 	

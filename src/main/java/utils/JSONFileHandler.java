@@ -214,7 +214,6 @@ public class JSONFileHandler {
 			addObjectInArrayAndWriteInFile(getPortsArray(), newPort, "ports");
 		}
 	}
-
 	// ## Getter und Setter ####################################################
 	/**
 	 * Werte aus dem Port Array an einer bestimmten Position in ein neues Port
@@ -232,7 +231,6 @@ public class JSONFileHandler {
 			p.setPort(temp.get("port").getAsString());
 		} catch (IndexOutOfBoundsException e) {
 			// TODO: handle exception
-
 		}
 		return p;
 	}
