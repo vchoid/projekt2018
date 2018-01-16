@@ -19,7 +19,6 @@ public class ViewController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		TableColumn id = new TableColumn("ID");
-		
 		TableColumn name = new TableColumn("Name");
 		TableColumn age = new TableColumn("Age");
 		TableColumn email = new TableColumn("Email");
