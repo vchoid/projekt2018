@@ -18,6 +18,7 @@ public class TableHandler {
 	
 	private void createColoumn() {
 		
+		// hier weiter machen
 		TableColumn col = new TableColumn(name);
 		
 		table.getColumns().add(col);
