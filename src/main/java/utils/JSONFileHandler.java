@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -78,8 +79,8 @@ public class JSONFileHandler {
 	private InetAddress inet;
 	private Boolean success = false;
 
-	private List portNameList;
-	private List serverNameList;
+	private List<String> portNameList = new ArrayList<>();
+	private List<String> serverNameList = new ArrayList<>();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -95,7 +96,7 @@ public class JSONFileHandler {
 	 */
 	private void init() {
 		parseFileAsJSONObject();
-		parsObjectToPortArrayAndServerArray();
+		parseObjectToPortArrayAndServerArray();
 		
 	}
 	/**
@@ -123,11 +124,21 @@ public class JSONFileHandler {
 	/**
 	 * Referenziert ein Array für Ports und eines für Server.
 	 */
-	private void parsObjectToPortArrayAndServerArray() {
+	private void parseObjectToPortArrayAndServerArray() {
 		setPortsArray(getJsonObj().getAsJsonArray("ports"));
+		saveNamesFromArray(getPortsArray(), portNameList);
 		setServerArray(getJsonObj().getAsJsonArray("server"));
+		saveNamesFromArray(getServerArray(), serverNameList);
 	}
-	
+	// ## Daten als Array für View #############################################
+	private void saveNamesFromArray(JsonArray array, List<String> list) {
+			for (int i = 0; i < array.size(); i++) {
+				JsonObject temp = array.get(i).getAsJsonObject();
+				JsonElement tempE = temp.get("name");
+				String tempS = tempE.getAsString();
+				list.add(tempS);
+			}
+		}
 	/**
 	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
 	 * Writer.
@@ -214,19 +225,6 @@ public class JSONFileHandler {
 		return false;
 	}
 
-	// ## Daten als Array für View #############################################
-
-	public void saveNamesFromArray(JsonArray array) {
-		JsonObject temp = new JsonObject();
-		JsonElement tempE = null;
-
-		for (int i = 0; i < array.size(); i++) {
-			System.out.println(i);
-			temp = array.get(i).getAsJsonObject();
-			tempE = temp.get("name");
-			System.out.println(tempE);
-		}
-	}
 
 	// ## add-Methode ##########################################################
 	private void addNewObjectInArray(JsonArray array, JsonObject newObject) {
@@ -500,8 +498,12 @@ public class JSONFileHandler {
 		this.positionInArray = positionInArray;
 	}
 
-	
-
+	public List<String> getPortNameList() {
+		return portNameList;
+	}
+	public List<String> getServerNameList() {
+		return serverNameList;
+	}
 	// --> Datei-Handling ------------------------------------------------------
 	public static String getFile() {
 		return FILE;
