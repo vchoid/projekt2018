@@ -1,7 +1,7 @@
 package test.java;
 
 import main.java.model.Port;
-import main.java.utils.GSONFileHandler;
+import main.java.utils.JSONFileHandler;
 
 public class TestWith {
 
@@ -37,9 +37,11 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
-				GSONFileHandler jFile = new GSONFileHandler();
-				Port portSE = new Port();
-				jFile.addPort(portSE.createPort("SE", "2409"));
+				JSONFileHandler jFile = new JSONFileHandler();
+				Port portDB = new Port();
+				jFile.addPort(portDB.createPort("DB2", "1527"));
+//				Port portChris = new Port();
+//				jFile.addPort(portDB.createPort("Chris", "1234"));
 //				Port portRemoteServer = new Port("RemoteServer", "8084");
 //				Port portTomcat = new Port("Tomcat", "8080");
 //				Port portFirstSpirit= new Port("FirstSpirit", "8000");

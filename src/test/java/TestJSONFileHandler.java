@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import main.java.utils.GSONFileHandler;
+import main.java.utils.JSONFileHandler;
 
 public class TestJSONFileHandler {
 

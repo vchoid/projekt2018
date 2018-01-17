@@ -8,96 +8,143 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import javafx.beans.property.SimpleStringProperty;
 import main.java.model.EmptyPortServerTemplate;
 import main.java.model.Port;
+
+//TODO syso -> löschen								
+//TODO regEx -> bei add und edit Funktionen machen	°
+//TODO Javadoc -> überprüfen						°
+//TODO Funktionsnamen ggf. anpassen					
+//TODO jUnit Tests schreiben 						!
+//TODO Ecxeption Handling 							!
+//TODO Port/Server Klassen -> einbinden
+
+/**
+ * 
+ * Werte in die Server_Ports.JSON schreiben, ändern und löschen.</br>
+ * 
+ * <p>
+ * <b>Methoden:</b>
+ * <ul>
+ * <li>Einen Porteintrag hinzufügen:
+ * <b>{@link #addPort(String, String)}</b></li>
+ * <li>Einen Porteintrag bearbeiten:
+ * <b>{@link #editPort(String, String, String)}</b></li>
+ * <li>Einen Porteintrag löschen: <b>{@link #deletePort(String)}</b></li>
+ * <li>Einen Servereintrag via Host hinzufügen:
+ * <b>{@link #addServerViaHost(String, String)}</b></li>
+ * <li>Einen Servereintrag via IP hinzufügen:
+ * <b>{@link #addServerViaIP(String, String)}</b></li>
+ * <li>Einen Servereintrag bearbeiten:
+ * <b>{@link #editServer(String, String, String)}</b></li>
+ * <li>Einen Servereintrag löschen: <b>{@link #deleteServer(String)}</b></li>
+ * </ul>
+ * </p>
+ * 
+ * @author Christoph Kiank
+ * @version 1.0.0
+ */
 
 public class JSONFileHandler {
 
 	// ## Variablen ############################################################
 
 	// --> Datei-Handling ------------------------------------------------------
-	private Gson gson;
-	private String filePath = System.getProperty("user.dir")
+	private Gson gson = new Gson();
+	private final static String FILE = System.getProperty("user.dir")
 			+ "/src/main/resources/Server_Ports.JSON";
 	private BufferedReader reader;
 	private FileInputStream input;
 	private BufferedWriter writer;
 	private FileOutputStream out;
-	private EmptyPortServerTemplate emptyPSTemplate = new EmptyPortServerTemplate();
 	// --> json-Handling -------------------------------------------------------
+	private EmptyPortServerTemplate emptyPSTemplate = new EmptyPortServerTemplate();
+	private JsonObject newPort = new JsonObject();
+	private JsonObject newServer = new JsonObject();
 	private JsonObject jsonObj;
 	private JsonArray portsArray;
-	private JsonElement searchElement;
+	private JsonArray serverArray;
 	private int positionInArray;
+	private JsonElement searchElement;
+	private InetAddress inet;
+	private Boolean success = false;
 
-	
-	// --> add Methoden --------------------------------------------------------
-	private JsonObject newPort = new JsonObject();
-
+	private List portNameList;
+	private List serverNameList;
 	// --> Exception-Handling --------------------------------------------------
+	private Exception e;
 
 	// ## Konstruktor ##########################################################
-	/**
-	 * Holt den Dateipfad und legt ein neues GSON-Objekt an.
-	 * 
-	 * @param path
-	 */
-	public JSONFileHandler(String path) {
-		filePath = path;
-		gson = new Gson();
-		readAndParseJSONFileToJsonArray();
-	}
 
-	// ## JSON-Datei Methoden ##################################################
-	/**
-	 * Parst Datei als JSON-Objekt und referenziert ein Array für Ports und
-	 * eines für Server. Wenn Datei nicht vorhanden wird eine neue leere
-	 * json-Datei angelegt und diese wird geparst.
-	 */
-	private void readAndParseJSONFileToJsonArray() {
-		try {
-			// Datei über einen Stream einlesen
-			input = new FileInputStream(filePath);
-			reader = new BufferedReader(new InputStreamReader(input));
-			// Inhalt als JSONObject referenzieren
-			setJsonObj(gson.fromJson(reader, JsonObject.class));
-			// PortsArray und ServerArray setzen
-			setPortsArray(getJsonObj().getAsJsonArray("ports"));
-			// setServerArray(getJsonObj().getAsJsonArray("server"));
-		} catch (FileNotFoundException e) {
-			addEmptyJsonFileTemplate();
-			readAndParseJSONFileToJsonArray();
-		}
+	public JSONFileHandler() {
+		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
+		init();
 	}
 	/**
-	 * Schreibe Inhalt(content) in der JSON-Datei und schließe den Writer.
-	 * 
-	 * @param content
+	 * Initialisiert die Datei und bereitet den Inhalt zur Weiterverabeitung
+	 * auf.
 	 */
-	private void writeInFile(String content) {
-		try {
-			out = new FileOutputStream(filePath);
-			writer = new BufferedWriter(new OutputStreamWriter(out));
-			writer.write(content);
-			// TODO löschen!
-			System.out.print(" -> gespeichert in Datei.");
-			writer.close();
-		} catch (IOException e) {
-
-		}
+	private void init() {
+		parseFileAsJSONObject();
+		parsObjectToPortArrayAndServerArray();
+		
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
 	 */
 	private void addEmptyJsonFileTemplate() {
 		writeInFile(emptyPSTemplate.getPortServerTemplate());
+	}
+	/**
+	 * Ließt Datei ein und speichern den Inhalt in ein {@link JsonObject}}.
+	 */
+	private void parseFileAsJSONObject() {
+		// Datei über einen Stream einlesen
+		try {
+			input = new FileInputStream(getFile());
+			reader = new BufferedReader(new InputStreamReader(input));
+			// Datei als JSON-Objekt einlesen
+			setJsonObj(gson.fromJson(reader, JsonObject.class));
+		} catch (FileNotFoundException e) {
+			addEmptyJsonFileTemplate();
+			init();
+		}
+	}
+	
+	/**
+	 * Referenziert ein Array für Ports und eines für Server.
+	 */
+	private void parsObjectToPortArrayAndServerArray() {
+		setPortsArray(getJsonObj().getAsJsonArray("ports"));
+		setServerArray(getJsonObj().getAsJsonArray("server"));
+	}
+	
+	/**
+	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
+	 * Writer.
+	 * 
+	 * @param content
+	 */
+	private void writeInFile(String content) {
+		try {
+			out = new FileOutputStream(getFile());
+			writer = new BufferedWriter(new OutputStreamWriter(out));
+			writer.write(content);
+			// TODO löschen!
+			System.out.println(" -> gespeichert in Datei.");
+			writer.close();
+		} catch (IOException e) {
+			setE(e);
+		}
 	}
 
 	// ## Prüfen auf validen Inhalt ############################################
@@ -131,7 +178,6 @@ public class JSONFileHandler {
 		}
 		return false;
 	}
-
 	/**
 	 * Prüft ob der Port bereits im Array vorhanden ist und gibt ein true
 	 * zurück.
@@ -140,7 +186,6 @@ public class JSONFileHandler {
 	 * @param port
 	 * @return
 	 */
-	// --> Port ----------------------------------------------------------------
 	private Boolean isPortAvailable(Port port) {
 		if (isValueInArray(getPortsArray(), "port", port.getPort())
 				|| isValueInArray(getPortsArray(), "name", port.getName())) {
@@ -150,6 +195,37 @@ public class JSONFileHandler {
 		}
 		return false;
 
+	}
+	/**
+	 * Prüft ob der Server bereits im Array vorhanden ist und gibt true zurück.
+	 * 
+	 * @param name
+	 * @param ipOrHost
+	 * @return
+	 */
+	private Boolean isServerAvailable(String name, String ip, String host) {
+		if (isValueInArray(getServerArray(), "ip", ip)
+				|| isValueInArray(getServerArray(), "name", name)
+				|| isValueInArray(getServerArray(), "host", host)) {
+			// TODO löschen !
+			System.out.print("\n  -> vorhanden");
+			return true;
+		}
+		return false;
+	}
+
+	// ## Daten als Array für View #############################################
+
+	public void saveNamesFromArray(JsonArray array) {
+		JsonObject temp = new JsonObject();
+		JsonElement tempE = null;
+
+		for (int i = 0; i < array.size(); i++) {
+			System.out.println(i);
+			temp = array.get(i).getAsJsonObject();
+			tempE = temp.get("name");
+			System.out.println(tempE);
+		}
 	}
 
 	// ## add-Methode ##########################################################
@@ -179,9 +255,8 @@ public class JSONFileHandler {
 		System.out.print(" -> hinzugefügt zum Array");
 		addNewArrayInJSONFile(array, key);
 	}
-	// --> add Port ------------------------------------------------------------
 	/**
-	 * Fügt zwei Key-Value Paare dem PortsArray hinzu.
+	 * Fügt zwei Key-Value Paare für das PortsArray hinzu.
 	 * 
 	 * @param name
 	 * @param port
@@ -191,6 +266,20 @@ public class JSONFileHandler {
 		System.out.println("\n++++++++++++++ HINZUFÜGEN ++++++++++++++");
 		newPort.addProperty("name", port.getName());
 		newPort.addProperty("port", port.getPort());
+	}
+	/**
+	 * Fügt drei Key-Value Paare für das Server-Array hinzu.
+	 * 
+	 * @param name
+	 * @param host
+	 * @param ip
+	 * @return
+	 */
+	private void addServerValues(String name, String host, String ip) {
+		System.out.println("\n++++++++++++++ HINZUFÜGEN ++++++++++++++");
+		newServer.addProperty("name", name);
+		newServer.addProperty("host", host);
+		newServer.addProperty("ip", ip);
 	}
 	/**
 	 * Ein Port in die Json-Datei schreiben.
@@ -214,36 +303,183 @@ public class JSONFileHandler {
 			addObjectInArrayAndWriteInFile(getPortsArray(), newPort, "ports");
 		}
 	}
-	// ## Getter und Setter ####################################################
 	/**
-	 * Werte aus dem Port Array an einer bestimmten Position in ein neues Port
-	 * Objekt speichern.
+	 * * {@link #isValueInArray(JsonArray, String, String)} überprüft ob der
+	 * Wert bereits existiert und gibt ein Boolean zurück. Wenn er nicht
+	 * vorhanden ist soll er ihn zum Array hinzufügen und dann in die Datei
+	 * schreiben. Der fehlenden Host wird automatisch ermittelt und ebenfalls
+	 * hinzugefügt.
 	 * 
-	 * @param posInArray
-	 * @return
+	 * @param name
+	 * @param port
+	 * @throws UnknownHostException
 	 */
-	public Port getValueAndSetAsSimpleProperty(int posInArray) {
-		Port p = new Port();
+	public void addServerViaIP(String name, String ip) {
 		try {
-			JsonObject temp = new JsonObject();
-			temp = getPortsArray().get(posInArray).getAsJsonObject();
-			p.setName(temp.get("name").getAsString());
-			p.setPort(temp.get("port").getAsString());
-		} catch (IndexOutOfBoundsException e) {
-			// TODO: handle exception
+			inet = InetAddress.getByName(ip);
+			addServerValues(name, inet.getHostName(), ip);
+			if (!isServerAvailable(name, ip, inet.getHostName())) {
+				addObjectInArrayAndWriteInFile(getServerArray(), newServer,
+						"server");
+			}
+		} catch (UnknownHostException e) {
+			setE(e);
 		}
-		return p;
 	}
-	
-	// --> Content-Handling ----------------------------------------------------
-	public String getFilePath() {
-		return filePath;
+	/**
+	 * 
+	 * Fügt ein Server in die ServerDB.JSON mittels des Hosts hinzu. Die IP wird
+	 * automatisch ergänzt,
+	 * 
+	 * {@link #isValueInJSONArray(String)} überprüft ob der Wert bereits
+	 * existiert und gibt ein Boolean zurück. Wenn er nicht vorhanden ist soll
+	 * er ihn zum Array hinzufügen und dann in die Datei schreiben. Der
+	 * fehlenden Host wird automatisch ermittelt und ebenfalls hinzugefügt.
+	 * 
+	 * 
+	 * @param name
+	 * @param port
+	 * @throws UnknownHostException
+	 */
+	public void addServerViaHost(String name, String host) {
+		try {
+			inet = InetAddress.getByName(host);
+			addServerValues(name, host, inet.getHostAddress());
+			if (!isServerAvailable(name, inet.getHostAddress(), host)) {
+				addObjectInArrayAndWriteInFile(getServerArray(), newServer,
+						"server");
+			}
+		} catch (UnknownHostException e) {
+			setE(e);
+		}
+	}
+	// ## delete Methoden ######################################################
+	private void removeValueFromArray(String name, JsonArray array) {
+		System.out.println("\n+++++++++++++++ LÖSCHEN ++++++++++++++++");
+		if (isValueInArray(array, "name", name)) {
+			try {
+				array.remove(getPositionInArray());
+				// TODO löschen!
+				System.out.print("  -> wurde aus Array gelöscht");
+				setSuccess(true);
+			} catch (Exception e) {
+				setE(e);
+			}
+		} else {
+			System.out.print(name);
+			System.err.println("  -> nicht im Array vorhanden");
+			setSuccess(false);
+		}
+	}
+	/**
+	 * Löscht ein Port anhand des Parameters.
+	 * 
+	 * @param name
+	 */
+	public void deletePort(Port port) {
+		removeValueFromArray(port.getName(), getPortsArray());
+		if (getSuccess()) {
+			addNewArrayInJSONFile(getPortsArray(), "ports");
+		}
+	}
+	/**
+	 * Löscht ein Server anhand des Parameters.
+	 * 
+	 * @param name
+	 */
+	public void deleteServer(String name) {
+		removeValueFromArray(name, getServerArray());
+		if (getSuccess()) {
+			addNewArrayInJSONFile(getServerArray(), "server");
+		}
+	}
+
+	// ## edit Methoden ########################################################
+	/**
+	 * 
+	 * Verändert einzelne Wertepaare aus dem Port-Array.
+	 * 
+	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
+	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
+	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
+	 * und schreibe das neue Array in die Datei.
+	 * 
+	 * @param key
+	 * @param oldVal
+	 * @param newVal
+	 */
+	public void editPort(String key, String oldVal, String newVal) {
+		System.out.println("\n////////////// BEARBEITEN //////////////");
+		// überprüfen ob der alter Wert überhaupt existiert
+		if (isValueInArray(getPortsArray(), key, oldVal)) {
+			JsonObject temp = (JsonObject) getPortsArray()
+					.get(getPositionInArray());
+			// überprüfen ob der neue Wert bereits existiert
+			if (!isValueInArray(getPortsArray(), key, newVal)) {
+				temp.addProperty(key, newVal);
+				addNewArrayInJSONFile(getPortsArray(), "ports");
+			} else {
+				// TODO löschen!
+				System.out.println("  -> keine doppelten Werte erlaubt");
+			}
+		} else {
+			System.out.print(oldVal);
+			System.out.println(" -> nicht gefunden");
+		}
+	}
+	/**
+	 * 
+	 * Verändert einzelne Wertepaare aus dem Server-Array.
+	 * 
+	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
+	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
+	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
+	 * und schreibe das neue Array in die Datei.
+	 * 
+	 * @param key
+	 * @param oldVal
+	 * @param newVal
+	 */
+	public void editServer(String key, String oldVal, String newVal) {
+		System.out.println("\n////////////// BEARBEITEN //////////////");
+		// überprüfen ob der alter Wert überhaupt existiert
+		if (isValueInArray(getServerArray(), key, oldVal)) {
+			JsonObject temp = (JsonObject) getServerArray()
+					.get(getPositionInArray());
+			// überprüfen ob der neue Wert bereits existiert
+			if (!isValueInArray(getServerArray(), key, newVal)) {
+				temp.addProperty(key, newVal);
+				addNewArrayInJSONFile(getServerArray(), "server");
+			} else {
+				// TODO löschen!
+				System.out.println("  -> keine doppelten Werte erlaubt");
+			}
+		} else {
+			System.out.print(oldVal);
+			System.out.println(" -> nicht gefunden");
+		}
+	}
+
+	// ## Getter und Setter ####################################################
+	// --> Array-Handling ------------------------------------------------------
+
+	public Boolean getSuccess() {
+		return success;
+	}
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+	public JsonElement getSearchElement() {
+		return searchElement;
+	}
+	public void setSearchElement(JsonElement searchElement) {
+		this.searchElement = searchElement;
 	}
 	public JsonObject getJsonObj() {
 		return jsonObj;
 	}
-	public void setJsonObj(JsonObject jsonObj) {
-		this.jsonObj = jsonObj;
+	public void setJsonObj(JsonObject json) {
+		this.jsonObj = json;
 	}
 	public JsonArray getPortsArray() {
 		return portsArray;
@@ -251,21 +487,31 @@ public class JSONFileHandler {
 	public void setPortsArray(JsonArray portsArray) {
 		this.portsArray = portsArray;
 	}
-
-	public JsonElement getSearchElement() {
-		return searchElement;
+	public JsonArray getServerArray() {
+		return serverArray;
 	}
-
-	public void setSearchElement(JsonElement searchElement) {
-		this.searchElement = searchElement;
+	public void setServerArray(JsonArray serverArray) {
+		this.serverArray = serverArray;
 	}
-
 	public int getPositionInArray() {
 		return positionInArray;
 	}
-
 	public void setPositionInArray(int positionInArray) {
 		this.positionInArray = positionInArray;
+	}
+
+	
+
+	// --> Datei-Handling ------------------------------------------------------
+	public static String getFile() {
+		return FILE;
+	}
+	// --> Exception Handling --------------------------------------------------
+	public Exception getE() {
+		return e;
+	}
+	public void setE(Exception e) {
+		this.e = e;
 	}
 
 }
