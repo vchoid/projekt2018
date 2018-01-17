@@ -1,4 +1,4 @@
-package main.java.utils;
+package main.java.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,9 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import main.java.model.EmptyPortServerTemplate;
-import main.java.model.Port;
 
 //TODO syso -> löschen								
 //TODO regEx -> bei add und edit Funktionen machen	°

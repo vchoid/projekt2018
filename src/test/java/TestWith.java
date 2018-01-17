@@ -1,7 +1,7 @@
 package test.java;
 
+import main.java.model.JSONFileHandler;
 import main.java.model.Port;
-import main.java.utils.JSONFileHandler;
 
 public class TestWith {
 
