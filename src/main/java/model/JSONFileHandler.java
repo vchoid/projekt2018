@@ -83,7 +83,7 @@ public class JSONFileHandler {
 
 	public JSONFileHandler() {
 		//TODO löschen
-		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
+//		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
 		init();
 	}
 	/**
@@ -93,7 +93,6 @@ public class JSONFileHandler {
 	private void init() {
 		parseFileAsJSONObject();
 		parseObjectToPortArrayAndServerArray();
-
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.

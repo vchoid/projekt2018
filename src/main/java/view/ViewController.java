@@ -18,43 +18,53 @@ import main.java.model.JSONFileHandler;
 
 public class ViewController implements Initializable {
 
-	@FXML
-	private TableView<String> portTable;
-	@FXML
-	private TableView<String> serverTable;
-	@FXML
-	private TableColumn<String, String> server;
-
+	@FXML private TableView<String> portServerTable;
+	
+	@FXML private TableColumn<String, String> server;
 	private ArrayList<String> serverArr = new ArrayList<>();
 	private JSONFileHandler jfh = new JSONFileHandler();
-
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		addPortsAsColoumn();
 		addServerAsRow();
 	}
+	/**
+	 * Holt die Name der Ports aus der Liste und legt für jeden Namen eine
+	 * Spalte an und fügt sie der Tabelle Ports hinzu.
+	 */
 	private void addPortsAsColoumn() {
 		for (int i = 0; i < jfh.getPortNameList().size(); i++) {
 			TableColumn<String, String> col = new TableColumn<String, String>(
 					jfh.getPortNameList().get(i));
-			portTable.getColumns().add(col);
+			portServerTable.getColumns().add(col);
 		}
 	}
+	/**
+	 * Fügt der Server Tabelle in der Spalte Server die Namen der der
+	 * ObserbableList hinzu.
+	 */
 	private void addServerAsRow() {
-		server.setCellValueFactory( 
-				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() { 
-                    public ObservableValue<String> call( 
-                            CellDataFeatures<String, String> p) { 
-                        return new SimpleStringProperty(p.getValue()); 
-                    } 
-                }); 
-		serverTable.setItems(createList());
+		server.setCellValueFactory(
+				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+					public ObservableValue<String> call(
+							CellDataFeatures<String, String> p) {
+						return new SimpleStringProperty(p.getValue());
+					}
+				});
+		portServerTable.setItems(createList());
 	}
-	private ObservableList<String> createList() { 
-		 for (int i = 0; i < jfh.getServerNameList().size(); i++) {
-		 serverArr.add(jfh.getServerNameList().get(i));
-		 }
-        return FXCollections.observableArrayList(serverArr); 
-    }
+	/**
+	 * Holt die Namen der Server aus der Liste und speichert jeden Namen in das
+	 * ServerArray und gibt das Array als eine {@link ObservableList}
+	 * zurück.
+	 * 
+	 * @return
+	 */
+	private ObservableList<String> createList() {
+		for (int i = 0; i < jfh.getServerNameList().size(); i++) {
+			serverArr.add(jfh.getServerNameList().get(i));
+		}
+		return FXCollections.observableArrayList(serverArr);
+	}
 }
