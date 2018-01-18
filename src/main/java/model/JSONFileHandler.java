@@ -18,6 +18,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 //TODO syso -> löschen								
 //TODO regEx -> bei add und edit Funktionen machen	°
 //TODO Javadoc -> überprüfen						°
@@ -78,6 +81,10 @@ public class JSONFileHandler {
 
 	private List<String> portNameList = new ArrayList<>();
 	private List<String> serverNameList = new ArrayList<>();
+	private ObservableList<Port> portsName = FXCollections
+			.observableArrayList();
+	// private ObservableList<Server> ServerName =
+	// FXCollections.observableArrayList();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -94,7 +101,7 @@ public class JSONFileHandler {
 	private void init() {
 		parseFileAsJSONObject();
 		parseObjectToPortArrayAndServerArray();
-		
+
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -117,7 +124,7 @@ public class JSONFileHandler {
 			init();
 		}
 	}
-	
+
 	/**
 	 * Referenziert ein Array für Ports und eines für Server.
 	 */
@@ -129,13 +136,13 @@ public class JSONFileHandler {
 	}
 	// ## Daten als Array für View #############################################
 	private void saveNamesFromArray(JsonArray array, List<String> list) {
-			for (int i = 0; i < array.size(); i++) {
-				JsonObject temp = array.get(i).getAsJsonObject();
-				JsonElement tempE = temp.get("name");
-				String tempS = tempE.getAsString();
-				list.add(tempS);
-			}
+		for (int i = 0; i < array.size(); i++) {
+			JsonObject temp = array.get(i).getAsJsonObject();
+			JsonElement tempE = temp.get("name");
+			String tempS = tempE.getAsString();
+			list.add(tempS);
 		}
+	}
 	/**
 	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
 	 * Writer.
@@ -211,17 +218,16 @@ public class JSONFileHandler {
 	 * @param ipOrHost
 	 * @return
 	 */
-	private Boolean isServerAvailable(String name, String ip, String host) {
-		if (isValueInArray(getServerArray(), "ip", ip)
-				|| isValueInArray(getServerArray(), "name", name)
-				|| isValueInArray(getServerArray(), "host", host)) {
+	private Boolean isServerAvailable(Server server) {
+		if (isValueInArray(getServerArray(), "ip", server.getIp())
+				|| isValueInArray(getServerArray(), "name", server.getName())
+				|| isValueInArray(getServerArray(), "host", server.getHost())) {
 			// TODO löschen !
 			System.out.print("\n  -> vorhanden");
 			return true;
 		}
 		return false;
 	}
-
 
 	// ## add-Methode ##########################################################
 	private void addNewObjectInArray(JsonArray array, JsonObject newObject) {
@@ -233,7 +239,6 @@ public class JSONFileHandler {
 		getJsonObj().add(key, array);
 		// verändertes Objekt als String in Datei schreiben
 		writeInFile(getJsonObj().toString());
-
 	}
 	/**
 	 * Fügt das Objekt in das Array ein und schreibt es in die Datei
@@ -250,12 +255,12 @@ public class JSONFileHandler {
 		System.out.print(" -> hinzugefügt zum Array");
 		addNewArrayInJSONFile(array, key);
 	}
+
+	// --> Port ------------------------------------------------------------
 	/**
 	 * Fügt zwei Key-Value Paare für das PortsArray hinzu.
 	 * 
-	 * @param name
 	 * @param port
-	 * @return
 	 */
 	private void addPortValues(Port port) {
 		System.out.println("\n++++++++++++++ HINZUFÜGEN ++++++++++++++");
@@ -263,21 +268,7 @@ public class JSONFileHandler {
 		newPort.addProperty("port", port.getPort());
 	}
 	/**
-	 * Fügt drei Key-Value Paare für das Server-Array hinzu.
-	 * 
-	 * @param name
-	 * @param host
-	 * @param ip
-	 * @return
-	 */
-	private void addServerValues(String name, String host, String ip) {
-		System.out.println("\n++++++++++++++ HINZUFÜGEN ++++++++++++++");
-		newServer.addProperty("name", name);
-		newServer.addProperty("host", host);
-		newServer.addProperty("ip", ip);
-	}
-	/**
-	 * Ein Port in die Json-Datei schreiben.
+	 * Ein Port in die Server_Ports.JSON-Datei schreiben.
 	 *
 	 * Erstellt ein neues {@link JsonObject} an und fügt die Parameter hinzu.
 	 *
@@ -286,7 +277,6 @@ public class JSONFileHandler {
 	 * ist soll er ihn zum Array hinzufügen und dann in die Datei schreiben.
 	 *
 	 * 
-	 * @param name
 	 * @param port
 	 */
 	public void addPort(Port port) {
@@ -298,54 +288,33 @@ public class JSONFileHandler {
 			addObjectInArrayAndWriteInFile(getPortsArray(), newPort, "ports");
 		}
 	}
+	// --> Server ----------------------------------------------------------
 	/**
-	 * * {@link #isValueInArray(JsonArray, String, String)} überprüft ob der
-	 * Wert bereits existiert und gibt ein Boolean zurück. Wenn er nicht
-	 * vorhanden ist soll er ihn zum Array hinzufügen und dann in die Datei
-	 * schreiben. Der fehlenden Host wird automatisch ermittelt und ebenfalls
-	 * hinzugefügt.
+	 * Fügt drei Key-Value Paare für das Server-Array hinzu.
 	 * 
-	 * @param name
-	 * @param port
-	 * @throws UnknownHostException
+	 * @param server
 	 */
-	public void addServerViaIP(String name, String ip) {
-		try {
-			inet = InetAddress.getByName(ip);
-			addServerValues(name, inet.getHostName(), ip);
-			if (!isServerAvailable(name, ip, inet.getHostName())) {
-				addObjectInArrayAndWriteInFile(getServerArray(), newServer,
-						"server");
-			}
-		} catch (UnknownHostException e) {
-			setE(e);
-		}
+	private void addServerValues(Server server) {
+		System.out.println("\n++++++++++++++ HINZUFÜGEN ++++++++++++++");
+		newServer.addProperty("name", server.getName());
+		newServer.addProperty("host", server.getHost());
+		newServer.addProperty("ip", server.getIp());
 	}
+
 	/**
+	 * Ein Server in die Server_Ports.JSON-Datei schrieben
 	 * 
-	 * Fügt ein Server in die ServerDB.JSON mittels des Hosts hinzu. Die IP wird
-	 * automatisch ergänzt,
+	 * {@link #addServerValues(Server)}} fügt Werte dem Server-Objekt hinzu.
+	 * Überprüft ob die Werte bereits in dem Server-Objekt vorhanden sind. Wenn
+	 * nicht, werden diese dem Array hinzugefügt und in die Datei geschrieben.
 	 * 
-	 * {@link #isValueInJSONArray(String)} überprüft ob der Wert bereits
-	 * existiert und gibt ein Boolean zurück. Wenn er nicht vorhanden ist soll
-	 * er ihn zum Array hinzufügen und dann in die Datei schreiben. Der
-	 * fehlenden Host wird automatisch ermittelt und ebenfalls hinzugefügt.
-	 * 
-	 * 
-	 * @param name
-	 * @param port
-	 * @throws UnknownHostException
+	 * @param server
 	 */
-	public void addServerViaHost(String name, String host) {
-		try {
-			inet = InetAddress.getByName(host);
-			addServerValues(name, host, inet.getHostAddress());
-			if (!isServerAvailable(name, inet.getHostAddress(), host)) {
-				addObjectInArrayAndWriteInFile(getServerArray(), newServer,
-						"server");
-			}
-		} catch (UnknownHostException e) {
-			setE(e);
+	public void addServer(Server server) {
+		addServerValues(server);
+		if (!isServerAvailable(server)) {
+			addObjectInArrayAndWriteInFile(getServerArray(), newServer,
+					"server");
 		}
 	}
 	// ## delete Methoden ######################################################

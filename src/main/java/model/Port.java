@@ -29,37 +29,31 @@ public class Port {
 	 * @return
 	 */
 	public Port createPort(String name, String port) {
-		Port p = new Port();
-		p.name = name;
-		p.port = port;
-		createSimpleStringProperty(p);
-		return p;
+		this.name = name;
+		this.port = port;
+		createSimpleStringProperty();
+		System.out.println(sName);
+		System.out.println(sPort);
+		return this;
 	}
 	/**
-	 * Den Name und den Port in {@link SimpleStringProperty}-Variable speichern
+	 * Den Name und den Port als {@link SimpleStringProperty}-Variable speichern.
 	 * 
 	 * @param p
 	 */
-	private void createSimpleStringProperty(Port p) {
-		this.sName = new SimpleStringProperty(p.getName());
-		this.sPort = new SimpleStringProperty(p.getPort());
+	private void createSimpleStringProperty() {
+		this.sName = new SimpleStringProperty(this.name);
+		this.sPort = new SimpleStringProperty(this.port);
 
 	}
-	public SimpleStringProperty getsName() {
-		return sName;
+	public String getsName() {
+		return sName.get();
 	}
 
-	public void setsName(SimpleStringProperty sName) {
-		this.sName = sName;
+	public String getsPort() {
+		return sPort.get();
 	}
-
-	public SimpleStringProperty getsPort() {
-		return sPort;
-	}
-
-	public void setsPort(SimpleStringProperty sPort) {
-		this.sPort = sPort;
-	}
+	
 	public String getName() {
 		return name;
 	}

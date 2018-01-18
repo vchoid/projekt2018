@@ -28,15 +28,13 @@ public class Test extends Application {
 
 		TableColumn<TableObject, String> col1 = new TableColumn<TableObject, String>(
 				"Column 1");
-		TableColumn<TableObject, String> col2 = new TableColumn<TableObject, String>(
-				"Column 2");
-		table.getColumns().addAll(col1, col2);
+		
+		table.getColumns().add(col1);
 
 		col1.setCellValueFactory(
 				new PropertyValueFactory<TableObject, String>("column1"));
-		col2.setCellValueFactory(
-				new PropertyValueFactory<TableObject, String>("column2"));
-		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+	
+//		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 		root.getChildren().add(table);
 
@@ -54,8 +52,7 @@ public class Test extends Application {
 		// Populate table
 		ArrayList<TableObject> data = new ArrayList<TableObject>();
 		for (int i = 0; i < 20;) {
-			TableObject entry = new TableObject(String.valueOf(i++),
-					String.valueOf(i++));
+			TableObject entry = new TableObject(String.valueOf(i++));
 			data.add(entry);
 		}
 
@@ -64,19 +61,16 @@ public class Test extends Application {
 
 	public class TableObject {
 		private StringProperty column1;
-		private StringProperty column2;
 
-		public TableObject(String col1, String col2) {
+		public TableObject(String col1) {
 			column1 = new SimpleStringProperty(col1);
-			column2 = new SimpleStringProperty(col2);
+			
 		}
 
 		public StringProperty column1Property() {
 			return column1;
 		}
 
-		public StringProperty column2Property() {
-			return column2;
-		}
+		
 	}
 }
