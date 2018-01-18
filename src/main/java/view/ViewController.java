@@ -4,12 +4,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 import main.java.model.JSONFileHandler;
 
 public class ViewController implements Initializable {
@@ -19,19 +23,17 @@ public class ViewController implements Initializable {
 	@FXML
 	private TableView<String> serverTable;
 	@FXML
-	private TableColumn<String, String> serverName = new TableColumn<>("Server");
+	private TableColumn<String, String> server;
 
-	ArrayList<String> serverArr = new ArrayList<>();
-	ObservableList<?> list = FXCollections.observableArrayList();
-	
+	private ArrayList<String> serverArr = new ArrayList<>();
 	private JSONFileHandler jfh = new JSONFileHandler();
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		addPortsAsColoumn();
 		addServerAsRow();
 	}
-
 	private void addPortsAsColoumn() {
 		for (int i = 0; i < jfh.getPortNameList().size(); i++) {
 			TableColumn<String, String> col = new TableColumn<String, String>(
@@ -39,13 +41,20 @@ public class ViewController implements Initializable {
 			portTable.getColumns().add(col);
 		}
 	}
-
 	private void addServerAsRow() {
-		for (int i = 0; i < jfh.getServerNameList().size(); i++) {
-			serverArr.add(jfh.getServerNameList().get(i));
-		}
-		System.out.println(serverArr);
+		server.setCellValueFactory( 
+				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() { 
+                    public ObservableValue<String> call( 
+                            CellDataFeatures<String, String> p) { 
+                        return new SimpleStringProperty(p.getValue()); 
+                    } 
+                }); 
+		serverTable.setItems(createList());
 	}
-
-	
+	private ObservableList<String> createList() { 
+		 for (int i = 0; i < jfh.getServerNameList().size(); i++) {
+		 serverArr.add(jfh.getServerNameList().get(i));
+		 }
+        return FXCollections.observableArrayList(serverArr); 
+    }
 }

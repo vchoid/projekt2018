@@ -8,8 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 //TODO syso -> löschen								
 //TODO regEx -> bei add und edit Funktionen machen	°
@@ -76,21 +71,18 @@ public class JSONFileHandler {
 	private JsonArray serverArray;
 	private int positionInArray;
 	private JsonElement searchElement;
-	private InetAddress inet;
 	private Boolean success = false;
 
 	private List<String> portNameList = new ArrayList<>();
 	private List<String> serverNameList = new ArrayList<>();
-	private ObservableList<Port> portsName = FXCollections
-			.observableArrayList();
-	// private ObservableList<Server> ServerName =
-	// FXCollections.observableArrayList();
+
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
 	// ## Konstruktor ##########################################################
 
 	public JSONFileHandler() {
+		//TODO löschen
 		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
 		init();
 	}
@@ -311,8 +303,11 @@ public class JSONFileHandler {
 	 * @param server
 	 */
 	public void addServer(Server server) {
+		// neues Objekt mit drei Key-Value-Paare anlegen
 		addServerValues(server);
+		// prüfen ob bereits vorhanden
 		if (!isServerAvailable(server)) {
+			// neuen validen Wert schreiben
 			addObjectInArrayAndWriteInFile(getServerArray(), newServer,
 					"server");
 		}
@@ -351,8 +346,8 @@ public class JSONFileHandler {
 	 * 
 	 * @param name
 	 */
-	public void deleteServer(String name) {
-		removeValueFromArray(name, getServerArray());
+	public void deleteServer(Server server) {
+		removeValueFromArray(server.getName(), getServerArray());
 		if (getSuccess()) {
 			addNewArrayInJSONFile(getServerArray(), "server");
 		}

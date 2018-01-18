@@ -1,7 +1,5 @@
 package main.java.model;
 
-import javafx.beans.property.SimpleStringProperty;
-
 /**
  * 
  * @author Christoph Kiank
@@ -12,46 +10,21 @@ public class Port {
 	private String name;
 	private String port;
 
-	private SimpleStringProperty sName;
-	private SimpleStringProperty sPort;
-
-	public Port() {
+	public Port(String name) {
 		super();
+		this.name = name;
 	}
 
 	/**
-	 * Ein Port-Element erzeugen, die Elemente zusätzlich als
-	 * {@link SimpleStringProperty}-Variablen speichern und den Port zurück
-	 * geben.
+	 * Ein Port erzeugen.
 	 * 
 	 * @param name
 	 * @param port
 	 * @return
 	 */
-	public Port createPort(String name, String port) {
-		this.name = name;
+	public Port createPort(String port) {
 		this.port = port;
-		createSimpleStringProperty();
-		System.out.println(sName);
-		System.out.println(sPort);
 		return this;
-	}
-	/**
-	 * Den Name und den Port als {@link SimpleStringProperty}-Variable speichern.
-	 * 
-	 * @param p
-	 */
-	private void createSimpleStringProperty() {
-		this.sName = new SimpleStringProperty(this.name);
-		this.sPort = new SimpleStringProperty(this.port);
-
-	}
-	public String getsName() {
-		return sName.get();
-	}
-
-	public String getsPort() {
-		return sPort.get();
 	}
 	
 	public String getName() {

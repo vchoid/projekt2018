@@ -39,11 +39,10 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				JSONFileHandler jFile = new JSONFileHandler();
-				Port portDB = new Port();
-				portDB.createPort("DB", "1520");
-				jFile.addPort(portDB);
-				Server stage = new Server();
-				stage.createServerViaIP("Stage", "10.33.246.212");
+				Port portDB = new Port("DB");
+				jFile.addPort(portDB.createPort("1520"));
+				Server stage = new Server("Local-Server");
+				stage.createServerViaIP("10.1.40.117");
 				jFile.addServer(stage);
 //				Port portChris = new Port();
 //				jFile.addPort(portDB.createPort("Chris", "1234"));

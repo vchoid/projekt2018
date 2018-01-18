@@ -16,47 +16,42 @@ public class Server {
 	private String host;
 	private String ip;
 	private InetAddress inet;
-
-	public Server() {
+	
+	private SimpleStringProperty sName;
+	
+	public Server(String name) {
 		super();
+		this.sName = new SimpleStringProperty(name);
+		this.name = name;
+		
 	}
-
-	public Server createServerViaIP(String name, String ip) {
+	public Server createServerViaIP(String ip) {
 		try {
 			inet = InetAddress.getByName(ip);
 		} catch (UnknownHostException e) {
 			//TODO löschen
 			System.out.print(" -> Unbekannter Host");
 		}
-		this.name = name;
 		this.ip = ip;
 		this.host =  inet.getHostName();
 		return this;
 	}
-	public Server createServerViaHost(String name, String host) {
+	public Server createServerViaHost(String host) {
 		try {
 			inet = InetAddress.getByName(host);
 		} catch (UnknownHostException e) {
 			//TODO löschen
 			System.out.print(" -> Unbekannter Host");
 		}
-		this.name = name;
 		this.host = host;
 		this.ip = inet.getHostAddress();
 		return this;
 	}
 	
-	/**
-	 * Den Name und den Port als {@link SimpleStringProperty}-Variable speichern.
-	 * 
-	 * @param p
-	 */
-//	private void createSimpleStringProperty() {
-//		this.sName = new SimpleStringProperty(this.name);
-//		this.sPort = new SimpleStringProperty(this.port);
-//
-//	}
-	
+	public String getSName() {
+		return sName.get();
+	}
+
 	public String getHost() {
 		return host;
 	}

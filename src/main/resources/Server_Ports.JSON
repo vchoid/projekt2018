@@ -1,1 +1,106 @@
-{"server":[{"name":"PreProd-Server","host":"lk101sw0397.ew1intra.de","ip":"10.33.246.213"},{"name":"Auslieferungsserver","host":"lk101sw0395.ew1intra.de","ip":"10.33.246.211"},{"name":"Local-Server","host":"W0195W1038.dakentw007200.de","ip":"10.1.40.117"},{"name":"Stage","host":"lk101sw0396.ew1intra.de","ip":"10.33.246.212"}],"ports":[{"name":"RemoteServer","port":"8084"},{"name":"Tomcat","port":"8080"},{"name":"FirstSpirit","port":"8000"},{"name":"SE","port":"2409"},{"name":"DB2","port":"1527"},{"name":"3","port":"1233"},{"name":"4","port":"1234"},{"name":"5","port":"1235"},{"name":"6","port":"1236"},{"name":"7","port":"1237"},{"name":"8","port":"1238"},{"name":"9","port":"1239"},{"name":"10","port":"1240"},{"name":"11","port":"1541"},{"name":"12","port":"1242"},{"name":"13","port":"1543"},{"name":"14","port":"1544"},{"name":"15","port":"1245"},{"name":"DB3","port":"1528"},{"name":"DB","port":"1520"}]}
+{
+	"server": [
+		{
+			"name": "PreProd-Server",
+			"host": "lk101sw0397.ew1intra.de",
+			"ip": "10.33.246.213"
+		},
+		{
+			"name": "Staging-Server",
+			"host": "lk101sw0396.ew1intra.de",
+			"ip": "10.33.246.212"
+		},
+		{
+			"name": "Auslieferungsserver",
+			"host": "lk101sw0395.ew1intra.de",
+			"ip": "10.33.246.211"
+		},
+		{
+			"name": "Local-Server",
+			"host": "W0195W1038.dakentw007200.de",
+			"ip": "10.1.40.117"
+		}
+	],
+	"ports": [
+		{
+			"name": "RemoteServer",
+			"port": "8084"
+		},
+		{
+			"name": "Tomcat",
+			"port": "8080"
+		},
+		{
+			"name": "FirstSpirit",
+			"port": "8000"
+		},
+		{
+			"name": "SE",
+			"port": "2409"
+		},
+		{
+			"name": "DB2",
+			"port": "1527"
+		},
+		{
+			"name": "3",
+			"port": "1233"
+		},
+		{
+			"name": "4",
+			"port": "1234"
+		},
+		{
+			"name": "5",
+			"port": "1235"
+		},
+		{
+			"name": "6",
+			"port": "1236"
+		},
+		{
+			"name": "7",
+			"port": "1237"
+		},
+		{
+			"name": "8",
+			"port": "1238"
+		},
+		{
+			"name": "9",
+			"port": "1239"
+		},
+		{
+			"name": "10",
+			"port": "1240"
+		},
+		{
+			"name": "11",
+			"port": "1541"
+		},
+		{
+			"name": "12",
+			"port": "1242"
+		},
+		{
+			"name": "13",
+			"port": "1543"
+		},
+		{
+			"name": "14",
+			"port": "1544"
+		},
+		{
+			"name": "15",
+			"port": "1245"
+		},
+		{
+			"name": "DB3",
+			"port": "1528"
+		},
+		{
+			"name": "DB",
+			"port": "1520"
+		}
+	]
+}
