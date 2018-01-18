@@ -2,40 +2,66 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="800.0" maxWidth="1000.0" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.ViewController">
    <children>
-      <SplitPane dividerPositions="0.7" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.6254180602006689" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="portServerTable" layoutX="32.0" layoutY="37.0" prefHeight="361.0" prefWidth="741.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+                  <TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="346.0" prefWidth="739.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
                     <columns>
                       <TableColumn fx:id="server" maxWidth="150.0" minWidth="100.0" prefWidth="100.0" />
                     </columns>
                   </TableView>
-                  <Label contentDisplay="TOP" layoutX="4.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="108.0">
+                  <Label contentDisplay="TOP" layoutX="-7.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textFill="#b2b2b2" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="108.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="151.0" layoutY="35.0" prefHeight="25.0" prefWidth="78.0" text="Ports &gt;" AnchorPane.leftAnchor="151.0" AnchorPane.topAnchor="35.0">
+                  <Label layoutX="151.0" layoutY="35.0" prefHeight="25.0" prefWidth="78.0" text="Ports &gt;" textFill="#b2b2b2" AnchorPane.leftAnchor="151.0" AnchorPane.topAnchor="35.0">
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <ProgressBar layoutX="50.0" layoutY="60.0" maxHeight="26.0" maxWidth="101.0" minHeight="26.0" minWidth="101.0" mouseTransparent="true" opacity="0.5" prefHeight="26.0" prefWidth="101.0" progress="0.25" scaleShape="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="60.0" />
+                  <ProgressBar layoutX="40.0" layoutY="64.0" maxHeight="26.0" maxWidth="101.0" minHeight="17.0" minWidth="101.0" mouseTransparent="true" opacity="0.5" prefHeight="17.0" prefWidth="101.0" progress="0.0" scaleShape="false" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="64.0">
+                     <effect>
+                        <BoxBlur height="11.07" width="0.0" />
+                     </effect></ProgressBar>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView layoutX="39.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label layoutX="39.0" layoutY="14.0" prefHeight="25.0" prefWidth="52.0" text="Details:" textFill="#b2b2b2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="detailTable" layoutX="40.0" layoutY="37.0" prefHeight="68.0" prefWidth="738.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="40.0">
+                    <columns>
+                        <TableColumn fx:id="hostDetail" prefWidth="75.0" text="Host" />
+                        <TableColumn fx:id="ipDetail" prefWidth="75.0" text="IP" />
+                        <TableColumn fx:id="localAdressDetail" prefWidth="88.0" text="LocalAdress" />
+                        <TableColumn fx:id="connectedDetail" prefWidth="75.0" text="IsConnected" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Label layoutX="103.0" layoutY="14.0" prefHeight="25.0" prefWidth="674.0" text="..." textFill="#666666">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutX="299.0" layoutY="136.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children></AnchorPane>
         </items>
       </SplitPane>
