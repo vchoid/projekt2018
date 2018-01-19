@@ -1,0 +1,21 @@
+
+AnchorPane{
+	-fx-background-color: grey;
+}
+
+TableView, #portServerTable .column-header,#portServerTable .filler, #portServerTable .show-hide-columns-button{
+	-fx-background-color: grey;
+	-fx-border-color: transparent;
+}
+.split-pane-divider{
+	-fx-background-color: lightgrey;
+	-fx-padding: 3;
+	
+}
+
+
+
+#server{
+	-fx-background-color: grey;
+	-fx-font-weight: bold;
+}
