@@ -76,8 +76,8 @@ public class JSONFileHandler {
 	private List<String> portNameList = new ArrayList<>();
 	private List<String> serverNameList = new ArrayList<>();
 	private List<Integer> portList = new ArrayList<>();
-	private List<String> ipList= new ArrayList<>();
-	
+	private List<String> ipList = new ArrayList<>();
+
 	private List connectionList = new ArrayList();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
@@ -85,8 +85,8 @@ public class JSONFileHandler {
 	// ## Konstruktor ##########################################################
 
 	public JSONFileHandler() {
-		//TODO löschen
-//		System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
+		// TODO löschen
+		// System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
 		init();
 	}
 	/**
@@ -95,7 +95,8 @@ public class JSONFileHandler {
 	 */
 	private void init() {
 		parseFileAsJSONObject();
-		setPortServerValuesInAList("ports", "port", portNameList, "server", "name", serverNameList);
+		setPortServerValuesInAList("ports", "port", portNameList, "server",
+				"name", serverNameList);
 		setIPAndPortInAList();
 	}
 	/**
@@ -120,7 +121,6 @@ public class JSONFileHandler {
 		}
 	}
 
-	
 	/**
 	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
 	 * Writer.
@@ -147,7 +147,8 @@ public class JSONFileHandler {
 	 * @param key
 	 * @param list
 	 */
-	private void saveValuesInArray(JsonArray array, String key, List<String> list) {
+	private void saveValuesInArray(JsonArray array, String key,
+			List<String> list) {
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject temp = array.get(i).getAsJsonObject();
 			JsonElement tempE = temp.get(key);
@@ -156,7 +157,8 @@ public class JSONFileHandler {
 		}
 	}
 	/**
-	 * Key Value Paare aus dem Port und Server Array in eine neue List speichern.
+	 * Key Value Paare aus dem Port und Server Array in eine neue List
+	 * speichern.
 	 * 
 	 * @param arr1
 	 * @param key1
@@ -165,19 +167,21 @@ public class JSONFileHandler {
 	 * @param key2
 	 * @param newList2
 	 */
-	private void setPortServerValuesInAList(String arr1, String key1, List<String> newList, String arr2, String key2, List<String> newList2) {
+	private void setPortServerValuesInAList(String arr1, String key1,
+			List<String> newList, String arr2, String key2,
+			List<String> newList2) {
 		setPortsArray(getJsonObj().getAsJsonArray(arr1));
-		saveValuesInArray(getPortsArray(),key1, newList);
+		saveValuesInArray(getPortsArray(), key1, newList);
 		setServerArray(getJsonObj().getAsJsonArray(arr2));
-		saveValuesInArray(getServerArray(),key2, newList2);
+		saveValuesInArray(getServerArray(), key2, newList2);
 	}
 	private void setIPAndPortInAList() {
-		for(int i = 0; i < getServerArray().size(); i++) {
+		for (int i = 0; i < getServerArray().size(); i++) {
 			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
 			JsonElement servElement = servTempObj.get("ip");
 			ipList.add(servElement.getAsString());
 		}
-		for(int j = 0; j < getPortsArray().size();j++) {
+		for (int j = 0; j < getPortsArray().size(); j++) {
 			JsonObject portTempObj = getPortsArray().get(j).getAsJsonObject();
 			JsonElement portElement = portTempObj.get("port");
 			portList.add(portElement.getAsInt());
@@ -225,7 +229,7 @@ public class JSONFileHandler {
 	 * @return
 	 */
 	private Boolean isPortAvailable(Port port) {
-		if (isValueInArray(getPortsArray(), "port", port.getPortAsString())
+		if (isValueInArray(getPortsArray(), "port", port.getPort())
 				|| isValueInArray(getPortsArray(), "name", port.getName())) {
 			// TODO löschen !
 			System.out.print("\n  -> vorhanden");
@@ -344,9 +348,17 @@ public class JSONFileHandler {
 		}
 	}
 	// ## delete Methoden ######################################################
-	private void removeValueFromArray(String name, JsonArray array) {
+	/**
+	 * Löscht einen Wert aus einem Array. Überprüft ob der Wert im Array ist,
+	 * wenn ja wird der Eintrag aus dem Array entfernt und der Wert Success wird
+	 * auf true gesetzt.
+	 * 
+	 * @param value
+	 * @param array
+	 */
+	private void removeValueFromArray(String value, JsonArray array) {
 		System.out.println("\n+++++++++++++++ LÖSCHEN ++++++++++++++++");
-		if (isValueInArray(array, "name", name)) {
+		if (isValueInArray(array, "name", value)) {
 			try {
 				array.remove(getPositionInArray());
 				// TODO löschen!
@@ -356,58 +368,72 @@ public class JSONFileHandler {
 				setE(e);
 			}
 		} else {
-			System.out.print(name);
+			System.out.print(value);
 			System.err.println("  -> nicht im Array vorhanden");
 			setSuccess(false);
 		}
 	}
 	/**
-	 * Löscht ein Port anhand des Parameters.
+	 * Ruft die Methode {@link #removeValueFromArray(String, JsonArray)} auf.
+	 * Wenn diese ein true zurück gibt, wird das neue Array in die Datei
+	 * geschrieben.
 	 * 
-	 * @param name
+	 * @param array
+	 * @param arrayInFile
+	 * @param value
 	 */
-	public void deletePort(Port port) {
-		removeValueFromArray(port.getName(), getPortsArray());
+	private void deleteValuesFromArray(JsonArray array, String arrayInFile,
+			String value) {
+		removeValueFromArray(value, array);
 		if (getSuccess()) {
-			addNewArrayInJSONFile(getPortsArray(), "ports");
+			addNewArrayInJSONFile(array, arrayInFile);
 		}
 	}
 	/**
-	 * Löscht ein Server anhand des Parameters.
+	 * Löscht ein Port anhand des Parameters mit der
+	 * {@link #deleteValuesFromArray(JsonArray, String, String)}-Methode.
 	 * 
 	 * @param name
 	 */
-	public void deleteServer(Server server) {
-		removeValueFromArray(server.getName(), getServerArray());
-		if (getSuccess()) {
-			addNewArrayInJSONFile(getServerArray(), "server");
-		}
+	public void deletePort(String portName) {
+		deleteValuesFromArray(getPortsArray(), "ports", portName);
+	}
+	/**
+	 * Löscht ein Server anhand des Parameters mit der
+	 * {@link #deleteValuesFromArray(JsonArray, String, String)}-Methode..
+	 * 
+	 * @param name
+	 */
+	public void deleteServer(String serverName) {
+		deleteValuesFromArray(getServerArray(), "server", serverName);
 	}
 
 	// ## edit Methoden ########################################################
 	/**
 	 * 
-	 * Verändert einzelne Wertepaare aus dem Port-Array.
+	 * Verändert einzelne Wertepaare aus dem Array.
 	 * 
 	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
 	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
 	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
 	 * und schreibe das neue Array in die Datei.
 	 * 
+	 * @param jArray
+	 * @param arrayInFile
 	 * @param key
 	 * @param oldVal
 	 * @param newVal
 	 */
-	public void editPort(int oldVal, int newVal) {
+	private void editValuesFromArray(JsonArray jArray, String arrayInFile,
+			String key, String oldVal, String newVal) {
 		System.out.println("\n////////////// BEARBEITEN //////////////");
 		// überprüfen ob der alter Wert überhaupt existiert
-		if (isValueInArray(getPortsArray(), "port", ""+oldVal)) {
-			JsonObject temp = (JsonObject) getPortsArray()
-					.get(getPositionInArray());
+		if (isValueInArray(jArray, key, oldVal)) {
+			JsonObject temp = (JsonObject) jArray.get(getPositionInArray());
 			// überprüfen ob der neue Wert bereits existiert
-			if (!isValueInArray(getPortsArray(), "port",""+ newVal)) {
-				temp.addProperty("port", newVal);
-				addNewArrayInJSONFile(getPortsArray(), "ports");
+			if (!isValueInArray(jArray, key, newVal)) {
+				temp.addProperty(key, newVal);
+				addNewArrayInJSONFile(jArray, arrayInFile);
 			} else {
 				// TODO löschen!
 				System.out.println("  -> keine doppelten Werte erlaubt");
@@ -419,67 +445,36 @@ public class JSONFileHandler {
 	}
 	/**
 	 * 
-	 * Verändert einzelne Wertepaare aus dem Port-Array.
+	 * Verändert den Port aus dem Port-Array mit der
+	 * {@link #editValuesFromArray(JsonArray, String, String, String, String)}-Methode.
 	 * 
-	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
-	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
-	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
-	 * und schreibe das neue Array in die Datei.
+	 * @param oldVal
+	 * @param newVal
+	 */
+	public void editPort(String oldVal, String newVal) {
+		editValuesFromArray(getPortsArray(), "ports", "port", oldVal, newVal);
+	}
+
+	/**
+	 * Verändert den Namen aus dem Port-Array mit der
+	 * {@link #editValuesFromArray(JsonArray, String, String, String, String)}-Methode..
 	 * 
-	 * @param key
 	 * @param oldVal
 	 * @param newVal
 	 */
 	public void editPortName(String oldVal, String newVal) {
-		System.out.println("\n////////////// BEARBEITEN //////////////");
-		// überprüfen ob der alter Wert überhaupt existiert
-		if (isValueInArray(getPortsArray(), "name", oldVal)) {
-			JsonObject temp = (JsonObject) getPortsArray()
-					.get(getPositionInArray());
-			// überprüfen ob der neue Wert bereits existiert
-			if (!isValueInArray(getPortsArray(), "name", newVal)) {
-				temp.addProperty("name", newVal);
-				addNewArrayInJSONFile(getPortsArray(), "ports");
-			} else {
-				// TODO löschen!
-				System.out.println("  -> keine doppelten Werte erlaubt");
-			}
-		} else {
-			System.out.print(oldVal);
-			System.out.println(" -> nicht gefunden");
-		}
+		editValuesFromArray(getPortsArray(), "ports", "name", oldVal, newVal);
 	}
 	/**
-	 * 
-	 * Verändert einzelne Wertepaare aus dem Server-Array.
-	 * 
-	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
-	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
-	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
-	 * und schreibe das neue Array in die Datei.
+	 * Verändert einzelne Wertepaare aus dem Server-Array mit der
+	 * {@link #editValuesFromArray(JsonArray, String, String, String, String)}-Methode..
 	 * 
 	 * @param key
 	 * @param oldVal
 	 * @param newVal
 	 */
 	public void editServer(String key, String oldVal, String newVal) {
-		System.out.println("\n////////////// BEARBEITEN //////////////");
-		// überprüfen ob der alter Wert überhaupt existiert
-		if (isValueInArray(getServerArray(), key, oldVal)) {
-			JsonObject temp = (JsonObject) getServerArray()
-					.get(getPositionInArray());
-			// überprüfen ob der neue Wert bereits existiert
-			if (!isValueInArray(getServerArray(), key, newVal)) {
-				temp.addProperty(key, newVal);
-				addNewArrayInJSONFile(getServerArray(), "server");
-			} else {
-				// TODO löschen!
-				System.out.println("  -> keine doppelten Werte erlaubt");
-			}
-		} else {
-			System.out.print(oldVal);
-			System.out.println(" -> nicht gefunden");
-		}
+		editValuesFromArray(getServerArray(), "server", key, oldVal, newVal);
 	}
 
 	// ## Getter und Setter ####################################################

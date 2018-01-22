@@ -2,6 +2,7 @@ package test.java;
 
 import main.java.model.JSONFileHandler;
 import main.java.model.Port;
+import main.java.model.Server;
 
 public class TestWith {
 
@@ -39,15 +40,21 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				JSONFileHandler jFile = new JSONFileHandler();
 				Port portDB = new Port("tes");
-				jFile.addPort(portDB.createPort(1234));
-				
-//				Server stage = new Server("Local-Server");
-//				stage.createServerViaIP("10.1.40.117");
-//				jFile.addServer(stage);
+				jFile.addPort(portDB.createPort("1234"));
 				
 				jFile.editPortName("tes", "test");
-				jFile.editPort(1234, 5678);
-				jFile.editPort(4567, 9870);
+				jFile.editPort("1234", "5678");
+				jFile.editPort("4567", "9870");
+				
+				
+				Server stage = new Server("Locla-Server");
+				stage.createServerViaIP("10.1.40.117");
+				jFile.addServer(stage);
+				
+				jFile.editServer("name", "Locla-Server", "Local-Server");
+				
+				jFile.deletePort(portDB);
+				
 
 				// #####################################################################
 			}
