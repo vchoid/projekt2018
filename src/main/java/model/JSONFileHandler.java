@@ -75,10 +75,10 @@ public class JSONFileHandler {
 
 	private List<String> portNameList = new ArrayList<>();
 	private List<String> serverNameList = new ArrayList<>();
-	private List<String> portList = new ArrayList<>();
+	private List<Integer> portList = new ArrayList<>();
 	private List<String> ipList= new ArrayList<>();
 	
-	private List<String> connectionList = new ArrayList<>();
+	private List connectionList = new ArrayList();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -95,7 +95,7 @@ public class JSONFileHandler {
 	 */
 	private void init() {
 		parseFileAsJSONObject();
-		setPortServerValuesInAList("ports", "name", portNameList, "server", "name", serverNameList);
+		setPortServerValuesInAList("ports", "port", portNameList, "server", "name", serverNameList);
 		setIPAndPortInAList();
 	}
 	/**
@@ -172,23 +172,18 @@ public class JSONFileHandler {
 		saveValuesInArray(getServerArray(),key2, newList2);
 	}
 	private void setIPAndPortInAList() {
-		String ip = "";
-		String port = "";
-		String ipAndPort = "";
 		for(int i = 0; i < getServerArray().size(); i++) {
 			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
-			JsonElement servElement = servTempObj.get("name");
-			ip = servElement.getAsString();
-			for(int j = 0; j < getPortsArray().size();j++) {
-				JsonObject portTempObj = getPortsArray().get(j).getAsJsonObject();
-				JsonElement portElement = portTempObj.get("name");
-				port = portElement.getAsString();
-				ipAndPort = ip + ":" + port;
-				connectionList.add(ipAndPort);
-			}
+			JsonElement servElement = servTempObj.get("ip");
+			ipList.add(servElement.getAsString());
 		}
-		System.out.println(connectionList.size());
-		System.out.println(connectionList);
+		for(int j = 0; j < getPortsArray().size();j++) {
+			JsonObject portTempObj = getPortsArray().get(j).getAsJsonObject();
+			JsonElement portElement = portTempObj.get("port");
+			portList.add(portElement.getAsInt());
+		}
+		System.out.println(ipList);
+		System.out.println(portList);
 	}
 	// ## Prüfen auf validen Inhalt ############################################
 	/**
@@ -230,7 +225,7 @@ public class JSONFileHandler {
 	 * @return
 	 */
 	private Boolean isPortAvailable(Port port) {
-		if (isValueInArray(getPortsArray(), "port", port.getPort())
+		if (isValueInArray(getPortsArray(), "port", port.getPortAsString())
 				|| isValueInArray(getPortsArray(), "name", port.getName())) {
 			// TODO löschen !
 			System.out.print("\n  -> vorhanden");
@@ -403,15 +398,47 @@ public class JSONFileHandler {
 	 * @param oldVal
 	 * @param newVal
 	 */
-	public void editPort(String key, String oldVal, String newVal) {
+	public void editPort(int oldVal, int newVal) {
 		System.out.println("\n////////////// BEARBEITEN //////////////");
 		// überprüfen ob der alter Wert überhaupt existiert
-		if (isValueInArray(getPortsArray(), key, oldVal)) {
+		if (isValueInArray(getPortsArray(), "port", ""+oldVal)) {
 			JsonObject temp = (JsonObject) getPortsArray()
 					.get(getPositionInArray());
 			// überprüfen ob der neue Wert bereits existiert
-			if (!isValueInArray(getPortsArray(), key, newVal)) {
-				temp.addProperty(key, newVal);
+			if (!isValueInArray(getPortsArray(), "port",""+ newVal)) {
+				temp.addProperty("port", newVal);
+				addNewArrayInJSONFile(getPortsArray(), "ports");
+			} else {
+				// TODO löschen!
+				System.out.println("  -> keine doppelten Werte erlaubt");
+			}
+		} else {
+			System.out.print(oldVal);
+			System.out.println(" -> nicht gefunden");
+		}
+	}
+	/**
+	 * 
+	 * Verändert einzelne Wertepaare aus dem Port-Array.
+	 * 
+	 * Überprüft zuerst ob der alte Wert existiert. Speichert temporär das
+	 * Array. Überprüft als nächstes, ob der neue Wert nicht schon vorhanden
+	 * ist. Wenn er nicht existiert, dann füge den neuen Wert dem Array hinzu
+	 * und schreibe das neue Array in die Datei.
+	 * 
+	 * @param key
+	 * @param oldVal
+	 * @param newVal
+	 */
+	public void editPortName(String oldVal, String newVal) {
+		System.out.println("\n////////////// BEARBEITEN //////////////");
+		// überprüfen ob der alter Wert überhaupt existiert
+		if (isValueInArray(getPortsArray(), "name", oldVal)) {
+			JsonObject temp = (JsonObject) getPortsArray()
+					.get(getPositionInArray());
+			// überprüfen ob der neue Wert bereits existiert
+			if (!isValueInArray(getPortsArray(), "name", newVal)) {
+				temp.addProperty("name", newVal);
 				addNewArrayInJSONFile(getPortsArray(), "ports");
 			} else {
 				// TODO löschen!

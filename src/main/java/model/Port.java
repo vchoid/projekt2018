@@ -8,7 +8,7 @@ package main.java.model;
 public class Port {
 
 	private String name;
-	private String port;
+	private int port;
 
 	public Port(String name) {
 		super();
@@ -22,7 +22,7 @@ public class Port {
 	 * @param port
 	 * @return
 	 */
-	public Port createPort(String port) {
+	public Port createPort(int port) {
 		this.port = port;
 		return this;
 	}
@@ -33,10 +33,13 @@ public class Port {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPort() {
+	public int getPort() {
 		return port;
 	}
-	public void setPort(String port) {
+	public String getPortAsString() {
+		return "" + getPort();
+	}
+	public void setPort(int port) {
 		this.port = port;
 	}
 

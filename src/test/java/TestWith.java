@@ -2,7 +2,6 @@ package test.java;
 
 import main.java.model.JSONFileHandler;
 import main.java.model.Port;
-import main.java.model.Server;
 
 public class TestWith {
 
@@ -39,37 +38,16 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				JSONFileHandler jFile = new JSONFileHandler();
-				Port portDB = new Port("gokv");
-				jFile.addPort(portDB.createPort("9080"));
-				Server stage = new Server("Local-Server");
-				stage.createServerViaIP("10.1.40.117");
-				jFile.addServer(stage);
-//				Port portChris = new Port();
-//				jFile.addPort(portDB.createPort("Chris", "1234"));
-//				Port portRemoteServer = new Port("RemoteServer", "8084");
-//				Port portTomcat = new Port("Tomcat", "8080");
-//				Port portFirstSpirit= new Port("FirstSpirit", "8000");
-//				jFile.addPort(portRemoteServer);
-//				jFile.addPort(portTomcat);
-//				jFile.addPort(portFirstSpirit);
-//				jFile.addServerViaHost("Auslieferungsserver","lk101sw0395.ew1intra.de");
-//				jFile.addPort("tom", "1234");
-//				jFile.addPort("Chris", "5678");
-//				jFile.editPort("port", "5678", "1234");
-//				jFile.editPort("name", "tom", "jens");
-				// jFile.addPort("DB3", "1527");
-//				jFile.addServerViaIP("Local-Serve", "1.1.40.117");
-//				jFile.editServer("name", "Local-Serve", "neuer Server");
-//				jFile.editServer("name", "neuer Server", "Local-Server");
-//				jFile.deletePort("jens");
-//				jFile.deletePort("Chris");
-//				jFile.deleteServer("neuer Server");
-//				jFile.editPort("name", "DB2", "Tomca");
-//				jFile.editPort("name", "Tomca", "DB2");
-				// jFile.deleteServer("Local-Server");
-//				jFile.deleteServer("Local-Serve");
-//				jFile.deletePort("test");
-				// jFile.addPort("DB2", "1527");
+				Port portDB = new Port("tes");
+				jFile.addPort(portDB.createPort(1234));
+				
+//				Server stage = new Server("Local-Server");
+//				stage.createServerViaIP("10.1.40.117");
+//				jFile.addServer(stage);
+				
+				jFile.editPortName("tes", "test");
+				jFile.editPort(1234, 5678);
+				jFile.editPort(4567, 9870);
 
 				// #####################################################################
 			}

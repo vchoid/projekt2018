@@ -49,8 +49,10 @@ public class ServerSockets {
 //		InetAddress inet = InetAddress.getByName("lk101sw0397.ew1intra.de");
 		// InetAddress inet = InetAddress.getByName("10.33.246.212");
 //		InetAddress inet = InetAddress.getByName("mwg7.prodsrz.srzintra.de");
+		// --> PING ----------------------------------------
 		System.out.println("isReachable");
 		System.out.println("  -> " + inet.isReachable(1));
+		// -------------------------------------------------
 		System.out.println("getHostName");
 		System.out.println("  -> " + inet.getHostName());
 		System.out.println("getHostAddress");
