@@ -6,9 +6,11 @@ import java.net.UnknownHostException;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
+ * Ein Server-Objekt anlegen. Entweder mit der IP-Adresse oder der Host-Adresse.
+ * Der jeweils fehlende Wert wird automatisch ergänzt.
  * 
  * @author Christoph Kiank
- * @version 0.0.1
+ * @version 1.0.0
  */
 public class Server {
 
@@ -16,40 +18,47 @@ public class Server {
 	private String host;
 	private String ip;
 	private InetAddress inet;
-	
-	private SimpleStringProperty sName;
-	
+
 	public Server(String name) {
 		super();
-		this.sName = new SimpleStringProperty(name);
 		this.name = name;
-		
+
 	}
+	/**
+	 * Zum Server-Objekt eine IP-Adresse hinzufügen. Der Host wird automatisch
+	 * ermittelt und hinzugefügt.
+	 * 
+	 * @param ip
+	 * @return
+	 */
 	public Server createServerViaIP(String ip) {
 		try {
 			inet = InetAddress.getByName(ip);
 		} catch (UnknownHostException e) {
-			//TODO löschen
-			System.out.print(" -> Unbekannter Host");
+			// TODO löschen
+			System.out.print(" -> Unbekannte IP-Adresse");
 		}
 		this.ip = ip;
-		this.host =  inet.getHostName();
+		this.host = inet.getHostName();
 		return this;
 	}
+	/**
+	 * Zum Server-Objekt ein Host-Adresse hinzufügen. Die IP wird automatisch
+	 * ermittelt und hinzugefügt.
+	 * 
+	 * @param host
+	 * @return
+	 */
 	public Server createServerViaHost(String host) {
 		try {
 			inet = InetAddress.getByName(host);
 		} catch (UnknownHostException e) {
-			//TODO löschen
+			// TODO löschen
 			System.out.print(" -> Unbekannter Host");
 		}
 		this.host = host;
 		this.ip = inet.getHostAddress();
 		return this;
-	}
-	
-	public String getSName() {
-		return sName.get();
 	}
 
 	public String getHost() {
@@ -74,6 +83,5 @@ public class Server {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
 }

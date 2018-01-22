@@ -1,5 +1,6 @@
 package main.java.view;
 
+import java.awt.TextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import main.java.model.JSONFileHandler;
 
@@ -25,12 +27,7 @@ public class ViewController implements Initializable {
 	private ArrayList<String> serverArr = new ArrayList<>();
 	private JSONFileHandler jfh = new JSONFileHandler();
 	
-	// --> Detail <-------------------------------------------------------------
-	@FXML private TableView<String> detailTable;
-	@FXML private TableColumn<String, String> hostDetail;
-	@FXML private TableColumn<String, String> ipDetail;
-	@FXML private TableColumn<String, String> localAdressDetail;
-	@FXML private TableColumn<String, String> connectedDetail; 
+	
 
 	// ## init Methode #########################################################
 	@Override
@@ -78,6 +75,8 @@ public class ViewController implements Initializable {
 		}
 		return FXCollections.observableArrayList(serverArr);
 	}
-	// ## Detail Tabelle ##########################################################
+	
+	
+	
 	
 }

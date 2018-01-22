@@ -1,21 +1,57 @@
+.root{
+	-fx-font-family: Arial ;
+}
+
+
+.menu-bar {
+    -fx-background-color: gray;
+    -fx-opacity: 0.8;
+    
+}
+
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background-color: #a61f7d;
+}
+
 
 AnchorPane{
-	-fx-background-color: grey;
+	-fx-background-color: gray;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.55), 6.0, 0.7, 0.0,1.5);
 }
 
 TableView, #portServerTable .column-header,#portServerTable .filler, #portServerTable .show-hide-columns-button{
-	-fx-background-color: grey;
-	-fx-border-color: transparent;
+	-fx-background-color: gray;
 }
-.split-pane-divider{
-	-fx-background-color: lightgrey;
-	-fx-padding: 3;
-	
+
+.table-view .table-cell{
+    -fx-border-color: darkgray; 
+    -fx-border-width: 0.5px 0px 0px 0.5px;
+}
+
+.table-row-cell{
+    -fx-background-color: gray;
+}
+
+.table-view > .virtual-flow > .scroll-bar:vertical,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background, 
+.table-view > .virtual-flow > .scroll-bar:horizontal,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
+   -fx-background-color: transparent  ;
+   -fx-opacity: 0.3;
+   -fx-max-height: 0px;    
+}
+.table-view > .virtual-flow > .scroll-bar > .increment-button, 
+.table-view > .virtual-flow > .scroll-bar > .decrement-button {
+    -fx-opacity: 0;
 }
 
 
 
 #server{
-	-fx-background-color: grey;
+	-fx-background-color: gray;
 	-fx-font-weight: bold;
+	-fx-border-width: 0px 0px 0px 0px;
 }
+

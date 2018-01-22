@@ -121,15 +121,22 @@ public class JSONFileHandler {
 	 */
 	private void parseObjectToPortArrayAndServerArray() {
 		setPortsArray(getJsonObj().getAsJsonArray("ports"));
-		saveNamesFromArray(getPortsArray(), portNameList);
+		saveValuesInArray(getPortsArray(),"name", portNameList);
 		setServerArray(getJsonObj().getAsJsonArray("server"));
-		saveNamesFromArray(getServerArray(), serverNameList);
+		saveValuesInArray(getServerArray(),"name", serverNameList);
 	}
 	// ## Daten als Array für View #############################################
-	private void saveNamesFromArray(JsonArray array, List<String> list) {
+	/**
+	 * Holt Werte eines Arrays und speichert diese in eine neue ArrayList.
+	 * 
+	 * @param array
+	 * @param key
+	 * @param list
+	 */
+	private void saveValuesInArray(JsonArray array, String key, List<String> list) {
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject temp = array.get(i).getAsJsonObject();
-			JsonElement tempE = temp.get("name");
+			JsonElement tempE = temp.get(key);
 			String tempS = tempE.getAsString();
 			list.add(tempS);
 		}
