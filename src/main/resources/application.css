@@ -47,11 +47,13 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
     -fx-opacity: 0;
 }
 
-
-
 #server{
 	-fx-background-color: gray;
 	-fx-font-weight: bold;
 	-fx-border-width: 0px 0px 0px 0px;
+}
+
+AnchorPane > #grauLabel{
+	-fx-background-color: gray ;
 }
 

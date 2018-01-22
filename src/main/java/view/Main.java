@@ -18,8 +18,8 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/main/resources/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Netzwerk Monitor");
-			primaryStage.setMinWidth(600.00);
-			primaryStage.setMinHeight(400.00);
+			primaryStage.setMinWidth(450.00);
+			primaryStage.setMinHeight(300.00);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

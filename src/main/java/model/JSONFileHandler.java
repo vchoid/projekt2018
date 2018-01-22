@@ -141,7 +141,8 @@ public class JSONFileHandler {
 	}
 	// ## Daten als Array für View #############################################
 	/**
-	 * Holt Werte eines Arrays und speichert diese in eine neue ArrayList.
+	 * Holt Werte eines Arrays über den Key und speichert diese in eine neue
+	 * ArrayList.
 	 * 
 	 * @param array
 	 * @param key
@@ -175,7 +176,7 @@ public class JSONFileHandler {
 		setServerArray(getJsonObj().getAsJsonArray(arr2));
 		saveValuesInArray(getServerArray(), key2, newList2);
 	}
-	
+
 	private void setIPAndPortInAList() {
 		for (int i = 0; i < getServerArray().size(); i++) {
 			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
