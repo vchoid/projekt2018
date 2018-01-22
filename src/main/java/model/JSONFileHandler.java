@@ -175,6 +175,7 @@ public class JSONFileHandler {
 		setServerArray(getJsonObj().getAsJsonArray(arr2));
 		saveValuesInArray(getServerArray(), key2, newList2);
 	}
+	
 	private void setIPAndPortInAList() {
 		for (int i = 0; i < getServerArray().size(); i++) {
 			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
@@ -369,7 +370,7 @@ public class JSONFileHandler {
 			}
 		} else {
 			System.out.print(value);
-			System.err.println("  -> nicht im Array vorhanden");
+			System.out.println("  -> nicht im Array vorhanden");
 			setSuccess(false);
 		}
 	}
