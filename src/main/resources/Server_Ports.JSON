@@ -14,13 +14,14 @@
 			"name": "Auslieferungsserver",
 			"host": "lk101sw0395.ew1intra.de",
 			"ip": "10.33.246.211"
+		},
+		{
+			"name": "Local-Server",
+			"host": "W0195W1038.dakentw007200.de",
+			"ip": "10.1.40.117"
 		}
 	],
 	"ports": [
-		{
-			"name": "Remote",
-			"port": "8084"
-		},
 		{
 			"name": "Tomcat",
 			"port": "8080"
@@ -32,6 +33,14 @@
 		{
 			"name": "SE",
 			"port": "2409"
+		},
+		{
+			"name": "Remote",
+			"port": "8084"
+		},
+		{
+			"name": "gokv",
+			"port": "9080"
 		}
 	]
 }

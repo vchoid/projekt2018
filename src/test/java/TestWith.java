@@ -39,8 +39,8 @@ public class TestWith {
 				// jUnit TEST ----------------------------------------------------------
 				// jUnit TEST ----------------------------------------------------------
 				JSONFileHandler jFile = new JSONFileHandler();
-				Port portDB = new Port("DB");
-				jFile.addPort(portDB.createPort("1520"));
+				Port portDB = new Port("gokv");
+				jFile.addPort(portDB.createPort("9080"));
 				Server stage = new Server("Local-Server");
 				stage.createServerViaIP("10.1.40.117");
 				jFile.addServer(stage);

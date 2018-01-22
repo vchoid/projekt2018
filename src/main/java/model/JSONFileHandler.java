@@ -75,7 +75,10 @@ public class JSONFileHandler {
 
 	private List<String> portNameList = new ArrayList<>();
 	private List<String> serverNameList = new ArrayList<>();
-
+	private List<String> portList = new ArrayList<>();
+	private List<String> ipList= new ArrayList<>();
+	
+	private List<String> connectionList = new ArrayList<>();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -92,7 +95,8 @@ public class JSONFileHandler {
 	 */
 	private void init() {
 		parseFileAsJSONObject();
-		parseObjectToPortArrayAndServerArray();
+		setPortServerValuesInAList("ports", "name", portNameList, "server", "name", serverNameList);
+		setIPAndPortInAList();
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -116,31 +120,7 @@ public class JSONFileHandler {
 		}
 	}
 
-	/**
-	 * Referenziert ein Array für Ports und eines für Server.
-	 */
-	private void parseObjectToPortArrayAndServerArray() {
-		setPortsArray(getJsonObj().getAsJsonArray("ports"));
-		saveValuesInArray(getPortsArray(),"name", portNameList);
-		setServerArray(getJsonObj().getAsJsonArray("server"));
-		saveValuesInArray(getServerArray(),"name", serverNameList);
-	}
-	// ## Daten als Array für View #############################################
-	/**
-	 * Holt Werte eines Arrays und speichert diese in eine neue ArrayList.
-	 * 
-	 * @param array
-	 * @param key
-	 * @param list
-	 */
-	private void saveValuesInArray(JsonArray array, String key, List<String> list) {
-		for (int i = 0; i < array.size(); i++) {
-			JsonObject temp = array.get(i).getAsJsonObject();
-			JsonElement tempE = temp.get(key);
-			String tempS = tempE.getAsString();
-			list.add(tempS);
-		}
-	}
+	
 	/**
 	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
 	 * Writer.
@@ -159,7 +139,57 @@ public class JSONFileHandler {
 			setE(e);
 		}
 	}
-
+	// ## Daten als Array für View #############################################
+	/**
+	 * Holt Werte eines Arrays und speichert diese in eine neue ArrayList.
+	 * 
+	 * @param array
+	 * @param key
+	 * @param list
+	 */
+	private void saveValuesInArray(JsonArray array, String key, List<String> list) {
+		for (int i = 0; i < array.size(); i++) {
+			JsonObject temp = array.get(i).getAsJsonObject();
+			JsonElement tempE = temp.get(key);
+			String tempS = tempE.getAsString();
+			list.add(tempS);
+		}
+	}
+	/**
+	 * Key Value Paare aus dem Port und Server Array in eine neue List speichern.
+	 * 
+	 * @param arr1
+	 * @param key1
+	 * @param newList
+	 * @param arr2
+	 * @param key2
+	 * @param newList2
+	 */
+	private void setPortServerValuesInAList(String arr1, String key1, List<String> newList, String arr2, String key2, List<String> newList2) {
+		setPortsArray(getJsonObj().getAsJsonArray(arr1));
+		saveValuesInArray(getPortsArray(),key1, newList);
+		setServerArray(getJsonObj().getAsJsonArray(arr2));
+		saveValuesInArray(getServerArray(),key2, newList2);
+	}
+	private void setIPAndPortInAList() {
+		String ip = "";
+		String port = "";
+		String ipAndPort = "";
+		for(int i = 0; i < getServerArray().size(); i++) {
+			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
+			JsonElement servElement = servTempObj.get("name");
+			ip = servElement.getAsString();
+			for(int j = 0; j < getPortsArray().size();j++) {
+				JsonObject portTempObj = getPortsArray().get(j).getAsJsonObject();
+				JsonElement portElement = portTempObj.get("name");
+				port = portElement.getAsString();
+				ipAndPort = ip + ":" + port;
+				connectionList.add(ipAndPort);
+			}
+		}
+		System.out.println(connectionList.size());
+		System.out.println(connectionList);
+	}
 	// ## Prüfen auf validen Inhalt ############################################
 	/**
 	 * Sucht einen Wert anhand des gesetzten Parameters im Array.
