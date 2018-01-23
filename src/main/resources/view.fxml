@@ -40,12 +40,13 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ImageView fitHeight="16.0" fitWidth="132.0" layoutX="481.0" layoutY="349.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
+            <Label fx:id="grauLabel" layoutX="394.0" layoutY="211.0" prefHeight="25.0" prefWidth="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
+            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="43.0" prefWidth="450.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <ImageView fx:id="bmLogo" fitHeight="25.0" fitWidth="157.0" layoutX="265.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="16.0">
                <image>
                   <Image url="@../../../../../../../Users/up40008/Desktop/Projektarbeit%202018/Monitoring%20Tool/Programm/GUI/Bitmarck_logo.png" />
                </image>
             </ImageView>
-            <Label fx:id="grauLabel" layoutX="394.0" layoutY="211.0" prefHeight="25.0" prefWidth="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
             
                </children>
       </AnchorPane>

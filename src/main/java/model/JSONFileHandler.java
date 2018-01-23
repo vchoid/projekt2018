@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,10 +74,13 @@ public class JSONFileHandler {
 	private Boolean success = false;
 
 	// --> Listen für View -----------------------------------------------------
-	private ArrayList<Integer> portNameList = new ArrayList<>();
+	private ArrayList<String> portList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
+	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
 
+	// --> Socket --------------------------------------------------------------
+	private Socket s;
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -97,8 +102,14 @@ public class JSONFileHandler {
 	 * </p>
 	 */
 	private void init() {
+		s = new Socket();
 		parseFileAsJSONObject();
 		setPortServerValuesInAList();
+		try {
+			s.close();
+		} catch (IOException e) {
+			System.out.println("Fehler");
+		}
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -135,7 +146,7 @@ public class JSONFileHandler {
 			writer.write(content);
 			// TODO löschen!
 			System.out.println(" -> gespeichert in Datei.");
-			writer.close();
+			writer.flush();
 		} catch (IOException e) {
 			setE(e);
 		}
@@ -153,7 +164,7 @@ public class JSONFileHandler {
 	 * @param list
 	 */
 	private void saveValuesInArray(JsonArray array, String key,
-			ArrayList list) {
+			ArrayList<String> list) {
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject temp = array.get(i).getAsJsonObject();
 			JsonElement tempE = temp.get(key);
@@ -177,7 +188,7 @@ public class JSONFileHandler {
 		// Ports-Array aus JSONFile speichern
 		setPortsArray(getJsonObj().getAsJsonArray("ports"));
 		// die Port-Werte in neue Liste speichern
-		saveValuesInArray(getPortsArray(), "port", portNameList);
+		saveValuesInArray(getPortsArray(), "port", portList);
 		// Server-Array aus JSONFile speichern
 		setServerArray(getJsonObj().getAsJsonArray("server"));
 		// Servername in neue List speichern
@@ -185,6 +196,34 @@ public class JSONFileHandler {
 		// IP-Adressen aus Server-Array in neue List speichern
 		saveValuesInArray(serverArray, "ip", ipList);
 
+	}
+	/**
+	 * Array für die Verbindungen.
+	 */
+	public void testServerPortConnection() {
+		int portAdr = 0;
+		String ip = "";
+		for (int i = 0; i < getPortList().size(); i++) {
+			portAdr = Integer.parseInt(getPortList().get(i));
+			System.out.println(portAdr);
+			ArrayList<String> temp = new ArrayList<String>();
+			for (int j = 0; j < getIpList().size(); j++) {
+				ip = getIpList().get(j);
+				System.out.print(" -" + ip);
+				try {
+					s = new Socket(ip, portAdr);
+					System.out.println(" -> " + s.isConnected());
+					temp.add(ip + ":" + portAdr);
+				} catch (UnknownHostException e) {
+					System.out.println("Unbekanner Host");
+				} catch (IOException e) {
+					System.out.println(" XXX ");
+					temp.add(" XXX ");
+				}
+			}
+			connectArray.add(temp);
+		}
+		System.out.println(connectArray);
 	}
 	// #########################################################################
 	// ## Prüfen auf validen Inhalt ############################################
@@ -289,8 +328,8 @@ public class JSONFileHandler {
 	/**
 	 * Fügt mit der {@link #addNewObjectInArray(JsonArray, JsonObject)}-Methode
 	 * das Objekt in das Array ein und schreibt mit
-	 * der{@link #addNewArrayInJSONFile(JsonArray, String)}-Methode das Objekt in die
-	 * Datei.
+	 * der{@link #addNewArrayInJSONFile(JsonArray, String)}-Methode das Objekt
+	 * in die Datei.
 	 * 
 	 * 
 	 * @param array
@@ -474,15 +513,8 @@ public class JSONFileHandler {
 			JsonObject temp = (JsonObject) jArray.get(getPositionInArray());
 			// überprüfen ob der neue Wert bereits existiert
 			if (!isValueInArray(jArray, key, newVal)) {
-				// überprüfen ob Ports vom Typ Integer verändert werden sollen
-				if (jArray == getPortsArray() && key == "port") {
-					// wenn ja den String in Integer parsen
-					temp.addProperty(key, Integer.parseInt(newVal));
-					addNewArrayInJSONFile(jArray, arrayInFile);
-				} else {
-					temp.addProperty(key, newVal);
-					addNewArrayInJSONFile(jArray, arrayInFile);
-				}
+				temp.addProperty(key, newVal);
+				addNewArrayInJSONFile(jArray, arrayInFile);
 			} else {
 				// TODO löschen!
 				System.out.println("  -> keine doppelten Werte erlaubt");
@@ -500,9 +532,8 @@ public class JSONFileHandler {
 	 * @param oldVal
 	 * @param newVal
 	 */
-	public void editPort(int oldVal, int newVal) {
-		editValuesFromArray(getPortsArray(), "ports", "port", "" + oldVal,
-				"" + newVal);
+	public void editPort(String oldVal, String newVal) {
+		editValuesFromArray(getPortsArray(), "ports", "port", oldVal, newVal);
 	}
 
 	/**
@@ -568,12 +599,18 @@ public class JSONFileHandler {
 	public void setPositionInArray(int positionInArray) {
 		this.positionInArray = positionInArray;
 	}
-
-	public List getPortNameList() {
-		return portNameList;
+	// --> Daten für die View --------------------------------------------------
+	public List<String> getIpList() {
+		return ipList;
+	}
+	public List<String> getPortList() {
+		return portList;
 	}
 	public List<String> getServerNameList() {
 		return serverNameList;
+	}
+	public ArrayList<ArrayList<String>> getConnectArray() {
+		return connectArray;
 	}
 	// --> Datei-Handling ------------------------------------------------------
 	public static String getFile() {

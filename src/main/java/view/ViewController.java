@@ -42,9 +42,11 @@ public class ViewController implements Initializable {
 	 * Spalte an und fügt sie der Tabelle Ports hinzu.
 	 */
 	private void addPorts() {
-		for (int i = 0; i < jfh.getPortNameList().size(); i++) {
-			TableColumn<String, String> col = new TableColumn<String, String>(
-					(String) jfh.getPortNameList().get(i));
+		TableColumn<String, String> col = null;
+		for (int i = 0; i < jfh.getPortList().size(); i++) {
+			col = new TableColumn<String, String>(
+					""+jfh.getPortList().get(i));
+			//TODO Einfügen der isConnected-Werte
 			portServerTable.getColumns().add(col);
 		}
 	}
@@ -60,7 +62,7 @@ public class ViewController implements Initializable {
 						return new SimpleStringProperty(p.getValue());
 					}
 				});
-		portServerTable.setItems(createList());
+		portServerTable.setItems(createServerList());
 	}
 	/**
 	 * Holt die Namen der Server aus der Liste und speichert jeden Namen in das
@@ -69,12 +71,13 @@ public class ViewController implements Initializable {
 	 * 
 	 * @return
 	 */
-	private ObservableList<String> createList() {
+	private ObservableList<String> createServerList() {
 		for (int i = 0; i < jfh.getServerNameList().size(); i++) {
 			serverArr.add(jfh.getServerNameList().get(i));
 		}
 		return FXCollections.observableArrayList(serverArr);
 	}
+	
 	
 	
 	

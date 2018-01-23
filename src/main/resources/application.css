@@ -56,4 +56,8 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
 AnchorPane > #grauLabel{
 	-fx-background-color: gray ;
 }
+AnchorPane > #verlaufLabel{
+	-fx-background-color: linear-gradient(transparent 0%, darkgrey 100%)  ;
+}
+
 
