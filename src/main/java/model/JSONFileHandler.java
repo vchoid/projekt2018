@@ -513,8 +513,15 @@ public class JSONFileHandler {
 			JsonObject temp = (JsonObject) jArray.get(getPositionInArray());
 			// überprüfen ob der neue Wert bereits existiert
 			if (!isValueInArray(jArray, key, newVal)) {
-				temp.addProperty(key, newVal);
-				addNewArrayInJSONFile(jArray, arrayInFile);
+				// überprüfen ob Ports vom Typ Integer verändert werden sollen
+				if (jArray == getPortsArray() && key == "port") {
+					// wenn ja den String in Integer parsen
+					temp.addProperty(key, Integer.parseInt(newVal));
+					addNewArrayInJSONFile(jArray, arrayInFile);
+				} else {
+					temp.addProperty(key, newVal);
+					addNewArrayInJSONFile(jArray, arrayInFile);
+				}
 			} else {
 				// TODO löschen!
 				System.out.println("  -> keine doppelten Werte erlaubt");
@@ -532,8 +539,9 @@ public class JSONFileHandler {
 	 * @param oldVal
 	 * @param newVal
 	 */
-	public void editPort(String oldVal, String newVal) {
-		editValuesFromArray(getPortsArray(), "ports", "port", oldVal, newVal);
+	public void editPort(Integer oldVal, Integer newVal) {
+		editValuesFromArray(getPortsArray(), "ports", "port", "" + oldVal,
+				"" + newVal);
 	}
 
 	/**

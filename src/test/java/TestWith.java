@@ -12,11 +12,11 @@ public class TestWith {
 		
 		JSONFileHandler jFile = new JSONFileHandler();
 		Port portDB = new Port("tes");
-		jFile.addPort(portDB.createPort("1234"));
+		jFile.addPort(portDB.createPort(1234));
 
 		jFile.editPortName("tes", "test");
-		jFile.editPort("1234", "5678");
-		jFile.editPort("4567", "9870");
+		jFile.editPort(1234, 5678);
+		jFile.editPort(4567, 9870);
 
 		jFile.testServerPortConnection();
 		
