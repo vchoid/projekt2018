@@ -18,11 +18,9 @@ import com.google.gson.JsonObject;
 
 //TODO syso -> löschen								
 //TODO regEx -> bei add und edit Funktionen machen	°
-//TODO Javadoc -> überprüfen						°
 //TODO Funktionsnamen ggf. anpassen					
 //TODO jUnit Tests schreiben 						!
 //TODO Ecxeption Handling 							!
-//TODO Port/Server Klassen -> einbinden
 
 /**
  * 
@@ -73,31 +71,34 @@ public class JSONFileHandler {
 	private JsonElement searchElement;
 	private Boolean success = false;
 
-	private List<String> portNameList = new ArrayList<>();
-	private List<String> serverNameList = new ArrayList<>();
-	private List<Integer> portList = new ArrayList<>();
-	private List<String> ipList = new ArrayList<>();
+	// --> Listen für View -----------------------------------------------------
+	private ArrayList<Integer> portNameList = new ArrayList<>();
+	private ArrayList<String> serverNameList = new ArrayList<>();
+	private ArrayList<String> ipList = new ArrayList<>();
 
-	private List<List<Integer>> connectionList = new ArrayList<List<Integer>>();
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
-	// ## Konstruktor ##########################################################
-
+	// #########################################################################
+	// ## Initialisieren ######################################################
+	// #########################################################################
 	public JSONFileHandler() {
-		// TODO löschen
-		// System.out.println("~~~~~~~~~~~~~~~~ Start ~~~~~~~~~~~~~~~~~");
 		init();
 	}
 	/**
-	 * Initialisiert die Datei und bereitet den Inhalt zur Weiterverabeitung
-	 * auf.
+	 * Initialisiert die Datei mit der {@link #parseFileAsJSONObject()}-Methode.
+	 * Bereitet den Inhalt zur Weiterverabeitung mit folgenden Methoden auf.
+	 * <p>
+	 * <b>Methoden:</b>
+	 * <ul>
+	 * <li>Werte für die Tabelle aufbereiten:
+	 * <b>{@link #setPortServerValuesInAList()}</b></li>
+	 * </ul>
+	 * </p>
 	 */
 	private void init() {
 		parseFileAsJSONObject();
-		setPortServerValuesInAList("ports", "port", portNameList, "server",
-				"name", serverNameList);
-
+		setPortServerValuesInAList();
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -139,7 +140,10 @@ public class JSONFileHandler {
 			setE(e);
 		}
 	}
-	// ## Daten als Array für View #############################################
+	// #########################################################################
+	// ## Daten als für View ###################################################
+	// #########################################################################
+
 	/**
 	 * Holt Werte eines Arrays über den Key und speichert diese in eine neue
 	 * ArrayList.
@@ -149,7 +153,7 @@ public class JSONFileHandler {
 	 * @param list
 	 */
 	private void saveValuesInArray(JsonArray array, String key,
-			List<String> list) {
+			ArrayList list) {
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject temp = array.get(i).getAsJsonObject();
 			JsonElement tempE = temp.get(key);
@@ -158,49 +162,42 @@ public class JSONFileHandler {
 		}
 	}
 	/**
-	 * Key Value Paare aus dem Port und Server Array in eine neue List
-	 * speichern.
+	 * Speichert folgende Werte aus den Server- und Port-Arrays in neue Listen.
 	 * 
-	 * @param arr1
-	 * @param key1
-	 * @param newList
-	 * @param arr2
-	 * @param key2
-	 * @param newList2
+	 * <p>
+	 * <b>Werte:</b>
+	 * <ul>
+	 * <li><b>Port als Integer</b></li>
+	 * <li><b>Servername als String</b></li>
+	 * <li><b>ServerIP als String</b></li>
+	 * </ul>
+	 * </p>
 	 */
-	private void setPortServerValuesInAList(String arr1, String key1,
-			List<String> newList, String arr2, String key2,
-			List<String> newList2) {
-		setPortsArray(getJsonObj().getAsJsonArray(arr1));
-		saveValuesInArray(getPortsArray(), key1, newList);
-		setServerArray(getJsonObj().getAsJsonArray(arr2));
-		saveValuesInArray(getServerArray(), key2, newList2);
-		setIPAndPortInAList();
-	}
+	private void setPortServerValuesInAList() {
+		// Ports-Array aus JSONFile speichern
+		setPortsArray(getJsonObj().getAsJsonArray("ports"));
+		// die Port-Werte in neue Liste speichern
+		saveValuesInArray(getPortsArray(), "port", portNameList);
+		// Server-Array aus JSONFile speichern
+		setServerArray(getJsonObj().getAsJsonArray("server"));
+		// Servername in neue List speichern
+		saveValuesInArray(getServerArray(), "name", serverNameList);
+		// IP-Adressen aus Server-Array in neue List speichern
+		saveValuesInArray(serverArray, "ip", ipList);
 
-	private void setIPAndPortInAList() {
-		for (int i = 0; i < getServerArray().size(); i++) {
-			JsonObject servTempObj = getServerArray().get(i).getAsJsonObject();
-			JsonElement servElement = servTempObj.get("ip");
-			ipList.add(servElement.getAsString());
-			for (int j = 0; j < getPortsArray().size(); j++) {
-				JsonObject portTempObj = getPortsArray().get(j)
-						.getAsJsonObject();
-				JsonElement portElement = portTempObj.get("port");
-				portList.add(portElement.getAsInt());
-				connectionList.add(portList);
-			}
-		}
-		System.out.println(portList.get(0));
 	}
+	// #########################################################################
 	// ## Prüfen auf validen Inhalt ############################################
+	// #########################################################################
 	/**
 	 * Sucht einen Wert anhand des gesetzten Parameters im Array.
 	 * 
 	 * JSONArray wird durchlaufen, jeder Eintrag wird temporär gespeichert und
 	 * überprüft ob der gesuchte Parameter sich im Array befindet. Wenn ja,
-	 * speichere den Eintrag selbst und die Position, wo sich der Eintrag im
-	 * Array befindet und gibt true zurück. Ansonsten false.
+	 * speichere den Eintrag selbst mit der
+	 * {@link #setSearchElement(JsonElement)}-Methode und die Position mit der
+	 * {@link #setPositionInArray(int)}-Methode, wo sich der Eintrag im Array
+	 * befindet. Wenn ja dann, gib true zurück. Ansonsten false.
 	 * 
 	 * 
 	 * @param value
@@ -225,7 +222,8 @@ public class JSONFileHandler {
 		return false;
 	}
 	/**
-	 * Prüft ob der Port bereits im Array vorhanden ist und gibt ein true
+	 * Prüft mit der {@link #isValueInArray(JsonArray, String, String)}-Methode,
+	 * ob der Port bereits im Array vorhanden ist. Wenn ja dann gib ein true
 	 * zurück.
 	 * 
 	 * @param name
@@ -233,7 +231,7 @@ public class JSONFileHandler {
 	 * @return
 	 */
 	private Boolean isPortAvailable(Port port) {
-		if (isValueInArray(getPortsArray(), "port", ""+port.getPort())
+		if (isValueInArray(getPortsArray(), "port", "" + port.getPort())
 				|| isValueInArray(getPortsArray(), "name", port.getName())) {
 			// TODO löschen !
 			System.out.print("\n  -> vorhanden");
@@ -243,7 +241,9 @@ public class JSONFileHandler {
 
 	}
 	/**
-	 * Prüft ob der Server bereits im Array vorhanden ist und gibt true zurück.
+	 * Prüft mit der {@link #isValueInArray(JsonArray, String, String)}-Methode,
+	 * ob der Server bereits im Array vorhanden ist. Wenn ja dann gib ein true
+	 * zurück.
 	 * 
 	 * @param name
 	 * @param ipOrHost
@@ -260,11 +260,26 @@ public class JSONFileHandler {
 		return false;
 	}
 
+	// #########################################################################
 	// ## add-Methode ##########################################################
+	// #########################################################################
+	/**
+	 * Fügt ein neue Objekt in ein Array.
+	 * 
+	 * @param array
+	 * @param newObject
+	 */
 	private void addNewObjectInArray(JsonArray array, JsonObject newObject) {
 		// Objekt in Array anfügen
 		array.add(newObject);
 	}
+	/**
+	 * Holt das JSONObjekt mit der {@link #getJsonObj()}-Methode und schreibt
+	 * mit der {@link #writeInFile(String)}-Methode das neue Objekt.
+	 * 
+	 * @param array
+	 * @param key
+	 */
 	private void addNewArrayInJSONFile(JsonArray array, String key) {
 		// Werte in Object anfügen
 		getJsonObj().add(key, array);
@@ -272,7 +287,11 @@ public class JSONFileHandler {
 		writeInFile(getJsonObj().toString());
 	}
 	/**
-	 * Fügt das Objekt in das Array ein und schreibt es in die Datei
+	 * Fügt mit der {@link #addNewObjectInArray(JsonArray, JsonObject)}-Methode
+	 * das Objekt in das Array ein und schreibt mit
+	 * der{@link #addNewArrayInJSONFile(JsonArray, String)}-Methode das Objekt in die
+	 * Datei.
+	 * 
 	 * 
 	 * @param array
 	 * @param newObject
@@ -299,13 +318,15 @@ public class JSONFileHandler {
 		newPort.addProperty("port", port.getPort());
 	}
 	/**
-	 * Ein Port in die Server_Ports.JSON-Datei schreiben.
-	 *
-	 * Erstellt ein neues {@link JsonObject} an und fügt die Parameter hinzu.
-	 *
-	 * {@link #isValueInArray(JsonArray, String, String)} überprüft ob der Wert
-	 * bereits existiert und gibt ein Boolean zurück. Wenn er nicht vorhanden
-	 * ist soll er ihn zum Array hinzufügen und dann in die Datei schreiben.
+	 * Ein Port in die Server_Ports.JSON-Datei schreiben
+	 * 
+	 * {@link #addPortValues(Port)} fügt Werte dem Port-Objekt hinzu.
+	 * 
+	 * Überprüft mit der {@link #isPortAvailable(Port)}-Methode, ob die Werte
+	 * bereits in dem Port-Objekt vorhanden sind. Wenn nicht, werden die neue
+	 * Werte mit der
+	 * {@link #addObjectInArrayAndWriteInFile(JsonArray, JsonObject, String)}-Methode
+	 * dem Array hinzugefügt und in die Datei geschrieben.
 	 *
 	 * 
 	 * @param port
@@ -335,9 +356,13 @@ public class JSONFileHandler {
 	/**
 	 * Ein Server in die Server_Ports.JSON-Datei schrieben
 	 * 
-	 * {@link #addServerValues(Server)}} fügt Werte dem Server-Objekt hinzu.
-	 * Überprüft ob die Werte bereits in dem Server-Objekt vorhanden sind. Wenn
-	 * nicht, werden diese dem Array hinzugefügt und in die Datei geschrieben.
+	 * {@link #addServerValues(Server)} fügt Werte dem Server-Objekt hinzu.
+	 * 
+	 * Überprüft mit der {@link #isServerAvailable(Server)}-Methode, ob die
+	 * Werte bereits in dem Server-Objekt vorhanden sind. Wenn nicht, werden die
+	 * neue Werte mit der
+	 * {@link #addObjectInArrayAndWriteInFile(JsonArray, JsonObject, String)}-Methode
+	 * dem Array hinzugefügt und in die Datei geschrieben.
 	 * 
 	 * @param server
 	 */
@@ -351,11 +376,15 @@ public class JSONFileHandler {
 					"server");
 		}
 	}
+	// #########################################################################
 	// ## delete Methoden ######################################################
+	// #########################################################################
 	/**
-	 * Löscht einen Wert aus einem Array. Überprüft ob der Wert im Array ist,
-	 * wenn ja wird der Eintrag aus dem Array entfernt und der Wert Success wird
-	 * auf true gesetzt.
+	 * Löscht einen Wert aus einem Array. Überprüft mit der
+	 * {@link #isValueInArray(JsonArray, String, String)}-Methode, ob der Wert
+	 * im Array ist, wenn ja wird der Eintrag über die
+	 * {@link #getPositionInArray()}-Methode ermittelt und aus dem Array
+	 * entfernt. Der Wert Success wird auf true gesetzt.
 	 * 
 	 * @param value
 	 * @param array
@@ -378,8 +407,12 @@ public class JSONFileHandler {
 		}
 	}
 	/**
-	 * Ruft die Methode {@link #removeValueFromArray(String, JsonArray)} auf.
-	 * Wenn diese ein true zurück gibt, wird das neue Array in die Datei
+	 * Entfernt Werte aus einem Array mit der
+	 * {@link #removeValueFromArray(String, JsonArray)}-Methode. Mit der
+	 * {@link #getSuccess()}-Methode, wird überprüft, ob die
+	 * {@link #removeValueFromArray(String, JsonArray)}-Methode erfolgreich war.
+	 * Wenn ja wird das neue Array mit der
+	 * {@link #addNewArrayInJSONFile(JsonArray, String)}-Methode in die Datei
 	 * geschrieben.
 	 * 
 	 * @param array
@@ -412,7 +445,9 @@ public class JSONFileHandler {
 		deleteValuesFromArray(getServerArray(), "server", serverName);
 	}
 
+	// #########################################################################
 	// ## edit Methoden ########################################################
+	// #########################################################################
 	/**
 	 * 
 	 * Verändert einzelne Wertepaare aus dem Array.
@@ -466,7 +501,8 @@ public class JSONFileHandler {
 	 * @param newVal
 	 */
 	public void editPort(int oldVal, int newVal) {
-		editValuesFromArray(getPortsArray(), "ports", "port", ""+oldVal, ""+newVal);
+		editValuesFromArray(getPortsArray(), "ports", "port", "" + oldVal,
+				"" + newVal);
 	}
 
 	/**
@@ -491,7 +527,9 @@ public class JSONFileHandler {
 		editValuesFromArray(getServerArray(), "server", key, oldVal, newVal);
 	}
 
+	// #########################################################################
 	// ## Getter und Setter ####################################################
+	// #########################################################################
 	// --> Array-Handling ------------------------------------------------------
 
 	public Boolean getSuccess() {
@@ -531,7 +569,7 @@ public class JSONFileHandler {
 		this.positionInArray = positionInArray;
 	}
 
-	public List<String> getPortNameList() {
+	public List getPortNameList() {
 		return portNameList;
 	}
 	public List<String> getServerNameList() {

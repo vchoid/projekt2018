@@ -44,7 +44,7 @@ public class ViewController implements Initializable {
 	private void addPorts() {
 		for (int i = 0; i < jfh.getPortNameList().size(); i++) {
 			TableColumn<String, String> col = new TableColumn<String, String>(
-					jfh.getPortNameList().get(i));
+					(String) jfh.getPortNameList().get(i));
 			portServerTable.getColumns().add(col);
 		}
 	}
