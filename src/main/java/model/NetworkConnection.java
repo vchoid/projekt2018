@@ -70,12 +70,8 @@ public class NetworkConnection implements Runnable {
 	 * </p>
 	 */
 	private void setPortServerValuesInAList() {
-		// Ports-Array aus JSONFile speichern
-		jfh.setPortsArray(jfh.getJsonObj().getAsJsonArray("ports"));
 		// die Port-Werte in neue Liste speichern
 		saveValuesInArray(jfh.getPortsArray(), "port", portList);
-		// Server-Array aus JSONFile speichern
-		jfh.setServerArray(jfh.getJsonObj().getAsJsonArray("server"));
 		// Servername in neue List speichern
 		saveValuesInArray(jfh.getServerArray(), "name", serverNameList);
 		// IP-Adressen aus Server-Array in neue List speichern

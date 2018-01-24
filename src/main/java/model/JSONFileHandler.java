@@ -94,6 +94,7 @@ public class JSONFileHandler {
 	 */
 	private void init() {
 		parseFileAsJSONObject();
+		setPortServerValuesInAList();
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -134,6 +135,18 @@ public class JSONFileHandler {
 		} catch (IOException e) {
 			setE(e);
 		}
+	}
+	
+	/**
+	 * Speichert folgende Werte aus den Server- und Port-Arrays in neue Listen.
+	 * 
+	 */
+	private void setPortServerValuesInAList() {
+		// Ports-Array aus JSONFile speichern
+		setPortsArray(getJsonObj().getAsJsonArray("ports"));
+		// Server-Array aus JSONFile speichern
+		setServerArray(getJsonObj().getAsJsonArray("server"));
+
 	}
 	// #########################################################################
 	// ## Prüfen auf validen Inhalt ############################################
