@@ -1,5 +1,9 @@
 package test.java;
 
+import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import main.java.model.JSONFileHandler;
 import main.java.model.Port;
 
@@ -11,14 +15,16 @@ public class TestWith {
 		// jUnit TEST ----------------------------------------------------------
 		
 		JSONFileHandler jFile = new JSONFileHandler();
-		Port portDB = new Port("tes");
-		jFile.addPort(portDB.createPort(1234));
+//		Port portDB = new Port("tes");
+//		jFile.addPort(portDB.createPort(1234));
+//
+//		jFile.editPortName("tes", "test");
+//		jFile.editPort(1234, 5678);
+//		jFile.editPort(4567, 9870);
 
-		jFile.editPortName("tes", "test");
-		jFile.editPort(1234, 5678);
-		jFile.editPort(4567, 9870);
-
-		jFile.testServerPortConnection();
+		ObservableList<String> tempList = FXCollections.observableArrayList(jFile.getTemp());
+		
+		System.out.println(tempList.get(1));
 		
 //		Server stage = new Server("Locla-Server");
 //		stage.createServerViaIP("10.1.40.117");

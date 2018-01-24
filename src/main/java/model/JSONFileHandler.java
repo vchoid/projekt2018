@@ -78,9 +78,17 @@ public class JSONFileHandler {
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
 	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
+	ArrayList<String> temp;
+	
+	public ArrayList<String> getTemp() {
+		return temp;
+	}
+	public void setTemp(ArrayList<String> temp) {
+		this.temp = temp;
+	}
+	private Boolean isConnected = false;
 
 	// --> Socket --------------------------------------------------------------
-	private Socket s;
 	// --> Exception-Handling --------------------------------------------------
 	private Exception e;
 
@@ -102,14 +110,10 @@ public class JSONFileHandler {
 	 * </p>
 	 */
 	private void init() {
-		s = new Socket();
 		parseFileAsJSONObject();
 		setPortServerValuesInAList();
-		try {
-			s.close();
-		} catch (IOException e) {
-			System.out.println("Fehler");
-		}
+		//TODO in extra Klasse -> GUI muss zuerst gestartet werden 
+		testServerPortConnection();
 	}
 	/**
 	 * Vorlageninhalt für leere JSON-Datei.
@@ -151,6 +155,8 @@ public class JSONFileHandler {
 			setE(e);
 		}
 	}
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !! IN EXTRA KLASSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// #########################################################################
 	// ## Daten als für View ###################################################
 	// #########################################################################
@@ -206,25 +212,32 @@ public class JSONFileHandler {
 		for (int i = 0; i < getPortList().size(); i++) {
 			portAdr = Integer.parseInt(getPortList().get(i));
 			System.out.println(portAdr);
-			ArrayList<String> temp = new ArrayList<String>();
+			temp = new ArrayList<String>();
 			for (int j = 0; j < getIpList().size(); j++) {
 				ip = getIpList().get(j);
 				System.out.print(" -" + ip);
 				try {
-					s = new Socket(ip, portAdr);
+					Socket s = new Socket(ip, portAdr);
 					System.out.println(" -> " + s.isConnected());
-					temp.add(ip + ":" + portAdr);
+					setIsConnected(true);
+					temp.add(getIsConnected().toString());
+					setTemp(temp);
+					s.close();
 				} catch (UnknownHostException e) {
 					System.out.println("Unbekanner Host");
 				} catch (IOException e) {
 					System.out.println(" XXX ");
-					temp.add(" XXX ");
+					setIsConnected(false);
+					temp.add(getIsConnected().toString());
+					setTemp(temp);
 				}
 			}
 			connectArray.add(temp);
 		}
 		System.out.println(connectArray);
 	}
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// #########################################################################
 	// ## Prüfen auf validen Inhalt ############################################
 	// #########################################################################
@@ -608,17 +621,24 @@ public class JSONFileHandler {
 		this.positionInArray = positionInArray;
 	}
 	// --> Daten für die View --------------------------------------------------
-	public List<String> getIpList() {
+	public ArrayList<String> getIpList() {
 		return ipList;
 	}
-	public List<String> getPortList() {
+	public ArrayList<String> getPortList() {
 		return portList;
 	}
-	public List<String> getServerNameList() {
+	public ArrayList<String> getServerNameList() {
 		return serverNameList;
 	}
 	public ArrayList<ArrayList<String>> getConnectArray() {
 		return connectArray;
+	}
+	
+	public Boolean getIsConnected() {
+		return isConnected;
+	}
+	public void setIsConnected(Boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 	// --> Datei-Handling ------------------------------------------------------
 	public static String getFile() {

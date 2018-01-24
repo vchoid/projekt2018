@@ -15,11 +15,11 @@ public class Main extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/main/resources/view.fxml"));
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/main/resources/application.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/main/resources/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Netzwerk Monitor");
-			primaryStage.setMinWidth(450.00);
-			primaryStage.setMinHeight(300.00);
+			primaryStage.setMinWidth(700.00);
+			primaryStage.setMinHeight(500.00);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
