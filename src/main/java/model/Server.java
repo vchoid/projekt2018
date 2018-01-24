@@ -3,8 +3,6 @@ package main.java.model;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import javafx.beans.property.SimpleStringProperty;
-
 /**
  * Ein Server-Objekt anlegen. Entweder mit der IP-Adresse oder der Host-Adresse.
  * Der jeweils fehlende Wert wird automatisch ergänzt.

@@ -1,21 +1,22 @@
 package main.java.view;
 
+
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import main.java.model.JSONFileHandler;
+import main.java.model.NetworkConnection;
 
 public class ViewController implements Initializable {
 
@@ -24,15 +25,21 @@ public class ViewController implements Initializable {
 	@FXML private TableView<String> portServerTable;
 	@FXML private TableColumn<String, String> server;
 	
-	private JSONFileHandler jfh = new JSONFileHandler();
-	
+	// --> Thread <-------------------------------------------------------------
+	NetworkConnection nc = new NetworkConnection();
 	
 
 	// ## init Methode #########################################################
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		addPortsColumn();
 		addServerValues();
+		addPortsColumn();
+	}
+	
+	
+	
+	public void startPing(ActionEvent e) {
+//		jfh.testServerPortConnection();
 	}
 	
 	// ## Server-Port Tabelle ##################################################
@@ -42,31 +49,40 @@ public class ViewController implements Initializable {
 	 */
 	private void addPortsColumn() {
 		TableColumn<String, String> col = null;
-		for (int i = 0; i < jfh.getPortList().size(); i++) {
-			col = new TableColumn<String, String>(jfh.getPortList().get(i));
+		for (int i = 0; i < nc.getPortList().size(); i++) {
+			col = new TableColumn<String, String>(nc.getPortList().get(i));
 			//TODO Einfügen der isConnected-Werte
 			portServerTable.getColumns().add(col);
+//			//TODO -> umarbeiten
+//			ObservableList<String> serverList = FXCollections.observableArrayList(jfh.getConnectArray().get(i));
+//			col.setCellValueFactory(new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+//				public ObservableValue<String> call(CellDataFeatures<String, String> p) {
+//					return new SimpleStringProperty(p.getValue());
+//				}
+//			});
+//			portServerTable.setItems(serverList);
 		}
-		addPortValues();
 	}
 	/**
 	 * Fügt der Server Tabelle in der Spalte Server die Namen der der
 	 * ObserbableList hinzu.
 	 */
 	private void addServerValues() {
-		ObservableList<String> serverList = FXCollections.observableArrayList(jfh.getServerNameList());
+		ObservableList<String> serverList = FXCollections.observableArrayList(nc.getServerNameList());
 		server.setCellValueFactory(new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<String, String> p) {
-						return new SimpleStringProperty(p.getValue());
-					}
-				});
+				return new SimpleStringProperty(p.getValue());
+			}
+		});
 		portServerTable.setItems(serverList);
 	}
 	
+	
+	// TODO Werte in die Spalten füllen. ConnectionArray aufspalten für jeden Port
 	private void addPortValues() {
-		System.out.println(jfh.getConnectArray().size());
-		System.out.println(jfh.getPortList().size());
-		for (int i = 0; i < jfh.getConnectArray().size(); i++) {
+		System.out.println(nc.getConnectArray().size());
+		System.out.println(nc.getPortList().size());
+		for (int i = 0; i < nc.getConnectArray().size(); i++) {
 			
 		}
 	}
