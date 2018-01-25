@@ -29,7 +29,7 @@ public class NetworkConnection implements Runnable {
 	public NetworkConnection() {
 		jfh = new JSONFileHandler();
 		setPortServerValuesInAList();
-		testServerPortConnection();
+//		testServerPortConnection();
 	}
 	@Override
 	public void run() {
@@ -85,18 +85,20 @@ public class NetworkConnection implements Runnable {
 	public void testServerPortConnection() {
 		int portAdr = 0;
 		String ip = "";
+		connectArray.add(serverNameList);
 		for (int i = 0; i < getPortList().size(); i++) {
 			portAdr = Integer.parseInt(getPortList().get(i));
 			System.out.println(portAdr);
 			temp = new ArrayList<String>();
-			for (int j = 0; j < getIpList().size(); j++) {
+			for (int j = 0; j < serverNameList.size(); j++) {
 				ip = getIpList().get(j);
 				System.out.print(" -" + ip);
 				try {
 					Socket s = new Socket(ip, portAdr);
 					System.out.println(" -> " + s.isConnected());
 					setIsConnected(true);
-					temp.add(getIsConnected().toString());
+					// temp.add(getIsConnected().toString());
+					temp.add(ip + ":" + portAdr);
 					setTemp(temp);
 					s.close();
 				} catch (UnknownHostException e) {
@@ -104,7 +106,8 @@ public class NetworkConnection implements Runnable {
 				} catch (IOException e) {
 					System.out.println(" XXX ");
 					setIsConnected(false);
-					temp.add(getIsConnected().toString());
+					temp.add("X " + ip + ":" + portAdr + " X");
+					// temp.add(getIsConnected().toString());
 					setTemp(temp);
 				}
 			}

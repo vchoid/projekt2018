@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,17 +25,13 @@
       </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
-              <columns>
-                <TableColumn fx:id="server" maxWidth="150.0" minWidth="100.0" prefWidth="100.0" />
-              </columns>
-            </TableView>
+            <TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
             <Label contentDisplay="TOP" layoutX="-7.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textFill="#b2b2b2" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="108.0">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="151.0" layoutY="35.0" prefHeight="25.0" prefWidth="78.0" text="Ports &gt;" textFill="#b2b2b2" AnchorPane.leftAnchor="151.0" AnchorPane.topAnchor="35.0">
+            <Label layoutX="204.0" layoutY="37.0" prefHeight="25.0" prefWidth="78.0" text="Ports &gt;" textFill="#b2b2b2" AnchorPane.leftAnchor="204.0" AnchorPane.topAnchor="37.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -48,7 +43,7 @@
                   <Image url="@../../resources/Icons/Bitmarck_logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" onAction="#startPing" text="Start Ping" />
+            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" onAction="#startPing" text="Starte Ping" />
             
                </children>
       </AnchorPane>

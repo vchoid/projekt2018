@@ -23,20 +23,8 @@
 	],
 	"ports": [
 		{
-			"name": "Tomcat",
-			"port": 8080
-		},
-		{
-			"name": "FirstSpirit",
-			"port": 8000
-		},
-		{
 			"name": "SE",
 			"port": 2409
-		},
-		{
-			"name": "Remote",
-			"port": 8084
 		}
 	]
 }

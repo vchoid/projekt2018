@@ -8,9 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -87,7 +84,7 @@ public class JSONFileHandler {
 	 * <p>
 	 * <b>Methoden:</b>
 	 * <ul>
-	 * <li>Werte für die Tabelle aufbereiten:
+	 * <li>Speichert Port und Server in jeweils ein JSONArray:
 	 * <b>{@link #setPortServerValuesInAList()}</b></li>
 	 * </ul>
 	 * </p>
@@ -136,9 +133,10 @@ public class JSONFileHandler {
 			setE(e);
 		}
 	}
-	
+
 	/**
-	 * Speichert folgende Werte aus den Server- und Port-Arrays in neue Listen.
+	 * Speichert Werte aus den Server- und Port-Arrays aus der JSON-Datei in
+	 * Arrays.
 	 * 
 	 */
 	private void setPortServerValuesInAList() {
