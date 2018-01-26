@@ -22,7 +22,10 @@ import com.google.gson.JsonObject;
 
 /**
  * 
- * Werte in die Server_Ports.JSON schreiben, ändern und löschen.</br>
+ * Inhalte aus der Server_Ports.JSON wird zur Weiterverarbeitung vorbereitet.
+ * 
+ * Zusätzlich stellt die Klasse Methoden zum Schreiben, Ändern und Löschen der
+ * Daten bereit.</br>
  * 
  * <p>
  * <b>Methoden:</b>
@@ -73,7 +76,7 @@ public class JSONFileHandler {
 	private Exception e;
 
 	// #########################################################################
-	// ## Initialisieren ######################################################
+	// ## Initialisieren #######################################################
 	// #########################################################################
 	public JSONFileHandler() {
 		init();
@@ -116,7 +119,7 @@ public class JSONFileHandler {
 	}
 
 	/**
-	 * Schreibe Inhalt(Parameter content) in der JSON-Datei und schließe den
+	 * Schreibt Inhalt(Parameter content) in der JSON-Datei und schließt den
 	 * Writer.
 	 * 
 	 * @param content
@@ -127,8 +130,9 @@ public class JSONFileHandler {
 			writer = new BufferedWriter(new OutputStreamWriter(out));
 			writer.write(content);
 			// TODO löschen!
-			System.out.println(" -> gespeichert in Datei.");
-			writer.flush();
+			System.out.print(" -> gespeichert in Datei.");
+			writer.close();
+			System.out.println(" >> 'writer' geschlossen!");
 		} catch (IOException e) {
 			setE(e);
 		}

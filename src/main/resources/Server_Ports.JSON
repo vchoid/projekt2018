@@ -23,8 +23,12 @@
 	],
 	"ports": [
 		{
-			"name": "SE",
-			"port": 2409
+			"name": "Tomcat",
+			"port": 8080
+		},
+		{
+			"name": "FirstSpirit",
+			"port": 8000
 		}
 	]
 }

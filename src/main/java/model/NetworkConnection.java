@@ -29,13 +29,14 @@ public class NetworkConnection implements Runnable {
 	public NetworkConnection() {
 		jfh = new JSONFileHandler();
 		setPortServerValuesInAList();
-//		testServerPortConnection();
+//		testAllServerPortConnection();
 	}
 	@Override
 	public void run() {
 
 	}
 
+	
 	// #########################################################################
 	// ## Daten als für View ###################################################
 	// #########################################################################
@@ -76,13 +77,11 @@ public class NetworkConnection implements Runnable {
 		saveValuesInArray(jfh.getServerArray(), "name", serverNameList);
 		// IP-Adressen aus Server-Array in neue List speichern
 		saveValuesInArray(jfh.getServerArray(), "ip", ipList);
-
 	}
-
 	/**
 	 * Array für die Verbindungen.
 	 */
-	public void testServerPortConnection() {
+	public void testAllServerPortConnection() {
 		int portAdr = 0;
 		String ip = "";
 		connectArray.add(serverNameList);

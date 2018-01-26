@@ -25,7 +25,7 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
 
 .table-view .table-cell{
     -fx-border-color: darkgray; 
-    -fx-border-width: 0.5px 0px 0px 0.5px;
+    -fx-border-width: 0.5px 0.0px 0.0px 0.5px;
 }
 
 .table-row-cell{
@@ -40,27 +40,28 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
 .table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
    -fx-background-color: transparent  ;
    -fx-opacity: 0.3;
-   -fx-max-height: 0px;    
+   -fx-max-height: 0.0px;    
 }
 .table-view > .virtual-flow > .scroll-bar > .increment-button, 
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
-    -fx-opacity: 0;
+    -fx-opacity: 0.0;
 }
 
 #server{
 	-fx-background-color: gray;
 	-fx-font-weight: bold;
-	-fx-border-width: 0px 0px 0px 0px;
+	-fx-border-width: 0.0px 0.0px 0.0px 0.0px;
 }
 
 AnchorPane > #grauLabel{
 	-fx-background-color: gray ;
 }
 AnchorPane > #verlaufLabel{
-	-fx-background-color: linear-gradient(transparent 0%, darkgrey 100%)  ;
+	-fx-background-color: linear-gradient(transparent 0.0%, darkgrey 100.0%)  ;
 }
 
-.button{
-	
+
+Button{
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2),10.0, 0.3, 0.0, 3.5);
 }
 
