@@ -16,12 +16,13 @@ public class NetworkConnection implements Runnable {
 
 	// --> Listen für View -----------------------------------------------------
 	private ArrayList<String> portList = new ArrayList<>();
+	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
+	
 	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
 	private ArrayList<String> temp;
-
-	private Boolean isConnected = false;
+	private String isConnected = "";
 
 	// #########################################################################
 	// ## Initialisieren #######################################################
@@ -29,14 +30,13 @@ public class NetworkConnection implements Runnable {
 	public NetworkConnection() {
 		jfh = new JSONFileHandler();
 		setPortServerValuesInAList();
-//		testAllServerPortConnection();
+		saveAllServerPortConnectionInArray();
 	}
 	@Override
 	public void run() {
 
 	}
 
-	
 	// #########################################################################
 	// ## Daten als für View ###################################################
 	// #########################################################################
@@ -73,6 +73,8 @@ public class NetworkConnection implements Runnable {
 	private void setPortServerValuesInAList() {
 		// die Port-Werte in neue Liste speichern
 		saveValuesInArray(jfh.getPortsArray(), "port", portList);
+		// die Port-Werte in neue Liste speichern
+		saveValuesInArray(jfh.getPortsArray(), "name", portNameList);
 		// Servername in neue List speichern
 		saveValuesInArray(jfh.getServerArray(), "name", serverNameList);
 		// IP-Adressen aus Server-Array in neue List speichern
@@ -81,38 +83,80 @@ public class NetworkConnection implements Runnable {
 	/**
 	 * Array für die Verbindungen.
 	 */
-	public void testAllServerPortConnection() {
-		int portAdr = 0;
+	public void saveAllServerPortConnectionInArray() {
+		String serverName = "";
 		String ip = "";
-		connectArray.add(serverNameList);
-		for (int i = 0; i < getPortList().size(); i++) {
-			portAdr = Integer.parseInt(getPortList().get(i));
-			System.out.println(portAdr);
+		String portName = "";
+		int portAdr = 0;
+		for (int i = 0; i < ipList.size(); i++) {
+			ip = ipList.get(i);
+			serverName = serverNameList.get(i);
 			temp = new ArrayList<String>();
-			for (int j = 0; j < serverNameList.size(); j++) {
-				ip = getIpList().get(j);
-				System.out.print(" -" + ip);
-				try {
-					Socket s = new Socket(ip, portAdr);
-					System.out.println(" -> " + s.isConnected());
-					setIsConnected(true);
-					// temp.add(getIsConnected().toString());
-					temp.add(ip + ":" + portAdr);
-					setTemp(temp);
-					s.close();
-				} catch (UnknownHostException e) {
-					System.out.println("Unbekanner Host");
-				} catch (IOException e) {
-					System.out.println(" XXX ");
-					setIsConnected(false);
-					temp.add("X " + ip + ":" + portAdr + " X");
-					// temp.add(getIsConnected().toString());
-					setTemp(temp);
-				}
+			temp.add(serverName);
+			//TODO löschen
+			System.out.println(serverName+ "["+ip+"]");
+			for (int j = 0; j < portList.size(); j++) {
+				portAdr = Integer.parseInt(portList.get(j));
+				portName = portNameList.get(j);
+				isConnected = testServerPortConnection(ip, portAdr);
+				temp.add(isConnected.toString());
+				//TODO löschen
+				System.out.println(portName + "[" + portAdr + "]" + ":" + isConnected);
 			}
 			connectArray.add(temp);
 		}
+		//TODO löschen
 		System.out.println(connectArray);
+	}
+
+	// /**
+	// * Array für die Verbindungen.
+	// */
+	// public void saveAllPortServerConnectionInArray() {
+	// int portAdr = 0;
+	// String ip = "";
+	// connectArray.add(serverNameList);
+	// for (int i = 0; i < getPortList().size(); i++) {
+	// portAdr = Integer.parseInt(getPortList().get(i));
+	// System.out.println(portAdr);
+	// temp = new ArrayList<String>();
+	// for (int j = 0; j < serverNameList.size(); j++) {
+	// ip = getIpList().get(j);
+	// System.out.print(" -" + ip);
+	// try {
+	// Socket s = new Socket(ip, portAdr);
+	// System.out.println(" -> " + s.isConnected());
+	// setIsConnected(true);
+	//// temp.add(getIsConnected().toString());
+	// temp.add(ip + ":" + portAdr);
+	// setTemp(temp);
+	// s.close();
+	// } catch (UnknownHostException e) {
+	// System.out.println("Unbekanner Host");
+	// } catch (IOException e) {
+	// System.out.println(" XXX ");
+	// setIsConnected(false);
+	// temp.add("X " + ip + ":" + portAdr + " X");
+	//// temp.add(getIsConnected().toString());
+	// setTemp(temp);
+	// }
+	// }
+	// connectArray.add(temp);
+	// }
+	// System.out.println(connectArray);
+	// }
+
+	/**
+	 * Verbindung von Server mit Port testen.
+	 */
+	public String testServerPortConnection(String server, int port) {
+		try {
+			Socket s = new Socket(server, port);
+			s.close();
+		} catch (IOException e) {
+			return "-";
+		}
+		return "O";
 	}
 	// #########################################################################
 	// ## Getter und Setter ####################################################
@@ -121,19 +165,22 @@ public class NetworkConnection implements Runnable {
 	public ArrayList<String> getIpList() {
 		return ipList;
 	}
+	public ArrayList<String> getServerNameList() {
+		return serverNameList;
+	}
 	public ArrayList<String> getPortList() {
 		return portList;
 	}
-	public ArrayList<String> getServerNameList() {
-		return serverNameList;
+	public ArrayList<String> getPortNameList() {
+		return portNameList;
 	}
 	public ArrayList<ArrayList<String>> getConnectArray() {
 		return connectArray;
 	}
-	public Boolean getIsConnected() {
+	public String getIsConnected() {
 		return isConnected;
 	}
-	public void setIsConnected(Boolean isConnected) {
+	public void setIsConnected(String isConnected) {
 		this.isConnected = isConnected;
 	}
 	public ArrayList<String> getTemp() {
