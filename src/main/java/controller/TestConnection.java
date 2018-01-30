@@ -6,7 +6,7 @@ import java.net.Socket;
 import main.java.model.Port;
 import main.java.model.Server;
 
-public class SetupConnection {
+public class TestConnection {
 
 	
 	

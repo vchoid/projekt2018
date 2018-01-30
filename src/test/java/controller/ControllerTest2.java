@@ -1,7 +1,6 @@
 package test.java.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -14,18 +13,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import main.java.model.NetworkConnection;
-import main.java.model.ServerPortConnection;
 
 public class ControllerTest2 implements Initializable {
 
 	// ## Variablen ############################################################
 	// --> Port/Server <--------------------------------------------------------
 	@FXML
-	private TableView<ServerPortConnection> portServerTable;
+	private TableView<String> portServerTable;
 	@FXML
-	private TableColumn<ServerPortConnection, String> serverTab;
+	private TableColumn<String, String> serverTab;
 	@FXML
-	private TableColumn<ServerPortConnection, String> portTab;
+	private TableColumn<String, String> portTab;
 
 	// --> NetworkTable <-------------------------------------------------------
 	NetworkConnection nc = new NetworkConnection();
@@ -64,12 +62,11 @@ public class ControllerTest2 implements Initializable {
 		
 	}
 
-	private ObservableList<ServerPortConnection> getWerte() {
-		boolean[] bool = {true, false, false};
+	private ObservableList<String> getWerte() {
 		
-		ObservableList<ServerPortConnection> con = FXCollections
+		ObservableList<String> con = FXCollections
 				.observableArrayList();
-		con.add(new ServerPortConnection("Stage", bool));
+		con.add("Stage");
 //		con.add(new ServerPortConnection("Production", false, true));
 //		con.add(new ServerPortConnection("FirstSpirit", false, true));
 //		con.add(new ServerPortConnection("SE", false, false));

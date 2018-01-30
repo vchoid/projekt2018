@@ -1,20 +1,20 @@
 package main.java.view;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import main.java.model.NetworkConnection;
-import main.java.model.ServerPortConnection;
+import main.java.model.Server;
 
 public class Controller implements Initializable {
 
@@ -23,10 +23,14 @@ public class Controller implements Initializable {
 	// #########################################################################
 	// --> Port/Server <--------------------------------------------------------
 	@FXML
-	private TableView portServerTable;
+	private TableView<Node> portServerTable;
 
 	// --> NetworkTable <-------------------------------------------------------
 	NetworkConnection nc = new NetworkConnection();
+	
+	
+	
+	
 
 	// #########################################################################
 	// ## init Methode #########################################################
@@ -37,13 +41,16 @@ public class Controller implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+		buildData();
 	}
 	// #########################################################################
 	// ## Daten verarbeiten ####################################################
 	// #########################################################################
 
-	
+	public void buildData() {
+		
+		
+	}
 	
 }
 
