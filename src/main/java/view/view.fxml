@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -37,13 +38,13 @@
                </font>
             </Label>
             <Label fx:id="grauLabel" layoutX="394.0" layoutY="211.0" prefHeight="25.0" prefWidth="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
-            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="43.0" prefWidth="450.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <ImageView fx:id="bmLogo" fitHeight="25.0" fitWidth="157.0" layoutX="265.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="16.0">
+            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="43.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <ImageView fx:id="bmLogo" blendMode="DARKEN" fitHeight="25.0" fitWidth="157.0" layoutX="265.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
                <image>
                   <Image url="@../../resources/Icons/Bitmarck_logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="10.0">
+            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" onAction="#buildData" prefHeight="20.0" prefWidth="10.0">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -51,6 +52,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
+            <ProgressBar fx:id="pbBar" layoutX="519.0" layoutY="470.0" prefHeight="11.0" prefWidth="157.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
             
                </children>
       </AnchorPane>

@@ -2,14 +2,16 @@ package main.java.model;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class NetworkConnection implements Runnable {
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+
+public class NetworkConnection {
 
 	// ## Variablen ############################################################
 	private JSONFileHandler jfh;
@@ -19,22 +21,23 @@ public class NetworkConnection implements Runnable {
 	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
-	
+
 	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
 	private ArrayList<String> temp;
 	private String isConnected = "";
 
+	private double progress = 0;
+	private double progressIndicator = 0;
+	private double progress100;
+
+	private Service<Object> ncService;
 	// #########################################################################
 	// ## Initialisieren #######################################################
 	// #########################################################################
 	public NetworkConnection() {
 		jfh = new JSONFileHandler();
 		setPortServerValuesInAList();
-		saveAllServerPortConnectionInArray();
-	}
-	@Override
-	public void run() {
-
+		// startConnectionRequest();
 	}
 
 	// #########################################################################
@@ -81,32 +84,62 @@ public class NetworkConnection implements Runnable {
 		saveValuesInArray(jfh.getServerArray(), "ip", ipList);
 	}
 	/**
-	 * Array für die Verbindungen.
+	 * In einem eigenen Thread werden die Verbindungen getestet und in ein Array
+	 * geschrieben.
+	 * 
+	 * Zuerst wird ein Service und dann ein Task -Objekt angelegt. In dem
+	 * Task-Objekt werden aus den Arrays die Server auf allen Ports angepingt
+	 * und das Ergebnis wird in ein neue Array gespeichert. Nach jedem Durchlauf
+	 * wird ein Fortschritt des Gesamtdurchlaufes gespeichert.
 	 */
-	public void saveAllServerPortConnectionInArray() {
-		String serverName = "";
-		String ip = "";
-		String portName = "";
-		int portAdr = 0;
-		for (int i = 0; i < ipList.size(); i++) {
-			ip = ipList.get(i);
-			serverName = serverNameList.get(i);
-			temp = new ArrayList<String>();
-			temp.add(serverName);
-			//TODO löschen
-			System.out.println(serverName+ "["+ip+"]");
-			for (int j = 0; j < portList.size(); j++) {
-				portAdr = Integer.parseInt(portList.get(j));
-				portName = portNameList.get(j);
-				isConnected = testServerPortConnection(ip, portAdr);
-				temp.add(isConnected.toString());
-				//TODO löschen
-				System.out.println(portName + "[" + portAdr + "]" + ":" + isConnected);
+	public void startConnectionRequest() {
+		ncService = new Service<>() {
+			@Override
+			protected Task<Object> createTask() {
+				return new Task<>() {
+					@Override
+					protected Object call() throws Exception {
+						String serverName = "";
+						String ip = "";
+						String portName = "";
+						int portAdr = 0;
+						progress100 = serverNameList.size()
+								* portNameList.size();
+						progress = 0;
+						progressIndicator = 0.0;
+						for (int i = 0; i < ipList.size(); i++) {
+							ip = ipList.get(i);
+							serverName = serverNameList.get(i);
+							temp = new ArrayList<String>();
+							temp.add(serverName);
+							// TODO löschen
+							System.out.println(serverName + "[" + ip + "]");
+							for (int j = 0; j < portList.size(); j++) {
+								portAdr = Integer.parseInt(portList.get(j));
+								portName = portNameList.get(j);
+								isConnected = startSocket(ip,
+										portAdr);
+								temp.add(isConnected.toString());
+								// TODO löschen
+								System.out.println(portName + "[" + portAdr
+										+ "]" + ":" + isConnected);
+								// setzt den Fortschritt nach jedem Durchlauf
+								// eins höher
+								progress++;
+								// rechnet den Gesamtfortschritt aus
+								progressIndicator = progress / progress100;
+							}
+							connectArray.add(temp);
+						}
+						progressIndicator = 0.0;
+						// TODO löschen
+						System.out.println(connectArray);
+						return null;
+					}
+				};
 			}
-			connectArray.add(temp);
-		}
-		//TODO löschen
-		System.out.println(connectArray);
+		};
+		ncService.start();
 	}
 
 	// /**
@@ -149,7 +182,7 @@ public class NetworkConnection implements Runnable {
 	/**
 	 * Verbindung von Server mit Port testen.
 	 */
-	public String testServerPortConnection(String server, int port) {
+	public String startSocket(String server, int port) {
 		try {
 			Socket s = new Socket(server, port);
 			s.close();
@@ -188,6 +221,21 @@ public class NetworkConnection implements Runnable {
 	}
 	public void setTemp(ArrayList<String> temp) {
 		this.temp = temp;
+	}
+
+	public double getProgress() {
+		return progress;
+	}
+
+	public void setProgress(double progress) {
+		this.progress = progress;
+	}
+	public double getProgressIndicator() {
+		return progressIndicator;
+	}
+
+	public void setProgressIndicator(double progressIndicator) {
+		this.progressIndicator = progressIndicator;
 	}
 
 }
