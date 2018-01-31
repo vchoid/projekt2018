@@ -52,7 +52,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <ProgressBar fx:id="pbBar" layoutX="519.0" layoutY="470.0" prefHeight="11.0" prefWidth="157.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
+            <ProgressBar fx:id="pbBar" layoutX="519.0" layoutY="470.0" prefHeight="11.0" prefWidth="157.0" progress="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
             
                </children>
       </AnchorPane>

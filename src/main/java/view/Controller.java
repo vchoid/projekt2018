@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -30,9 +31,11 @@ public class Controller implements Initializable {
 	// --> Progress <-----------------------------------------------------------
 	@FXML
 	private ProgressBar pbBar;
+	@FXML
+	private Label progressLabel;
 	private boolean threadFinish = false;
-	private Service<NetworkConnection> s;
 	private ScheduledService<ProgressBar> sc;
+	
 	private NetworkConnection nc = new NetworkConnection();
 	// --> NetworkTable <-------------------------------------------------------
 
@@ -63,6 +66,8 @@ public class Controller implements Initializable {
 			}
 		};
 		sc.start();
+		sc.setPeriod(Duration.seconds(0.25));
+		
 	}
 	// #########################################################################
 	// ## Daten verarbeiten ####################################################

@@ -60,9 +60,13 @@ AnchorPane > #verlaufLabel{
 	-fx-background-color: linear-gradient(transparent 0.0%, darkgrey 100.0%)  ;
 }
 
-
-Button{
-	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2),10.0, 0.3, 0.0, 3.5);
+.button{
+	-fx-background-color: rgb(200.0, 200.0, 200.0) ;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2),10.0, 0.3, 0.0, 2.5);
+}
+.button:pressed{
+	-fx-background-color: rgb(180.0, 180.0, 180.0) ;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.5),5.0, 0.3, 0.0, 0.5);
 }
 
 .progress-bar .bar {

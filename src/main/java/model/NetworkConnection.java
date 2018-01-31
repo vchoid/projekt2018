@@ -11,7 +11,13 @@ import com.google.gson.JsonObject;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public class NetworkConnection {
+
+
+public class NetworkConnection  {
+	
+	// hier weiter machen -> Code aus startConnectioRequest
+	// --> Extends Service
+	
 
 	// ## Variablen ############################################################
 	private JSONFileHandler jfh;
@@ -37,7 +43,6 @@ public class NetworkConnection {
 	public NetworkConnection() {
 		jfh = new JSONFileHandler();
 		setPortServerValuesInAList();
-		// startConnectionRequest();
 	}
 
 	// #########################################################################
@@ -221,6 +226,14 @@ public class NetworkConnection {
 	}
 	public void setTemp(ArrayList<String> temp) {
 		this.temp = temp;
+	}
+
+	public double getProgress100() {
+		return progress100;
+	}
+
+	public void setProgress100(double progress100) {
+		this.progress100 = progress100;
 	}
 
 	public double getProgress() {
