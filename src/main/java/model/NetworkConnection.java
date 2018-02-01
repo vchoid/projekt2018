@@ -11,13 +11,10 @@ import com.google.gson.JsonObject;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
+public class NetworkConnection {
 
-
-public class NetworkConnection  {
-	
 	// hier weiter machen -> Code aus startConnectioRequest
 	// --> Extends Service
-	
 
 	// ## Variablen ############################################################
 	private JSONFileHandler jfh;
@@ -27,16 +24,22 @@ public class NetworkConnection  {
 	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
+	private String serverName = "";
+	private String ip = "";
+	private int portAdr = 0;
 
 	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
 	private ArrayList<String> temp;
 	private String isConnected = "";
+	private boolean stopNC;
+	private boolean isRunning;
 
-	private double progress = 0;
-	private double progressIndicator = 0;
+	private double progress;
+	private double progressIndicator;
 	private double progress100;
 
 	private Service<Object> ncService;
+	private Socket socket;
 	// #########################################################################
 	// ## Initialisieren #######################################################
 	// #########################################################################
@@ -88,6 +91,12 @@ public class NetworkConnection  {
 		// IP-Adressen aus Server-Array in neue List speichern
 		saveValuesInArray(jfh.getServerArray(), "ip", ipList);
 	}
+	
+	private void setProgressInfo() {
+		progress100 = serverNameList.size()* portNameList.size();
+		progress = 0;
+		progressIndicator = 0.0;
+	}
 	/**
 	 * In einem eigenen Thread werden die Verbindungen getestet und in ein Array
 	 * geschrieben.
@@ -104,41 +113,43 @@ public class NetworkConnection  {
 				return new Task<>() {
 					@Override
 					protected Object call() throws Exception {
-						String serverName = "";
-						String ip = "";
-						String portName = "";
-						int portAdr = 0;
-						progress100 = serverNameList.size()
-								* portNameList.size();
-						progress = 0;
-						progressIndicator = 0.0;
+						setProgressInfo();
 						for (int i = 0; i < ipList.size(); i++) {
-							ip = ipList.get(i);
-							serverName = serverNameList.get(i);
-							temp = new ArrayList<String>();
-							temp.add(serverName);
-							// TODO löschen
-							System.out.println(serverName + "[" + ip + "]");
-							for (int j = 0; j < portList.size(); j++) {
-								portAdr = Integer.parseInt(portList.get(j));
-								portName = portNameList.get(j);
-								isConnected = startSocket(ip,
-										portAdr);
-								temp.add(isConnected.toString());
+							
+							if(isStopNC() == true) {
+								break;
+							} else if(isStopNC() == false) {
+								ip = ipList.get(i);
+								serverName = serverNameList.get(i);
+								temp = new ArrayList<String>();
+								temp.add(serverName);
 								// TODO löschen
-								System.out.println(portName + "[" + portAdr
-										+ "]" + ":" + isConnected);
-								// setzt den Fortschritt nach jedem Durchlauf
-								// eins höher
-								progress++;
-								// rechnet den Gesamtfortschritt aus
-								progressIndicator = progress / progress100;
+								System.out.print(serverName);
+							}
+							for (int j = 0; j < portList.size(); j++) {
+								if(isStopNC() == true) {
+									break;
+								} else if(isStopNC() == false) {
+									portAdr = Integer.parseInt(portList.get(j));
+									isConnected = startSocket(ip, portAdr);
+									temp.add(isConnected.toString());
+									// TODO löschen
+									System.out.print(" | " + isConnected);
+									// setzt den Fortschritt nach jedem Durchlauf
+									// eins höher
+									progress++;
+									// rechnet den Gesamtfortschritt aus
+									progressIndicator = progress / progress100;
+								}
 							}
 							connectArray.add(temp);
+							System.out.println(
+									"\n----------------------------------------------");
 						}
 						progressIndicator = 0.0;
 						// TODO löschen
-						System.out.println(connectArray);
+//						System.out.println(connectArray);
+						closeSocket();
 						return null;
 					}
 				};
@@ -146,55 +157,26 @@ public class NetworkConnection  {
 		};
 		ncService.start();
 	}
-
-	// /**
-	// * Array für die Verbindungen.
-	// */
-	// public void saveAllPortServerConnectionInArray() {
-	// int portAdr = 0;
-	// String ip = "";
-	// connectArray.add(serverNameList);
-	// for (int i = 0; i < getPortList().size(); i++) {
-	// portAdr = Integer.parseInt(getPortList().get(i));
-	// System.out.println(portAdr);
-	// temp = new ArrayList<String>();
-	// for (int j = 0; j < serverNameList.size(); j++) {
-	// ip = getIpList().get(j);
-	// System.out.print(" -" + ip);
-	// try {
-	// Socket s = new Socket(ip, portAdr);
-	// System.out.println(" -> " + s.isConnected());
-	// setIsConnected(true);
-	//// temp.add(getIsConnected().toString());
-	// temp.add(ip + ":" + portAdr);
-	// setTemp(temp);
-	// s.close();
-	// } catch (UnknownHostException e) {
-	// System.out.println("Unbekanner Host");
-	// } catch (IOException e) {
-	// System.out.println(" XXX ");
-	// setIsConnected(false);
-	// temp.add("X " + ip + ":" + portAdr + " X");
-	//// temp.add(getIsConnected().toString());
-	// setTemp(temp);
-	// }
-	// }
-	// connectArray.add(temp);
-	// }
-	// System.out.println(connectArray);
-	// }
-
 	/**
-	 * Verbindung von Server mit Port testen.
+	 * Startet die Verbindung von Server und Port.
 	 */
 	public String startSocket(String server, int port) {
 		try {
-			Socket s = new Socket(server, port);
-			s.close();
+			setSocket(new Socket(server, port));
 		} catch (IOException e) {
 			return "-";
 		}
 		return "O";
+	}
+	/**
+	 * Schließt die Verbindung zum Server.
+	 */
+	public void closeSocket() {
+		try {
+			getSocket().close();
+		} catch (IOException e) {
+			System.out.println("Konnte nicht geschlossen werden");
+		}
 	}
 	// #########################################################################
 	// ## Getter und Setter ####################################################
@@ -227,28 +209,34 @@ public class NetworkConnection  {
 	public void setTemp(ArrayList<String> temp) {
 		this.temp = temp;
 	}
-
-	public double getProgress100() {
-		return progress100;
+	// --> Array Iteration -----------------------------------------------------
+	public boolean isStopNC() {
+		return stopNC;
+	}
+	public void setStopNC(boolean stopNC) {
+		this.stopNC = stopNC;
+	}
+	
+	public boolean isRunning() {
+		return isRunning;
 	}
 
-	public void setProgress100(double progress100) {
-		this.progress100 = progress100;
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
 	}
 
-	public double getProgress() {
-		return progress;
+	// --> Socket --------------------------------------------------------------
+	public Socket getSocket() {
+		return socket;
 	}
 
-	public void setProgress(double progress) {
-		this.progress = progress;
+	public void setSocket(Socket socket) {
+		this.socket = socket;
 	}
+	// --> Progress Indicator --------------------------------------------------
 	public double getProgressIndicator() {
 		return progressIndicator;
 	}
-
-	public void setProgressIndicator(double progressIndicator) {
-		this.progressIndicator = progressIndicator;
-	}
+	
 
 }

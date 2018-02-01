@@ -4,15 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableView;
 import javafx.util.Duration;
 import main.java.model.NetworkConnection;
@@ -22,25 +18,19 @@ public class Controller implements Initializable {
 	// #########################################################################
 	// ## Variablen ############################################################
 	// #########################################################################
-	// --> Port/Server <--------------------------------------------------------
+	// --> NetworkTable <-------------------------------------------------------
 	@FXML
 	private TableView<String> portServerTable;
-	// --> Buuton <-------------------------------------------------------------
-	@FXML
-	private Button startBut;
+	private NetworkConnection nc = new NetworkConnection();
 	// --> Progress <-----------------------------------------------------------
 	@FXML
 	private ProgressBar pbBar;
 	@FXML
-	private Label progressLabel;
-	private boolean threadFinish = false;
+	private ProgressIndicator progressInd;
 	private ScheduledService<ProgressBar> sc;
-	
-	private NetworkConnection nc = new NetworkConnection();
-	// --> NetworkTable <-------------------------------------------------------
 
 	// #########################################################################
-	// ## init Methode #########################################################
+	// ## initialize-Methode ###################################################
 	// #########################################################################
 	/**
 	 * Hier werden alle Methoden aufgeführt, die direkt nach dem Laden der
@@ -48,18 +38,64 @@ public class Controller implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		buildData();
+		startBuild();
+		setProgressStatus();
+
+	}
+	// #########################################################################
+	// ## Daten verarbeiten ####################################################
+	// #########################################################################
+
+	/**
+	 * Verbindungsabfrage starten. Den Progress-Indicator auf sichtbar machen.
+	 * Den Stop-Wert auf false setzen, der aussagt, dass der Prozess noch nicht
+	 * gestoppt wurde.
+	 */
+	@FXML
+	public void startBuild() {
+		nc.startConnectionRequest();
+		progressInd.setVisible(true);
+		nc.setStopNC(false);
+	}
+	/**
+	 * Nur wenn die Serverabfrage geschlossen ist soll einer Versuche gestartet
+	 * werden.
+	 */
+	@FXML
+	public void restartBuild() {
+		if (nc.getSocket().isClosed() == true) {
+			startBuild();
+		}
+	}
+	/**
+	 * Den Prozess stoppen in dem der Stop-Wert auf true setzen. Den
+	 * Progress-Indicator unsichtbar machen.
+	 */
+	@FXML
+	public void stopBuild() {
+		nc.setStopNC(true);
+		progressInd.setVisible(false);
+	}
+
+	// #########################################################################
+	// ## Fortschrittsanzeige ##################################################
+	// #########################################################################
+	/**
+	 * Gibt den Status der Verarbeitung an.
+	 */
+	private void setProgressStatus() {
 		// ständige Abfrage des Fortschritts
 		sc = new ScheduledService<>() {
-
 			@Override
 			protected Task<ProgressBar> createTask() {
 				// TODO Auto-generated method stub
 				return new Task<ProgressBar>() {
-
 					@Override
 					protected ProgressBar call() throws Exception {
 						pbBar.setProgress(nc.getProgressIndicator());
+						if (nc.getProgressIndicator() > 0.93) {
+							progressInd.setVisible(false);
+						}
 						return null;
 					}
 				};
@@ -67,63 +103,6 @@ public class Controller implements Initializable {
 		};
 		sc.start();
 		sc.setPeriod(Duration.seconds(0.25));
-		
-	}
-	// #########################################################################
-	// ## Daten verarbeiten ####################################################
-	// #########################################################################
-
-	@FXML
-	public void buildData() {
-		nc.startConnectionRequest();
-	}
-
-	// @FXML
-	// public void buildData() {
-	// pbBar.setVisible(true);
-	// // Thread damit die Anwendung gleich zu sehene ist
-	// s = new Service<NetworkConnection>() {
-	// @Override
-	// protected Task<NetworkConnection> createTask() {
-	// return new Task<NetworkConnection>() {
-	// @Override
-	// protected NetworkConnection call() throws Exception {
-	// // ständige Abfrage des Fortschritts
-	// sc = new ScheduledService<>() {
-	//
-	// @Override
-	// protected Task<Double> createTask() {
-	// // TODO Auto-generated method stub
-	// return new Task<Double>() {
-	//
-	// @Override
-	// protected Double call() throws Exception {
-	// pbBar.setProgress(nc.getProgressIndicator());
-	// return null;
-	// }
-	// };
-	// }
-	// };
-	// sc.start();
-	// nc.startConnectionRequest();
-	// pbBar.setVisible(false);
-	// return null;
-	// }
-	// };
-	// }
-	// };
-	// s.start();
-	// }
-
-	// #########################################################################
-	// ## Getter und Setter ####################################################
-	// #########################################################################
-
-	public boolean isThreadFinish() {
-		return threadFinish;
-	}
-	public void setThreadFinish(boolean threadFinish) {
-		this.threadFinish = threadFinish;
 	}
 
 }

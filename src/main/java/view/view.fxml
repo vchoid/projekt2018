@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,6 +27,7 @@
       </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
          <children>
+            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="249.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 	<TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
             <Label contentDisplay="TOP" layoutX="-7.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textFill="#b2b2b2" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="108.0">
                <font>
@@ -38,21 +40,30 @@
                </font>
             </Label>
             <Label fx:id="grauLabel" layoutX="394.0" layoutY="211.0" prefHeight="25.0" prefWidth="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
-            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="43.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <ImageView fx:id="bmLogo" blendMode="DARKEN" fitHeight="25.0" fitWidth="157.0" layoutX="265.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
+            <ImageView fx:id="bmLogo" blendMode="DARKEN" fitHeight="25.0" fitWidth="157.0" layoutX="523.0" layoutY="437.2167053222656" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.0">
                <image>
                   <Image url="@../../resources/Icons/Bitmarck_logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" onAction="#buildData" prefHeight="20.0" prefWidth="10.0">
+            <Button layoutX="40.0" layoutY="432.0" mnemonicParsing="false" onAction="#restartBuild" prefHeight="20.0" prefWidth="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="40.0">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/Icons/26_lila/icons8-verfügbare-updates-26.png" />
+                        <Image url="@../../resources/Icons/26_lila/icons8-neustart-26.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
-            <ProgressBar fx:id="pbBar" layoutX="519.0" layoutY="470.0" prefHeight="11.0" prefWidth="157.0" progress="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" />
+            <ProgressBar fx:id="pbBar" layoutY="-5.0" prefHeight="11.0" prefWidth="700.0" progress="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ProgressIndicator fx:id="progressInd" layoutX="288.0" layoutY="161.0" maxHeight="82.0" maxWidth="10.0" minHeight="10.0" minWidth="10.0" prefWidth="88.0" AnchorPane.bottomAnchor="232.0" AnchorPane.leftAnchor="343.0" AnchorPane.rightAnchor="324.0" AnchorPane.topAnchor="218.0" />
+            <Button layoutX="85.0" layoutY="442.0" mnemonicParsing="false" onAction="#stopBuild" prefHeight="20.0" prefWidth="10.0">
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/Icons/26_lila/icons8-herunterfahren-26.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             
                </children>
       </AnchorPane>
