@@ -64,7 +64,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="128.0" layoutY="444.0" mnemonicParsing="false" onAction="#skipPort" prefHeight="20.0" prefWidth="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="130.0">
+            <Button layoutX="128.0" layoutY="444.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="130.0">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
