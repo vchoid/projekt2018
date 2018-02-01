@@ -93,7 +93,8 @@ public class Controller implements Initializable {
 					@Override
 					protected ProgressBar call() throws Exception {
 						pbBar.setProgress(nc.getProgressIndicator());
-						if (nc.getProgressIndicator() > 0.93) {
+						progressInd.setProgress(nc.getProgressIndicator());
+						if (nc.getProgressIndicator() >= 0.935) {
 							progressInd.setVisible(false);
 						}
 						return null;

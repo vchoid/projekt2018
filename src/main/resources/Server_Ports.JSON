@@ -20,11 +20,6 @@
 			"host": "W0195W1038.dakentw007200.de",
 			"ip": "10.1.40.117"
 		
-		},
-		{
-			"name": "Local-Server2",
-			"host": "",
-			"ip": "10.14.1.0"
 		}
 	],
 	"ports": [
@@ -43,10 +38,6 @@
 		{
 			"name": "SE",
 			"port": 2409
-		},
-		{
-			"name": "Derby",
-			"port": 1527
 		}
 	]
 }

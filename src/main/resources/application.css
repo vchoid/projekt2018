@@ -1,37 +1,27 @@
 .root{
 	-fx-font-family: Arial ;
 }
-
-
 .menu-bar {
     -fx-background-color: gray;
     -fx-opacity: 0.8;
-    
 }
-
 .menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
     -fx-background-color: #a61f7d;
 }
-
-
 AnchorPane{
 	-fx-background-color: gray;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.55), 6.0, 0.7, 0.0,1.5);
 }
-
 TableView, #portServerTable .column-header,#portServerTable .filler, #portServerTable .show-hide-columns-button{
 	-fx-background-color: gray;
 }
-
 .table-view .table-cell{
     -fx-border-color: darkgray; 
     -fx-border-width: 0.5px 0.0px 0.0px 0.5px;
 }
-
 .table-row-cell{
     -fx-background-color: gray;
 }
-
 .table-view > .virtual-flow > .scroll-bar:vertical,
 .table-view > .virtual-flow > .scroll-bar:vertical > .track,
 .table-view > .virtual-flow > .scroll-bar:vertical > .track-background, 
@@ -46,20 +36,17 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0.0;
 }
-
 #server{
 	-fx-background-color: gray;
 	-fx-font-weight: bold;
 	-fx-border-width: 0.0px 0.0px 0.0px 0.0px;
 }
-
 AnchorPane > #grauLabel{
 	-fx-background-color: gray ;
 }
 AnchorPane > #verlaufLabel{
 	-fx-background-color: linear-gradient(transparent 0.0%, darkgrey 100.0%)  ;
 }
-
 .button{
 	-fx-background-color: rgb(200.0, 200.0, 200.0) ;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2),10.0, 0.3, 0.0, 2.5);
@@ -68,7 +55,6 @@ AnchorPane > #verlaufLabel{
 	-fx-background-color: rgb(180.0, 180.0, 180.0) ;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.5),5.0, 0.3, 0.0, 0.5);
 }
-
 .progress-bar .bar {
 	-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, transparent , rgb(166,166,166) );
     -fx-padding: 0.4em; /* 5 */
@@ -76,6 +62,18 @@ AnchorPane > #verlaufLabel{
 .progress-bar .track{
     -fx-background-color: transparent ;
 }
-.progress-indicator{
-	-fx-progress-color: rgb(166,166,166);
+
+
+.progress-indicator>.determinate-indicator>.indicator {
+	-fx-background-color: transparent;
+	-fx-padding: 0.0;
+}
+
+.progress-indicator>.determinate-indicator>.progress {
+	-fx-background-color: transparent;
+}
+
+.progress-indicator>.determinate-indicator>.percentage {
+	-fx-fill: darkgray;
+	-fx-font-size: 9px;
 }
