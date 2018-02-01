@@ -33,7 +33,7 @@ public class Controller implements Initializable {
 	// ## initialize-Methode ###################################################
 	// #########################################################################
 	/**
-	 * Hier werden alle Methoden aufgeführt, die direkt nach dem Laden der
+	 * Hier werden alle Methoden aufgefï¿½hrt, die direkt nach dem Laden der
 	 * Anwendung gestartet werden sollen.
 	 */
 	@Override
@@ -54,7 +54,6 @@ public class Controller implements Initializable {
 	@FXML
 	public void startBuild() {
 		nc.startConnectionRequest();
-		progressInd.setVisible(true);
 		nc.setStopNC(false);
 	}
 	/**
@@ -63,7 +62,8 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void restartBuild() {
-		if (nc.getSocket().isClosed() == true) {
+//		if (nc.getSocket().isClosed() == true) {
+		if (nc.isRunning() == false) {
 			startBuild();
 		}
 	}
@@ -84,7 +84,7 @@ public class Controller implements Initializable {
 	 * Gibt den Status der Verarbeitung an.
 	 */
 	private void setProgressStatus() {
-		// ständige Abfrage des Fortschritts
+		// stï¿½ndige Abfrage des Fortschritts
 		sc = new ScheduledService<>() {
 			@Override
 			protected Task<ProgressBar> createTask() {
@@ -92,9 +92,16 @@ public class Controller implements Initializable {
 				return new Task<ProgressBar>() {
 					@Override
 					protected ProgressBar call() throws Exception {
+						if(nc.isRunning()) {
+							progressInd.setProgress(0);
+						}
+						progressInd.setVisible(true);
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
-						if (nc.getProgressIndicator() >= 0.935) {
+						while(nc.isRunning() == false) {
+							System.out.println(nc.isRunning());
+							progressInd.setProgress(1);
+							Thread.sleep(1*1000);
 							progressInd.setVisible(false);
 						}
 						return null;

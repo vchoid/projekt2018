@@ -19,7 +19,7 @@ public class NetworkConnection {
 	// ## Variablen ############################################################
 	private JSONFileHandler jfh;
 
-	// --> Listen für View -----------------------------------------------------
+	// --> Listen fï¿½r View -----------------------------------------------------
 	private ArrayList<String> portList = new ArrayList<>();
 	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
@@ -49,11 +49,11 @@ public class NetworkConnection {
 	}
 
 	// #########################################################################
-	// ## Daten als für View ###################################################
+	// ## Daten als fï¿½r View ###################################################
 	// #########################################################################
 
 	/**
-	 * Holt Werte eines Arrays über den Key und speichert diese in eine neue
+	 * Holt Werte eines Arrays ï¿½ber den Key und speichert diese in eine neue
 	 * ArrayList.
 	 * 
 	 * @param array
@@ -107,6 +107,7 @@ public class NetworkConnection {
 	 * wird ein Fortschritt des Gesamtdurchlaufes gespeichert.
 	 */
 	public void startConnectionRequest() {
+		setRunning(true);
 		ncService = new Service<>() {
 			@Override
 			protected Task<Object> createTask() {
@@ -123,7 +124,7 @@ public class NetworkConnection {
 								serverName = serverNameList.get(i);
 								temp = new ArrayList<String>();
 								temp.add(serverName);
-								// TODO löschen
+								// TODO lï¿½schen
 								System.out.print(serverName);
 							}
 							for (int j = 0; j < portList.size(); j++) {
@@ -131,15 +132,18 @@ public class NetworkConnection {
 									break;
 								} else if(isStopNC() == false) {
 									portAdr = Integer.parseInt(portList.get(j));
-									isConnected = startSocket(ip, portAdr);
+									Thread.sleep(1*300);
+//									isConnected = startSocket(ip, portAdr);
 									temp.add(isConnected.toString());
-									// TODO löschen
+									// TODO lï¿½schen
 									System.out.print(" | " + isConnected);
 									// setzt den Fortschritt nach jedem Durchlauf
-									// eins höher
+									// eins hï¿½her
 									progress++;
 									// rechnet den Gesamtfortschritt aus
 									progressIndicator = progress / progress100;
+									System.out.println(progressIndicator);
+									setRunning(true);
 								}
 							}
 							connectArray.add(temp);
@@ -147,9 +151,10 @@ public class NetworkConnection {
 									"\n----------------------------------------------");
 						}
 						progressIndicator = 0.0;
-						// TODO löschen
-//						System.out.println(connectArray);
-						closeSocket();
+						// TODO lï¿½schen
+						System.out.println(connectArray);
+						setRunning(false);
+//						closeSocket();
 						return null;
 					}
 				};
@@ -169,7 +174,7 @@ public class NetworkConnection {
 		return "O";
 	}
 	/**
-	 * Schließt die Verbindung zum Server.
+	 * Schlieï¿½t die Verbindung zum Server.
 	 */
 	public void closeSocket() {
 		try {
@@ -181,7 +186,7 @@ public class NetworkConnection {
 	// #########################################################################
 	// ## Getter und Setter ####################################################
 	// #########################################################################
-	// --> Daten für die View --------------------------------------------------
+	// --> Daten fï¿½r die View --------------------------------------------------
 	public ArrayList<String> getIpList() {
 		return ipList;
 	}
