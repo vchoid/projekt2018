@@ -67,6 +67,7 @@ public class Controller implements Initializable {
 	public void startBuild() {
 		nc.startConnectionRequest();
 		nc.setStoped(false);
+		setStartButton(false);
 	}
 	// #########################################################################
 	// ## Steuerelemente #######################################################
@@ -76,11 +77,13 @@ public class Controller implements Initializable {
 	 * 
 	 * @param val
 	 */
-	public void setAllButtonDisable(Boolean val) {
-		startButton.setDisable(val);
-//		stopButton.setDisable(val);
+	public void setSkipButtonDisable(boolean val) {
 		skipServerButton.setDisable(val);
 		skipPortButton.setDisable(val);
+	}
+	public void setStartButton(boolean val) {
+		startButton.setVisible(val);
+		stopButton.setVisible(!val);
 	}
 	/**
 	 * Schnellvorlauf für die Serveranfragem.
@@ -88,7 +91,8 @@ public class Controller implements Initializable {
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
 			nc.setThreadTime(0);
-			setAllButtonDisable(true);
+			setSkipButtonDisable(true);
+			setStartButton(false);
 		}
 	}
 	/**
@@ -147,12 +151,13 @@ public class Controller implements Initializable {
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
 						while (nc.isRunning() == false) {
+							setSkipButtonDisable(false);
+							setStartButton(true);
+							nc.setDefaultProgressInfo();
 							progressInd.setProgress(1);
 							Thread.sleep(1 * 200);
 							progressInd.setVisible(false);
 							pbBar.setVisible(false);
-							setAllButtonDisable(false);
-							nc.setDefaultProgressInfo();
 						}
 						return null;
 					}

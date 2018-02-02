@@ -21,7 +21,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Netzwerk Monitor");
 			primaryStage.setMinWidth(700.00);
-			primaryStage.setMinHeight(400.00);
+			primaryStage.setMinHeight(450.00);
 			primaryStage.setAlwaysOnTop(true);
 			primaryStage.show();
 		} catch(Exception e) {
