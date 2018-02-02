@@ -101,7 +101,7 @@ public class NetworkConnection {
 	/**
 	 * Setzt die Werte zum Ausführen der calcProgress-Methode.
 	 */
-	private void setProgressInfo() {
+	public void setDefaultProgressInfo() {
 		setProgress100(serverNameList.size() * portNameList.size());
 		setProgress(0);
 		setProgressIndicator(0.0);
@@ -160,7 +160,7 @@ public class NetworkConnection {
 				return new Task<>() {
 					@Override
 					protected Object call() throws Exception {
-						setProgressInfo();
+						setDefaultProgressInfo();
 						for (int i = 0; i < ipList.size(); i++) {
 							setStatus();
 							ip = ipList.get(i);

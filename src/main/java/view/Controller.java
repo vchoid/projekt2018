@@ -5,11 +5,9 @@ import java.util.ResourceBundle;
 
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableView;
@@ -41,7 +39,7 @@ public class Controller implements Initializable {
 	@FXML
 	private Button skipPortButton;
 	@FXML
-	private CheckBox disCheckBox;
+	private Button fastForwardButton;
 
 	// #########################################################################
 	// ## initialize-Methode ###################################################
@@ -71,21 +69,26 @@ public class Controller implements Initializable {
 		nc.setStoped(false);
 	}
 	// #########################################################################
-	// ## Steuerelemente ######################################################
+	// ## Steuerelemente #######################################################
 	// #########################################################################
-	public void disableAllButtons() {
-		if (disCheckBox.isSelected()) {
+	/**
+	 * Deaktiviert alle Button, wenn der Parameter auf true ist.
+	 * 
+	 * @param val
+	 */
+	public void setAllButtonDisable(Boolean val) {
+		startButton.setDisable(val);
+//		stopButton.setDisable(val);
+		skipServerButton.setDisable(val);
+		skipPortButton.setDisable(val);
+	}
+	/**
+	 * Schnellvorlauf für die Serveranfragem.
+	 */
+	public void fastForwardQuery() {
+		if (!fastForwardButton.isPressed()) {
 			nc.setThreadTime(0);
-			startButton.setDisable(true);
-			stopButton.setDisable(true);
-			skipServerButton.setDisable(true);
-			skipPortButton.setDisable(true);
-		} else if (!disCheckBox.isSelected()) {
-			nc.setThreadTime(2*1000);
-			startButton.setDisable(false);
-			stopButton.setDisable(false);
-			skipServerButton.setDisable(false);
-			skipPortButton.setDisable(false);
+			setAllButtonDisable(true);
 		}
 	}
 	/**
@@ -148,6 +151,8 @@ public class Controller implements Initializable {
 							Thread.sleep(1 * 200);
 							progressInd.setVisible(false);
 							pbBar.setVisible(false);
+							setAllButtonDisable(false);
+							nc.setDefaultProgressInfo();
 						}
 						return null;
 					}
