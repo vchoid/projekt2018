@@ -50,15 +50,6 @@
             <ProgressIndicator fx:id="progressInd" layoutX="653.0" layoutY="-17.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="0.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="-17.0" />
             <ButtonBar fx:id="stopRestartBAR" layoutX="20.0" layoutY="428.0" prefHeight="40.0" prefWidth="157.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="20.0">
                <buttons>
-                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopBuild" prefHeight="20.0" prefWidth="10.0" text="Stop">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../resources/Icons/26_lila/icons8-stop-26.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <Button fx:id="startButton" mnemonicParsing="false" onAction="#restartBuild" prefHeight="20.0" prefWidth="10.0" text="Start">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
@@ -73,6 +64,15 @@
                         <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../resources/Icons/26_lila/icons8-schnellvorlauf-26.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopBuild" prefHeight="20.0" prefWidth="10.0" text="Stop">
+                     <graphic>
+                        <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/Icons/26_lila/icons8-stop-26.png" />
                            </image>
                         </ImageView>
                      </graphic>
