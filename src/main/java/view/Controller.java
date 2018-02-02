@@ -28,12 +28,14 @@ public class Controller implements Initializable {
 	@FXML
 	private ProgressIndicator progressInd;
 	private ScheduledService<ProgressBar> sc;
+	// --> Progress <-----------------------------------------------------------
+	
 
 	// #########################################################################
 	// ## initialize-Methode ###################################################
 	// #########################################################################
 	/**
-	 * Hier werden alle Methoden aufgef�hrt, die direkt nach dem Laden der
+	 * Hier werden alle Methoden aufgeführt, die direkt nach dem Laden der
 	 * Anwendung gestartet werden sollen.
 	 */
 	@Override
@@ -54,15 +56,17 @@ public class Controller implements Initializable {
 	@FXML
 	public void startBuild() {
 		nc.startConnectionRequest();
-		nc.setStopNC(false);
+		nc.setStoped(false);
 	}
+	// #########################################################################
+	// ## Steuerelemente  ######################################################
+	// #########################################################################
 	/**
 	 * Nur wenn die Serverabfrage geschlossen ist soll einer Versuche gestartet
 	 * werden.
 	 */
 	@FXML
 	public void restartBuild() {
-//		if (nc.getSocket().isClosed() == true) {
 		if (nc.isRunning() == false) {
 			startBuild();
 		}
@@ -73,14 +77,28 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void stopBuild() {
-		nc.setStopNC(true);
+		nc.setStoped(true);
+	}
+	/**
+	 * Überspringt die Abfrage eines Ports
+	 */
+	@FXML
+	public void skipPort() {
+		nc.setSkipPort(true);
+	}
+	/**
+	 * Überspringt die Abfrage eines Servers und den dazu gehörigen Ports.
+	 */
+	@FXML
+	public void skipServer() {
+		nc.setSkipServer(true);
 	}
 
 	// #########################################################################
 	// ## Fortschrittsanzeige ##################################################
 	// #########################################################################
 	/**
-	 * Gibt den Status der Verarbeitung an.
+	 * Gibt den Status der Verarbeitung aus.
 	 */
 	private void setProgressStatus() {
 		// st�ndige Abfrage des Fortschritts
