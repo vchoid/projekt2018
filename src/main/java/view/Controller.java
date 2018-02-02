@@ -59,7 +59,7 @@ public class Controller implements Initializable {
 	// #########################################################################
 
 	/**
-	 * Verbindungsabfrage starten. Den Progress-Indicator auf sichtbar machen.
+	 * Verbindungsanfrage starten. Den Progress-Indicator auf sichtbar machen.
 	 * Den Stop-Wert auf false setzen, der aussagt, dass der Prozess noch nicht
 	 * gestoppt wurde.
 	 */
@@ -73,7 +73,7 @@ public class Controller implements Initializable {
 	// ## Steuerelemente #######################################################
 	// #########################################################################
 	/**
-	 * Deaktiviert alle Button, wenn der Parameter auf true ist.
+	 * Deaktiviert alle Skip-Button, wenn der Parameter auf true ist.
 	 * 
 	 * @param val
 	 */
@@ -81,12 +81,19 @@ public class Controller implements Initializable {
 		skipServerButton.setDisable(val);
 		skipPortButton.setDisable(val);
 	}
+	/**
+	 * Setzt Start-Button bei true auf Sichtbar und der Stop-Button
+	 * verschwindet.
+	 * 
+	 * @param val
+	 */
 	public void setStartButton(boolean val) {
 		startButton.setVisible(val);
 		stopButton.setVisible(!val);
 	}
 	/**
-	 * Schnellvorlauf für die Serveranfragem.
+	 * Schnellvorlauf für die Serveranfragen. Deaktiviert die Skip-Button
+	 * Deaktiviert den Start-Button
 	 */
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
@@ -96,7 +103,7 @@ public class Controller implements Initializable {
 		}
 	}
 	/**
-	 * Nur wenn die Serverabfrage geschlossen ist soll einer Versuche gestartet
+	 * Nur wenn die Serveranfrage geschlossen ist soll einer Versuche gestartet
 	 * werden.
 	 */
 	@FXML
