@@ -39,7 +39,8 @@ public class NetworkConnection {
 	private boolean running;
 	private boolean skipPort;
 	private boolean skipServer;
-
+	private int threadTime;
+	
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
@@ -101,9 +102,10 @@ public class NetworkConnection {
 	 * Setzt die Werte zum Ausführen der calcProgress-Methode.
 	 */
 	private void setProgressInfo() {
-		progress100 = serverNameList.size() * portNameList.size();
-		progress = 0;
-		progressIndicator = 0.0;
+		setProgress100(serverNameList.size() * portNameList.size());
+		setProgress(0);
+		setProgressIndicator(0.0);
+		setThreadTime(2*1000);
 	}
 	/**
 	 * Setzt verschiedene Status auf Ausgangswert zurück.
@@ -165,7 +167,7 @@ public class NetworkConnection {
 							serverName = serverNameList.get(i);
 							System.out.print(serverName);
 							// Zeit zum drücken der Button
-							Thread.sleep(2 * 1000);
+							Thread.sleep(getThreadTime());
 							if (isSkipServer()) {
 								skipServer(portList.size());
 								continue;
@@ -180,7 +182,7 @@ public class NetworkConnection {
 									portAdr = Integer.parseInt(portList.get(j));
 									System.out.print(" | ");
 									// Zeit zum drücken der Button
-									Thread.sleep(2 * 1000);
+									Thread.sleep(getThreadTime());
 									if (isSkipPort()) {
 										skipPort();
 										continue;
@@ -300,6 +302,14 @@ public class NetworkConnection {
 	public void setSkipServer(boolean skipServer) {
 		this.skipServer = skipServer;
 	}
+	
+	public int getThreadTime() {
+		return threadTime;
+	}
+
+	public void setThreadTime(int threadTime) {
+		this.threadTime = threadTime;
+	}
 
 	// --> Socket --------------------------------------------------------------
 	public Socket getSocket() {
@@ -322,4 +332,17 @@ public class NetworkConnection {
 		this.progress = progress;
 	}
 
+	public double getProgress100() {
+		return progress100;
+	}
+
+	public void setProgress100(double progress100) {
+		this.progress100 = progress100;
+	}
+
+	public void setProgressIndicator(double progressIndicator) {
+		this.progressIndicator = progressIndicator;
+	}
+	
+	
 }

@@ -5,8 +5,11 @@ import java.util.ResourceBundle;
 
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableView;
@@ -28,8 +31,17 @@ public class Controller implements Initializable {
 	@FXML
 	private ProgressIndicator progressInd;
 	private ScheduledService<ProgressBar> sc;
-	// --> Progress <-----------------------------------------------------------
-	
+	// --> Button <-------------------------------------------------------------
+	@FXML
+	private Button startButton;
+	@FXML
+	private Button stopButton;
+	@FXML
+	private Button skipServerButton;
+	@FXML
+	private Button skipPortButton;
+	@FXML
+	private CheckBox disCheckBox;
 
 	// #########################################################################
 	// ## initialize-Methode ###################################################
@@ -59,8 +71,23 @@ public class Controller implements Initializable {
 		nc.setStoped(false);
 	}
 	// #########################################################################
-	// ## Steuerelemente  ######################################################
+	// ## Steuerelemente ######################################################
 	// #########################################################################
+	public void disableAllButtons() {
+		if (disCheckBox.isSelected()) {
+			nc.setThreadTime(0);
+			startButton.setDisable(true);
+			stopButton.setDisable(true);
+			skipServerButton.setDisable(true);
+			skipPortButton.setDisable(true);
+		} else if (!disCheckBox.isSelected()) {
+			nc.setThreadTime(2*1000);
+			startButton.setDisable(false);
+			stopButton.setDisable(false);
+			skipServerButton.setDisable(false);
+			skipPortButton.setDisable(false);
+		}
+	}
 	/**
 	 * Nur wenn die Serverabfrage geschlossen ist soll einer Versuche gestartet
 	 * werden.
@@ -109,16 +136,16 @@ public class Controller implements Initializable {
 				return new Task<ProgressBar>() {
 					@Override
 					protected ProgressBar call() throws Exception {
-						if(nc.isRunning()) {
+						if (nc.isRunning()) {
 							progressInd.setProgress(0);
 							pbBar.setVisible(true);
 							progressInd.setVisible(true);
 						}
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
-						while(nc.isRunning() == false) {
+						while (nc.isRunning() == false) {
 							progressInd.setProgress(1);
-							Thread.sleep(1*200);
+							Thread.sleep(1 * 200);
 							progressInd.setVisible(false);
 							pbBar.setVisible(false);
 						}
