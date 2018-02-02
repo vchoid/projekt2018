@@ -74,7 +74,6 @@ public class Controller implements Initializable {
 	@FXML
 	public void stopBuild() {
 		nc.setStopNC(true);
-		progressInd.setVisible(false);
 	}
 
 	// #########################################################################
@@ -99,9 +98,8 @@ public class Controller implements Initializable {
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
 						while(nc.isRunning() == false) {
-							System.out.println(nc.isRunning());
 							progressInd.setProgress(1);
-							Thread.sleep(1*1000);
+							Thread.sleep(1*200);
 							progressInd.setVisible(false);
 						}
 						return null;

@@ -7,9 +7,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/chris/workspace2018/projekt2018/src/lib/gson-2.6.2.jar"/>
-	<classpathentry kind="lib" path="/Users/chris/workspace2018/projekt2018/src/lib/gson-2.6.2-javadoc.jar"/>
-	<classpathentry kind="lib" path="/Users/chris/workspace2018/projekt2018/src/lib/gson-2.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/java/workspace_2018/Kiank_Projekt2018/NetworkMonitor2018/src/lib/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/java/workspace_2018/Kiank_Projekt2018/NetworkMonitor2018/src/lib/gson-2.6.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/java/workspace_2018/Kiank_Projekt2018/NetworkMonitor2018/src/lib/gson-2.6.2-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
