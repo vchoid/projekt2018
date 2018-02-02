@@ -53,7 +53,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <ProgressBar fx:id="pbBar" layoutY="-5.0" prefHeight="11.0" prefWidth="700.0" progress="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ProgressBar fx:id="pbBar" layoutX="40.0" layoutY="-5.0" prefHeight="11.0" prefWidth="614.0" progress="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="0.0" />
             <ProgressIndicator fx:id="progressInd" layoutX="653.0" layoutY="-17.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="0.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="-17.0" />
             <Button layoutX="85.0" layoutY="442.0" mnemonicParsing="false" onAction="#stopBuild" prefHeight="20.0" prefWidth="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="85.0">
                <graphic>

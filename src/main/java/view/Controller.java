@@ -93,14 +93,16 @@ public class Controller implements Initializable {
 					protected ProgressBar call() throws Exception {
 						if(nc.isRunning()) {
 							progressInd.setProgress(0);
+							pbBar.setVisible(true);
+							progressInd.setVisible(true);
 						}
-						progressInd.setVisible(true);
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
 						while(nc.isRunning() == false) {
 							progressInd.setProgress(1);
 							Thread.sleep(1*200);
 							progressInd.setVisible(false);
+							pbBar.setVisible(false);
 						}
 						return null;
 					}
