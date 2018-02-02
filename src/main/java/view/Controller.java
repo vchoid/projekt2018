@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableView;
@@ -40,7 +41,10 @@ public class Controller implements Initializable {
 	private Button skipPortButton;
 	@FXML
 	private Button fastForwardButton;
-
+	// --> Ausgabe <------------------------------------------------------------
+	@FXML
+	private Label ausgabeLabel;
+	private String ausgabeText;
 	// #########################################################################
 	// ## initialize-Methode ###################################################
 	// #########################################################################
@@ -73,7 +77,7 @@ public class Controller implements Initializable {
 	// ## Steuerelemente #######################################################
 	// #########################################################################
 	/**
-	 * Deaktiviert alle Skip-Button, wenn der Parameter auf true ist.
+	 * Deaktiviert alle Skip-Button und den FastForward-Button, wenn der Parameter auf true ist.
 	 * 
 	 * @param val
 	 */
@@ -98,6 +102,7 @@ public class Controller implements Initializable {
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
 			nc.setThreadTime(0);
+			fastForwardButton.setDisable(true);
 			setSkipButtonDisable(true);
 			setStartButton(false);
 		}
@@ -109,6 +114,7 @@ public class Controller implements Initializable {
 	@FXML
 	public void restartBuild() {
 		if (nc.isRunning() == false) {
+			fastForwardButton.setDisable(false);
 			startBuild();
 		}
 	}
@@ -142,7 +148,8 @@ public class Controller implements Initializable {
 	 * Gibt den Status der Verarbeitung aus.
 	 */
 	private void setProgressStatus() {
-		// st�ndige Abfrage des Fortschritts
+		ausgabeLabel.textProperty().set(getAusgabeText());;
+		// ständige Abfrage des Fortschritts
 		sc = new ScheduledService<>() {
 			@Override
 			protected Task<ProgressBar> createTask() {
@@ -154,6 +161,7 @@ public class Controller implements Initializable {
 							progressInd.setProgress(0);
 							pbBar.setVisible(true);
 							progressInd.setVisible(true);
+							setAusgabeText("läuft");
 						}
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
@@ -163,6 +171,7 @@ public class Controller implements Initializable {
 							nc.setDefaultProgressInfo();
 							progressInd.setProgress(1);
 							Thread.sleep(1 * 200);
+							setAusgabeText("Beendet");
 							progressInd.setVisible(false);
 							pbBar.setVisible(false);
 						}
@@ -175,4 +184,13 @@ public class Controller implements Initializable {
 		sc.setPeriod(Duration.seconds(0.25));
 	}
 
+	public String getAusgabeText() {
+		return ausgabeText;
+	}
+
+	public void setAusgabeText(String ausgabeText) {
+		this.ausgabeText = ausgabeText;
+	}
+
+	
 }

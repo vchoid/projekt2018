@@ -112,6 +112,7 @@
          <children>
             <ProgressBar fx:id="pbBar" layoutX="-3.0" layoutY="21.0" prefHeight="11.0" prefWidth="660.0" progress="1.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="45.0" />
             <ProgressIndicator fx:id="progressInd" layoutX="657.0" layoutY="4.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" />
+            <Label fx:id="ausgabeLabel" layoutX="36.0" layoutY="2.0" prefHeight="17.0" prefWidth="616.0" text="fghfh" textFill="#ffffff80" />
          </children>
       </AnchorPane>
    </children>
