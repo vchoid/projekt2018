@@ -40,7 +40,7 @@ public class NetworkConnection {
 	private boolean skipPort;
 	private boolean skipServer;
 	private int threadTime;
-	
+
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
@@ -105,7 +105,7 @@ public class NetworkConnection {
 		setProgress100(serverNameList.size() * portNameList.size());
 		setProgress(0);
 		setProgressIndicator(0.0);
-		setThreadTime(2*1000);
+		setThreadTime(2 * 1000);
 	}
 	/**
 	 * Setzt verschiedene Status auf Ausgangswert zurück.
@@ -162,46 +162,53 @@ public class NetworkConnection {
 					protected Object call() throws Exception {
 						setDefaultProgressInfo();
 						for (int i = 0; i < ipList.size(); i++) {
-							setStatus();
-							ip = ipList.get(i);
-							serverName = serverNameList.get(i);
-							System.out.print(serverName);
-							// Zeit zum drücken der Button
-							Thread.sleep(getThreadTime());
-							if (isSkipServer()) {
-								skipServer(portList.size());
-								continue;
-							} else if (isStoped()) {
-								break;
-							} else if (!isStoped()) {
-								portConnArray = new ArrayList<String>();
-								portConnArray.add(serverName);
-								// TODO löschen
-								for (int j = 0; j < portList.size(); j++) {
-									setStatus();
-									portAdr = Integer.parseInt(portList.get(j));
-									System.out.print(" | ");
-									// Zeit zum drücken der Button
-									Thread.sleep(getThreadTime());
-									if (isSkipPort()) {
-										skipPort();
-										continue;
-									} else if (isStoped()) {
-										break;
-									} else if (!isStoped()) {
-										connected = openSocket(ip, portAdr);
-										portConnArray.add(connected.toString());
-										// TODO löschen
-										System.out.print(connected);
-										// Fortschritt +1
-										progress++;
-										calcProgress();
-										setRunning(true);
+							if (!isStoped()) {
+								setStatus();
+								ip = ipList.get(i);
+								serverName = serverNameList.get(i);
+								System.out.print(serverName);
+								// Zeit zum drücken der Button
+								Thread.sleep(getThreadTime());
+								if (isSkipServer()) {
+									skipServer(portList.size());
+									continue;
+								} else if (!isStoped()) {
+									portConnArray = new ArrayList<String>();
+									portConnArray.add(serverName);
+									// TODO löschen
+									for (int j = 0; j < portList.size(); j++) {
+										if (!isStoped()) {
+											setStatus();
+											portAdr = Integer
+													.parseInt(portList.get(j));
+											System.out.print(" | ");
+											// Zeit zum drücken der Button
+											Thread.sleep(getThreadTime());
+											if (isSkipPort()) {
+												skipPort();
+												continue;
+											} else if (!isStoped()) {
+												connected = openSocket(ip,
+														portAdr);
+												portConnArray.add(
+														connected.toString());
+												// TODO löschen
+												System.out.print(connected);
+												// Fortschritt +1
+												progress++;
+												calcProgress();
+												setRunning(true);
+											} else {
+												break;
+											}
+										}
 									}
+									connectArray.add(portConnArray);
+									System.out.println(
+											"\n----------------------------------------------");
 								}
-								connectArray.add(portConnArray);
-								System.out.println(
-										"\n----------------------------------------------");
+							} else {
+								break;
 							}
 						}
 						setRunning(false);
@@ -302,7 +309,7 @@ public class NetworkConnection {
 	public void setSkipServer(boolean skipServer) {
 		this.skipServer = skipServer;
 	}
-	
+
 	public int getThreadTime() {
 		return threadTime;
 	}
@@ -343,6 +350,5 @@ public class NetworkConnection {
 	public void setProgressIndicator(double progressIndicator) {
 		this.progressIndicator = progressIndicator;
 	}
-	
-	
+
 }
