@@ -31,7 +31,7 @@ public class NetworkConnection {
 	private String ip = "";
 	private int portAdr = 0;
 
-	private ArrayList<ArrayList<String>> connectArray = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> connectArray;
 	private ArrayList<String> portConnArray;
 	private Socket socket;
 	private String connected = "";
@@ -102,6 +102,7 @@ public class NetworkConnection {
 	 * Setzt die Werte zum Ausführen der calcProgress-Methode.
 	 */
 	public void setDefaultProgressInfo() {
+		connectArray = new ArrayList<ArrayList<String>>();
 		setProgress100(serverNameList.size() * portNameList.size());
 		setProgress(0);
 		setProgressIndicator(0.0);
@@ -203,10 +204,10 @@ public class NetworkConnection {
 											}
 										}
 									}
-									connectArray.add(portConnArray);
-									System.out.println(
-											"\n----------------------------------------------");
 								}
+								connectArray.add(portConnArray);
+								System.out.println(
+										"\n----------------------------------------------");
 							} else {
 								break;
 							}
