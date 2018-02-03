@@ -27,9 +27,11 @@ public class NetworkConnection {
 	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
+	private ArrayList<String> hostList = new ArrayList<>();
 	private String serverName = "";
 	private String portName = "";
 	private String ip = "";
+	private String host = "";
 	private int portAdr = 0;
 
 	private ArrayList<ArrayList<String>> connectArray;
@@ -100,6 +102,8 @@ public class NetworkConnection {
 		saveValuesInArray(jfh.getServerArray(), "name", serverNameList);
 		// IP-Adressen aus Server-Array in neue List speichern
 		saveValuesInArray(jfh.getServerArray(), "ip", ipList);
+		// Host-Adressen aus Server-Array in neue List speichern
+		saveValuesInArray(jfh.getServerArray(), "host", hostList);
 	}
 	/**
 	 * Setzt die Werte zum Ausführen der calcProgress-Methode.
@@ -135,14 +139,12 @@ public class NetworkConnection {
 	private void skipServer(int size) {
 		setProgress((1 * size) + getProgress());
 		ArrayList<String> temp = new ArrayList<>();
-		temp.add(">skipped");
+		temp.add("skipped");
 		connectArray.add(temp);
 		try {
 			setAusgabeText(" übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	/**
@@ -156,8 +158,6 @@ public class NetworkConnection {
 			setAusgabeText(" übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	/**
@@ -182,6 +182,7 @@ public class NetworkConnection {
 							if (!isStoped()) {
 								setStatus();
 								ip = ipList.get(i);
+								host = hostList.get(i);
 								setServerName(serverNameList.get(i));
 //								System.out.print(serverName);
 								setAusgabeText(serverName);
@@ -226,8 +227,6 @@ public class NetworkConnection {
 									}
 								}
 								connectArray.add(portConnArray);
-//								System.out.println(
-//										"\n----------------------------------------------");
 							} else {
 								break;
 							}
@@ -253,19 +252,22 @@ public class NetworkConnection {
 		try {
 			setAusgabeText(""+port);
 			Thread.sleep(1*500);
-//			setSocket(new Socket(server, port));
-		} catch (Exception e) {
-			setAusgabeText("keine Verbindung");
-			return " -- ";
+			setSocket(new Socket(server, port));
+			try {
+				setAusgabeText("verbunden");
+				Thread.sleep(1*500);
+			} catch (InterruptedException e) {
+			}
+			return " -O- ";
+		} catch (IOException | InterruptedException e) {
+			try {
+				setAusgabeText("keine Verbindung");
+				Thread.sleep(1*500);
+				return " -- ";
+			} catch (InterruptedException e1) {
+			}
 		}
-		try {
-			setAusgabeText("verbunden");
-			Thread.sleep(1*500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return " -O- ";
+		return null;
 	}
 	/**
 	 * Schließt die Verbindung zum Server.
@@ -281,8 +283,19 @@ public class NetworkConnection {
 	// #########################################################################
 	// ## Getter und Setter ####################################################
 	// #########################################################################
-	// --> Daten für die View
-	// --------------------------------------------------
+	// --> Daten für die View --------------------------------------------------
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public ArrayList<String> getHostList() {
+		return hostList;
+	}
+	public void setHostList(ArrayList<String> hostList) {
+		this.hostList = hostList;
+	}
 	public ArrayList<String> getIpList() {
 		return ipList;
 	}
