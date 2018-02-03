@@ -251,20 +251,20 @@ public class NetworkConnection {
 	 */
 	public String openSocket(String server, int port, String serverName, String portName) {
 		try {
-			setAusgabeText(server + ":" + port);
-			Thread.sleep(getThreadTime());
+			setAusgabeText(""+port);
+			Thread.sleep(1*500);
 //			setSocket(new Socket(server, port));
 		} catch (Exception e) {
 			setAusgabeText("keine Verbindung");
 			return " -- ";
 		}
 		try {
-			Thread.sleep(1*100);
+			setAusgabeText("verbunden");
+			Thread.sleep(1*500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		setAusgabeText("verbunden");
 		return " -O- ";
 	}
 	/**
