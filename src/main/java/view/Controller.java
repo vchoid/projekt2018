@@ -3,6 +3,7 @@ package main.java.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -44,7 +45,6 @@ public class Controller implements Initializable {
 	// --> Ausgabe <------------------------------------------------------------
 	@FXML
 	private Label ausgabeLabel;
-	private String ausgabeText;
 	// #########################################################################
 	// ## initialize-Methode ###################################################
 	// #########################################################################
@@ -101,6 +101,7 @@ public class Controller implements Initializable {
 	 */
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
+			nc.setAusgabeText("Schnellvorlauf");
 			nc.setThreadTime(0);
 			fastForwardButton.setDisable(true);
 			setSkipButtonDisable(true);
@@ -124,6 +125,7 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void stopBuild() {
+		nc.setAusgabeText("Gestoppt");
 		nc.setStoped(true);
 	}
 	/**
@@ -131,6 +133,7 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void skipPort() {
+		nc.setAusgabeText(nc.getPortName());
 		nc.setSkipPort(true);
 	}
 	/**
@@ -138,6 +141,7 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void skipServer() {
+		nc.setAusgabeText(nc.getServerName());
 		nc.setSkipServer(true);
 	}
 
@@ -148,12 +152,17 @@ public class Controller implements Initializable {
 	 * Gibt den Status der Verarbeitung aus.
 	 */
 	private void setProgressStatus() {
-		ausgabeLabel.textProperty().set(getAusgabeText());;
 		// ständige Abfrage des Fortschritts
 		sc = new ScheduledService<>() {
 			@Override
 			protected Task<ProgressBar> createTask() {
 				// TODO Auto-generated method stub
+				Platform.runLater(new Runnable(){
+					@Override
+					public void run() {
+						ausgabeLabel.textProperty().set(nc.getAusgabeText());;
+					}
+				});
 				return new Task<ProgressBar>() {
 					@Override
 					protected ProgressBar call() throws Exception {
@@ -161,7 +170,7 @@ public class Controller implements Initializable {
 							progressInd.setProgress(0);
 							pbBar.setVisible(true);
 							progressInd.setVisible(true);
-							setAusgabeText("läuft");
+//							System.out.println(nc.getAusgabeText());
 						}
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
@@ -170,8 +179,7 @@ public class Controller implements Initializable {
 							setStartButton(true);
 							nc.setDefaultProgressInfo();
 							progressInd.setProgress(1);
-							Thread.sleep(1 * 200);
-							setAusgabeText("Beendet");
+							Thread.sleep(1 * 1000);
 							progressInd.setVisible(false);
 							pbBar.setVisible(false);
 						}
@@ -181,16 +189,9 @@ public class Controller implements Initializable {
 			}
 		};
 		sc.start();
-		sc.setPeriod(Duration.seconds(0.25));
+//		sc.setPeriod(Duration.seconds(0.25));
 	}
 
-	public String getAusgabeText() {
-		return ausgabeText;
-	}
-
-	public void setAusgabeText(String ausgabeText) {
-		this.ausgabeText = ausgabeText;
-	}
 
 	
 }
