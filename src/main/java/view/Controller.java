@@ -101,7 +101,7 @@ public class Controller implements Initializable {
 	 */
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
-			nc.setAusgabeText("Schnellvorlauf");
+			nc.setAusgabeText(">>");
 			nc.setThreadTime(0);
 			fastForwardButton.setDisable(true);
 			setSkipButtonDisable(true);
@@ -170,7 +170,6 @@ public class Controller implements Initializable {
 							progressInd.setProgress(0);
 							pbBar.setVisible(true);
 							progressInd.setVisible(true);
-//							System.out.println(nc.getAusgabeText());
 						}
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
@@ -189,7 +188,6 @@ public class Controller implements Initializable {
 			}
 		};
 		sc.start();
-//		sc.setPeriod(Duration.seconds(0.25));
 	}
 
 

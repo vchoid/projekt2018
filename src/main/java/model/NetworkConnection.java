@@ -142,7 +142,7 @@ public class NetworkConnection {
 		temp.add("skipped");
 		connectArray.add(temp);
 		try {
-			setAusgabeText(" übersprungen");
+			setAusgabeText(getAusgabeText() + " übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
 		}
@@ -155,7 +155,7 @@ public class NetworkConnection {
 		setProgress(getProgress() + 1);
 		portConnArray.add("-s-");
 		try {
-			setAusgabeText(" übersprungen");
+			setAusgabeText(getAusgabeText() + " übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
 		}
@@ -175,47 +175,56 @@ public class NetworkConnection {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call() throws Exception {
+					protected Object call(){
 						setDefaultProgressInfo();
-						setAusgabeText("Anfrage gestartet");
 						for (int i = 0; i < ipList.size(); i++) {
 							if (!isStoped()) {
 								setStatus();
 								ip = ipList.get(i);
 								host = hostList.get(i);
 								setServerName(serverNameList.get(i));
-//								System.out.print(serverName);
-								setAusgabeText(serverName);
+								setAusgabeText(getServerName());
 								// Zeit zum drücken der Button
-								Thread.sleep(getThreadTime()+1000);
+								try {
+									Thread.sleep(getThreadTime()+1000);
+								} catch (InterruptedException e) {
+									setAusgabeText("Fehler 1");
+									break;
+								}
 								if (isSkipServer()) {
 									skipServer(portList.size());
 									continue;
 								} else if (!isStoped()) {
 									portConnArray = new ArrayList<String>();
 									portConnArray.add(serverName);
-									// TODO löschen
 									for (int j = 0; j < portList.size(); j++) {
 										if (!isStoped()) {
 											setStatus();
 											setPortName(portNameList.get(j));
 											portAdr = Integer
 													.parseInt(portList.get(j));
-//											System.out.print(" | ");
-//											setAusgabeText(""+portAdr);
+											setAusgabeText(getPortName());
 											// Zeit zum drücken der Button
-											Thread.sleep(getThreadTime());
+											try {
+												Thread.sleep(getThreadTime());
+											} catch (InterruptedException e) {
+												setAusgabeText("Fehler 2");
+												break;
+											}
 											if (isSkipPort()) {
 												skipPort();
 												continue;
 											} else if (!isStoped()) {
-												Thread.sleep(getThreadTime());
+												try {
+													Thread.sleep(getThreadTime());
+												} catch (InterruptedException e) {
+													setAusgabeText("Fehler 3");
+													break;
+												}
 												connected = openSocket(ip,
 														portAdr, serverName, portName );
 												portConnArray.add(
 														connected.toString());
-												// TODO löschen
-//												System.out.print(connected);
 												// Fortschritt +1
 												progress++;
 												calcProgress();
@@ -232,7 +241,6 @@ public class NetworkConnection {
 							}
 						}
 						setRunning(false);
-						setAusgabeText(" ");
 						if (getSocket() != null) {
 							closeSocket();
 						}
@@ -250,8 +258,8 @@ public class NetworkConnection {
 	 */
 	public String openSocket(String server, int port, String serverName, String portName) {
 		try {
-			setAusgabeText("Port:"+port);
-			Thread.sleep(1*500);
+//			setAusgabeText("Port:"+port);
+//			Thread.sleep(1*500);
 			setSocket(new Socket(server, port));
 			try {
 				setAusgabeText(getAusgabeText() + " ...ist offen");
@@ -259,12 +267,13 @@ public class NetworkConnection {
 			} catch (InterruptedException e) {
 			}
 			return " -O- ";
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException  e) {
 			try {
 				setAusgabeText(getAusgabeText() + " ...ist geschlossen");
 				Thread.sleep(1*500);
 				return " -- ";
 			} catch (InterruptedException e1) {
+				setAusgabeText("Fehler!");
 			}
 		}
 		return null;
