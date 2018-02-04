@@ -250,18 +250,18 @@ public class NetworkConnection {
 	 */
 	public String openSocket(String server, int port, String serverName, String portName) {
 		try {
-			setAusgabeText(""+port);
+			setAusgabeText("Port:"+port);
 			Thread.sleep(1*500);
 			setSocket(new Socket(server, port));
 			try {
-				setAusgabeText("verbunden");
+				setAusgabeText(getAusgabeText() + " ...ist offen");
 				Thread.sleep(1*500);
 			} catch (InterruptedException e) {
 			}
 			return " -O- ";
 		} catch (IOException | InterruptedException e) {
 			try {
-				setAusgabeText("keine Verbindung");
+				setAusgabeText(getAusgabeText() + " ...ist geschlossen");
 				Thread.sleep(1*500);
 				return " -- ";
 			} catch (InterruptedException e1) {
@@ -277,7 +277,7 @@ public class NetworkConnection {
 			setAusgabeText(" ");
 			getSocket().close();
 		} catch (IOException e) {
-			System.out.println("Konnte nicht geschlossen werden");
+			setAusgabeText("Fehler!");
 		}
 	}
 	// #########################################################################
