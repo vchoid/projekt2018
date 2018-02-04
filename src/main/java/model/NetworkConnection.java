@@ -42,6 +42,8 @@ public class NetworkConnection {
 	private boolean running;
 	private boolean skipPort;
 	private boolean skipServer;
+	private boolean portSkippable;
+	private boolean serverSkippable;
 	private int threadTime;
 
 	private double progress;
@@ -142,7 +144,7 @@ public class NetworkConnection {
 		temp.add("skipped");
 		connectArray.add(temp);
 		try {
-			setAusgabeText(getAusgabeText() + " übersprungen");
+			setAusgabeText(" übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
 		}
@@ -155,7 +157,7 @@ public class NetworkConnection {
 		setProgress(getProgress() + 1);
 		portConnArray.add("-s-");
 		try {
-			setAusgabeText(getAusgabeText() + " übersprungen");
+			setAusgabeText(" übersprungen");
 			Thread.sleep(getThreadTime());
 		} catch (InterruptedException e) {
 		}
@@ -180,10 +182,11 @@ public class NetworkConnection {
 						for (int i = 0; i < ipList.size(); i++) {
 							if (!isStoped()) {
 								setStatus();
+								setServerSkippable(true);
+								setPortSkippable(false);
 								ip = ipList.get(i);
 								host = hostList.get(i);
 								setServerName(serverNameList.get(i));
-								setAusgabeText(getServerName());
 								// Zeit zum drücken der Button
 								try {
 									Thread.sleep(getThreadTime()+1000);
@@ -195,15 +198,16 @@ public class NetworkConnection {
 									skipServer(portList.size());
 									continue;
 								} else if (!isStoped()) {
+									setServerSkippable(false);
 									portConnArray = new ArrayList<String>();
 									portConnArray.add(serverName);
 									for (int j = 0; j < portList.size(); j++) {
 										if (!isStoped()) {
 											setStatus();
+											setPortSkippable(true);
 											setPortName(portNameList.get(j));
 											portAdr = Integer
 													.parseInt(portList.get(j));
-											setAusgabeText(getPortName());
 											// Zeit zum drücken der Button
 											try {
 												Thread.sleep(getThreadTime());
@@ -258,18 +262,16 @@ public class NetworkConnection {
 	 */
 	public String openSocket(String server, int port, String serverName, String portName) {
 		try {
-//			setAusgabeText("Port:"+port);
-//			Thread.sleep(1*500);
 			setSocket(new Socket(server, port));
 			try {
-				setAusgabeText(getAusgabeText() + " ...ist offen");
+				setAusgabeText("offen");
 				Thread.sleep(1*500);
 			} catch (InterruptedException e) {
 			}
 			return " -O- ";
 		} catch (IOException  e) {
 			try {
-				setAusgabeText(getAusgabeText() + " ...ist geschlossen");
+				setAusgabeText("geschlossen");
 				Thread.sleep(1*500);
 				return " -- ";
 			} catch (InterruptedException e1) {
@@ -362,6 +364,22 @@ public class NetworkConnection {
 
 	public void setSkipServer(boolean skipServer) {
 		this.skipServer = skipServer;
+	}
+	
+	public boolean isPortSkippable() {
+		return portSkippable;
+	}
+
+	public void setPortSkippable(boolean portSkippable) {
+		this.portSkippable = portSkippable;
+	}
+
+	public boolean isServerSkippable() {
+		return serverSkippable;
+	}
+
+	public void setServerSkippable(boolean serverSkippable) {
+		this.serverSkippable = serverSkippable;
 	}
 
 	public int getThreadTime() {

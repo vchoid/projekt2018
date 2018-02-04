@@ -18,11 +18,20 @@
 
 <VBox prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.Controller">
    <children>
-      <MenuBar>
+      <MenuBar disable="true">
         <menus>
-          <Menu mnemonicParsing="false" text="Bearbeiten">
+            <Menu mnemonicParsing="false" text="Server">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Neu" />
+                  <MenuItem mnemonicParsing="false" text="Bearbeiten" />
+                  <MenuItem mnemonicParsing="false" text="Löschen" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Port">
             <items>
               <MenuItem mnemonicParsing="false" text="Neu" />
+                  <MenuItem mnemonicParsing="false" text="Bearbeiten" />
+                  <MenuItem mnemonicParsing="false" text="Löschen" />
             </items>
           </Menu>
         </menus>
@@ -74,9 +83,9 @@
                   </Button>
                </buttons>
             </ButtonBar>
-            <ButtonBar fx:id="skipBAR" layoutX="296.0" layoutY="428.0" prefHeight="40.0" prefWidth="157.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="296.0">
+            <ButtonBar fx:id="skipBAR" layoutX="204.0" layoutY="390.0" prefHeight="40.0" prefWidth="195.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="204.0">
                <buttons>
-                  <Button fx:id="skipServerButton" mnemonicParsing="false" onAction="#skipServer" prefHeight="25.0" prefWidth="49.0" text="Server">
+                  <Button fx:id="skipServerButton" mnemonicParsing="false" onAction="#skipServer" prefHeight="27.0" prefWidth="123.0" text="Server">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -105,6 +114,8 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="serverReadOutLabel" alignment="CENTER" layoutX="224.0" layoutY="378.0" prefHeight="17.0" prefWidth="83.0" text="Ausgabe" textFill="#ffffff80" />
+            <Label fx:id="portReadOutLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="316.0" layoutY="378.0" prefHeight="17.0" prefWidth="83.0" text="Ausgabe" textAlignment="JUSTIFY" textFill="#ffffff80" />
             
                </children>
       </AnchorPane>
@@ -112,7 +123,7 @@
          <children>
             <ProgressBar fx:id="pbBar" layoutX="-3.0" layoutY="21.0" prefHeight="34.0" prefWidth="655.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="45.0" />
             <ProgressIndicator fx:id="progressInd" layoutX="657.0" layoutY="4.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" />
-            <Label fx:id="ausgabeLabel" layoutX="36.0" layoutY="2.0" prefHeight="17.0" prefWidth="616.0" text="Ausgabe" textFill="#ffffff80" />
+            <Label fx:id="readOutLabel" alignment="CENTER" layoutX="36.0" layoutY="2.0" prefHeight="17.0" prefWidth="616.0" text="Ausgabe" textFill="#ffffff80" />
          </children>
       </AnchorPane>
    </children>

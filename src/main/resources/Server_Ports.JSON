@@ -8,6 +8,56 @@
 		{
 			"name": "Google",
 			"host": "www.google.de",
+			"ip": "196.217.0.0"
+		},
+		{
+			"name": "2Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "2Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "3Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "3Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "4Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "4Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "5Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "5Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "6Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "6Google",
+			"host": "www.google.de",
 			"ip": "172.217.0.0"
 		}
 	],
@@ -18,6 +68,46 @@
 		},
 		{
 			"name": "HTTPS",
+			"port": 443
+		},
+		{
+			"name": "2HTTP",
+			"port": 80
+		},
+		{
+			"name": "2HTTPS",
+			"port": 443
+		},
+		{
+			"name": "3HTTP",
+			"port": 80
+		},
+		{
+			"name": "3HTTPS",
+			"port": 443
+		},
+		{
+			"name": "4HTTP",
+			"port": 80
+		},
+		{
+			"name": "4HTTPS",
+			"port": 443
+		},
+		{
+			"name": "5HTTP",
+			"port": 80
+		},
+		{
+			"name": "5HTTPS",
+			"port": 443
+		},
+		{
+			"name": "6HTTP",
+			"port": 80
+		},
+		{
+			"name": "6HTTPS",
 			"port": 443
 		}
 	]

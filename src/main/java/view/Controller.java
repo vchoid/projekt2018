@@ -44,7 +44,11 @@ public class Controller implements Initializable {
 	private Button fastForwardButton;
 	// --> Ausgabe <------------------------------------------------------------
 	@FXML
-	private Label ausgabeLabel;
+	private Label readOutLabel;
+	@FXML
+	private Label serverReadOutLabel;
+	@FXML
+	private Label portReadOutLabel;
 	// #########################################################################
 	// ## initialize-Methode ###################################################
 	// #########################################################################
@@ -94,6 +98,7 @@ public class Controller implements Initializable {
 	public void setStartButton(boolean val) {
 		startButton.setVisible(val);
 		stopButton.setVisible(!val);
+		fastForwardButton.setDisable(val);
 	}
 	/**
 	 * Schnellvorlauf für die Serveranfragen. Deaktiviert die Skip-Button
@@ -101,11 +106,10 @@ public class Controller implements Initializable {
 	 */
 	public void fastForwardQuery() {
 		if (!fastForwardButton.isPressed()) {
+			fastForwardButton.setDisable(true);
 			nc.setAusgabeText(">>");
 			nc.setThreadTime(0);
-			fastForwardButton.setDisable(true);
-			setSkipButtonDisable(true);
-			setStartButton(false);
+			
 		}
 	}
 	/**
@@ -125,7 +129,6 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void stopBuild() {
-		nc.setAusgabeText("Gestoppt");
 		nc.setStoped(true);
 	}
 	/**
@@ -156,31 +159,44 @@ public class Controller implements Initializable {
 		sc = new ScheduledService<>() {
 			@Override
 			protected Task<ProgressBar> createTask() {
-				// TODO Auto-generated method stub
+				// dieser Thread läuft etwas später, damit sie nicht kollidieren und abstürzen
 				Platform.runLater(new Runnable(){
 					@Override
 					public void run() {
-						ausgabeLabel.textProperty().set(nc.getAusgabeText());;
+						readOutLabel.textProperty().set(nc.getAusgabeText());
+						serverReadOutLabel.textProperty().set(nc.getServerName());
+						portReadOutLabel.textProperty().set(nc.getPortName());
 					}
 				});
 				return new Task<ProgressBar>() {
 					@Override
-					protected ProgressBar call() throws Exception {
-						if (nc.isRunning()) {
+					protected ProgressBar call() {
+						// wenn Anfrage läuft
+						if(nc.isRunning()) {
+							skipServerButton.setDisable(!nc.isServerSkippable());
+							skipPortButton.setDisable(!nc.isPortSkippable());
 							progressInd.setProgress(0);
-							pbBar.setVisible(true);
-							progressInd.setVisible(true);
+							setVisibleOfProgressAndReadOut(true);
 						}
 						pbBar.setProgress(nc.getProgressIndicator());
 						progressInd.setProgress(nc.getProgressIndicator());
+						// wenn Anfrage nicht mehr läuft
 						while (nc.isRunning() == false) {
 							setSkipButtonDisable(false);
 							setStartButton(true);
 							nc.setDefaultProgressInfo();
 							progressInd.setProgress(1);
-							Thread.sleep(1 * 1000);
-							progressInd.setVisible(false);
-							pbBar.setVisible(false);
+							try {
+								Thread.sleep(1 * 100);
+								Platform.runLater(new Runnable(){
+									@Override
+									public void run() {
+										setVisibleOfProgressAndReadOut(false);
+									}
+								});
+							} catch (InterruptedException e) {
+								System.out.println("Fehler im ScheduleService");
+							}
 						}
 						return null;
 					}
@@ -190,6 +206,12 @@ public class Controller implements Initializable {
 		sc.start();
 	}
 
-
+	private void setVisibleOfProgressAndReadOut(boolean visible) {
+		progressInd.setVisible(visible);
+		pbBar.setVisible(visible);
+		readOutLabel.setVisible(visible);
+		serverReadOutLabel.setVisible(visible);
+		portReadOutLabel.setVisible(visible);
+	}
 	
 }
