@@ -49,8 +49,6 @@ public class NetworkConnection {
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
-	
-	private String ausgabeText;
 
 	private Service<Object> ncService;
 	// #########################################################################
@@ -115,16 +113,6 @@ public class NetworkConnection {
 		setProgress100(serverNameList.size() * portNameList.size());
 		setProgress(0);
 		setProgressIndicator(0.0);
-		setThreadTime(1 * 1000);
-	}
-	/**
-	 * Setzt verschiedene Status auf Ausgangswert zurück.
-	 */
-	private void setStatus() {
-		setRunning(true);
-		setSkipPort(false);
-		setSkipServer(false);
-		setStoped(false);
 	}
 	/**
 	 * Rechnet den Gesamtfortschritt aus
@@ -133,35 +121,13 @@ public class NetworkConnection {
 		progressIndicator = progress / progress100;
 	}
 	/**
-	 * Einen Server auslassen. Die Fortschrittsanzeige um die Anzahl der
-	 * ausgelassenen Ports erhöhen. Im Array den Eintrag skipped hinzufügen.
-	 * 
-	 * @param size
+	 * Setzt verschiedene Status auf Ausgangswert zurück.
 	 */
-	private void skipServer(int size) {
-		setProgress((1 * size) + getProgress());
-		ArrayList<String> temp = new ArrayList<>();
-		temp.add("skipped");
-		connectArray.add(temp);
-		try {
-			setAusgabeText(" übersprungen");
-			Thread.sleep(getThreadTime());
-		} catch (InterruptedException e) {
-		}
+	private void setStatus() {
+		setRunning(true);
+		setStoped(false);
 	}
-	/**
-	 * Einen Port auslassen. Die Fortschrittsanzeige um eins erhöhen und ins
-	 * Array anstelle der Verbindungsanfrage ein -S- schreiben.
-	 */
-	private void skipPort() {
-		setProgress(getProgress() + 1);
-		portConnArray.add("-s-");
-		try {
-			setAusgabeText(" übersprungen");
-			Thread.sleep(getThreadTime());
-		} catch (InterruptedException e) {
-		}
-	}
+	
 	/**
 	 * In einem eigenen Thread werden die Verbindungen getestet und in ein Array
 	 * geschrieben.
@@ -177,56 +143,28 @@ public class NetworkConnection {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call(){
+					protected Object call() throws InterruptedException {
 						setDefaultProgressInfo();
 						for (int i = 0; i < ipList.size(); i++) {
 							if (!isStoped()) {
 								setStatus();
-								setServerSkippable(true);
-								setPortSkippable(false);
 								ip = ipList.get(i);
 								host = hostList.get(i);
 								setServerName(serverNameList.get(i));
 								// Zeit zum drücken der Button
-								try {
-									Thread.sleep(getThreadTime()+1000);
-								} catch (InterruptedException e) {
-									setAusgabeText("Fehler 1");
-									break;
-								}
-								if (isSkipServer()) {
-									skipServer(portList.size());
-									continue;
-								} else if (!isStoped()) {
-									setServerSkippable(false);
+								if (!isStoped()) {
 									portConnArray = new ArrayList<String>();
 									portConnArray.add(serverName);
 									for (int j = 0; j < portList.size(); j++) {
 										if (!isStoped()) {
 											setStatus();
-											setPortSkippable(true);
 											setPortName(portNameList.get(j));
 											portAdr = Integer
 													.parseInt(portList.get(j));
-											// Zeit zum drücken der Button
-											try {
-												Thread.sleep(getThreadTime());
-											} catch (InterruptedException e) {
-												setAusgabeText("Fehler 2");
-												break;
-											}
-											if (isSkipPort()) {
-												skipPort();
-												continue;
-											} else if (!isStoped()) {
-												try {
-													Thread.sleep(getThreadTime());
-												} catch (InterruptedException e) {
-													setAusgabeText("Fehler 3");
-													break;
-												}
+											if (!isStoped()) {
 												connected = openSocket(ip,
-														portAdr, serverName, portName );
+														portAdr, serverName,
+														portName);
 												portConnArray.add(
 														connected.toString());
 												// Fortschritt +1
@@ -246,6 +184,7 @@ public class NetworkConnection {
 						}
 						setRunning(false);
 						if (getSocket() != null) {
+							setRunning(false);
 							closeSocket();
 						}
 						// TODO löschen
@@ -260,35 +199,24 @@ public class NetworkConnection {
 	/**
 	 * Startet die Verbindung von Server und Port.
 	 */
-	public String openSocket(String server, int port, String serverName, String portName) {
+	public String openSocket(String server, int port, String serverName,
+			String portName) {
 		try {
 			setSocket(new Socket(server, port));
-			try {
-				setAusgabeText("offen");
-				Thread.sleep(1*500);
-			} catch (InterruptedException e) {
-			}
 			return " -O- ";
-		} catch (IOException  e) {
-			try {
-				setAusgabeText("geschlossen");
-				Thread.sleep(1*500);
-				return " -- ";
-			} catch (InterruptedException e1) {
-				setAusgabeText("Fehler!");
-			}
+		} catch (IOException e) {
+			return " -- ";
 		}
-		return null;
 	}
 	/**
 	 * Schließt die Verbindung zum Server.
 	 */
 	public void closeSocket() {
 		try {
-			setAusgabeText(" ");
 			getSocket().close();
 		} catch (IOException e) {
-			setAusgabeText("Fehler!");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	// #########################################################################
@@ -365,7 +293,7 @@ public class NetworkConnection {
 	public void setSkipServer(boolean skipServer) {
 		this.skipServer = skipServer;
 	}
-	
+
 	public boolean isPortSkippable() {
 		return portSkippable;
 	}
@@ -389,7 +317,7 @@ public class NetworkConnection {
 	public void setThreadTime(int threadTime) {
 		this.threadTime = threadTime;
 	}
-	
+
 	public String getServerName() {
 		return serverName;
 	}
@@ -414,7 +342,8 @@ public class NetworkConnection {
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 	}
-	// --> Progress & Indicator --------------------------------------------------
+	// --> Progress & Indicator
+	// --------------------------------------------------
 	public double getProgressIndicator() {
 		return progressIndicator;
 	}
@@ -437,13 +366,5 @@ public class NetworkConnection {
 
 	public void setProgressIndicator(double progressIndicator) {
 		this.progressIndicator = progressIndicator;
-	}
-
-	public String getAusgabeText() {
-		return ausgabeText;
-	}
-
-	public void setAusgabeText(String ausgabeText) {
-		this.ausgabeText = ausgabeText;
 	}
 }

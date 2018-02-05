@@ -1,5 +1,7 @@
 package main.java.view;
 
-public class AusgabeController {
+public class AusgabeController extends Thread{
 
+	
+	
 }
