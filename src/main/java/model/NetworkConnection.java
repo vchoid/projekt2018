@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.print.attribute.SetOfIntegerSyntax;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -40,12 +38,8 @@ public class NetworkConnection {
 	private String connected = "";
 	private boolean stoped;
 	private boolean running;
-	private boolean skipPort;
-	private boolean skipServer;
-	private boolean portSkippable;
-	private boolean serverSkippable;
-	private int threadTime;
 
+	private String messageOutput;
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
@@ -127,7 +121,7 @@ public class NetworkConnection {
 		setRunning(true);
 		setStoped(false);
 	}
-	
+
 	/**
 	 * In einem eigenen Thread werden die Verbindungen getestet und in ein Array
 	 * geschrieben.
@@ -187,6 +181,7 @@ public class NetworkConnection {
 						if (getSocket() != null) {
 							closeSocket();
 						}
+						setMessageOutput(" ");
 						setRunning(false);
 						return null;
 					}
@@ -197,10 +192,16 @@ public class NetworkConnection {
 	}
 	/**
 	 * Startet die Verbindung von Server und Port.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public String openSocket(String server, int port, String serverName,
-			String portName) {
+			String portName) throws InterruptedException {
 		try {
+			setMessageOutput(serverName + " > " + portName);
+			setMessageOutput(
+					getMessageOutput() + " [" + server + ":" + port + "]");
+			Thread.sleep(100);
 			setSocket(new Socket(server, port));
 			return " -O- ";
 		} catch (IOException e) {
@@ -214,8 +215,6 @@ public class NetworkConnection {
 		try {
 			getSocket().close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	// #########################################################################
@@ -277,46 +276,6 @@ public class NetworkConnection {
 		this.running = running;
 	}
 
-	public boolean isSkipPort() {
-		return skipPort;
-	}
-
-	public void setSkipPort(boolean skipPort) {
-		this.skipPort = skipPort;
-	}
-
-	public boolean isSkipServer() {
-		return skipServer;
-	}
-
-	public void setSkipServer(boolean skipServer) {
-		this.skipServer = skipServer;
-	}
-
-	public boolean isPortSkippable() {
-		return portSkippable;
-	}
-
-	public void setPortSkippable(boolean portSkippable) {
-		this.portSkippable = portSkippable;
-	}
-
-	public boolean isServerSkippable() {
-		return serverSkippable;
-	}
-
-	public void setServerSkippable(boolean serverSkippable) {
-		this.serverSkippable = serverSkippable;
-	}
-
-	public int getThreadTime() {
-		return threadTime;
-	}
-
-	public void setThreadTime(int threadTime) {
-		this.threadTime = threadTime;
-	}
-
 	public String getServerName() {
 		return serverName;
 	}
@@ -341,8 +300,7 @@ public class NetworkConnection {
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 	}
-	// --> Progress & Indicator
-	// --------------------------------------------------
+	// --> Progress & Indicator -----------------------------------------------
 	public double getProgressIndicator() {
 		return progressIndicator;
 	}
@@ -366,4 +324,15 @@ public class NetworkConnection {
 	public void setProgressIndicator(double progressIndicator) {
 		this.progressIndicator = progressIndicator;
 	}
+
+	// --> Message -------------------------------------------------------------
+
+	public String getMessageOutput() {
+		return messageOutput;
+	}
+
+	public void setMessageOutput(String messageOutput) {
+		this.messageOutput = messageOutput;
+	}
+
 }

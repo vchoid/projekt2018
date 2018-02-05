@@ -84,6 +84,11 @@
          <children>
             <ProgressBar fx:id="pgBar" layoutY="18.0" prefHeight="10.0" prefWidth="655.0" progress="1.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="45.0" />
             <ProgressIndicator fx:id="progressInd" layoutX="657.0" layoutY="4.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" />
+            <Label fx:id="messageOutput" alignment="CENTER" layoutX="39.0" layoutY="1.0" prefHeight="23.0" prefWidth="630.0" text="Label" textFill="#ffffff64" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>
