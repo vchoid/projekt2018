@@ -13,38 +13,38 @@ import javafx.concurrent.Task;
 
 public class NetworkConnection {
 
-	// hier weiter machen -> Code aus startConnectioRequest
-	// --> Extends Service
-
 	// ## Variablen ############################################################
 	private JSONFileHandler jfh;
 
-	// --> Listen für View
-	// -----------------------------------------------------
+	// --> Listen für View -----------------------------------------------------
 	private ArrayList<String> portList = new ArrayList<>();
 	private ArrayList<String> portNameList = new ArrayList<>();
 	private ArrayList<String> serverNameList = new ArrayList<>();
 	private ArrayList<String> ipList = new ArrayList<>();
 	private ArrayList<String> hostList = new ArrayList<>();
+	private ArrayList<ArrayList<String>> connectArray;
+	private ArrayList<String> portConnArray;
 	private String serverName = "";
 	private String portName = "";
 	private String ip = "";
 	private String host = "";
 	private int portAdr = 0;
 
-	private ArrayList<ArrayList<String>> connectArray;
-	private ArrayList<String> portConnArray;
+	// --> Abfrage Prozess -----------------------------------------------------
 	private Socket socket;
 	private String connected = "";
 	private boolean stoped;
 	private boolean running;
 
+	// --> Fortschritt Ausgabe -------------------------------------------------
 	private String messageOutput;
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
 
+	// --> Thread --------------------------------------------------------------
 	private Service<Object> ncService;
+	
 	// #########################################################################
 	// ## Initialisieren #######################################################
 	// #########################################################################
@@ -198,13 +198,17 @@ public class NetworkConnection {
 	public String openSocket(String server, int port, String serverName,
 			String portName) throws InterruptedException {
 		try {
-			setMessageOutput(serverName + " > " + portName);
-			setMessageOutput(
-					getMessageOutput() + " [" + server + ":" + port + "]");
+
+			setMessageOutput(serverName + " > " + portName + " [" + server + ":"
+					+ port + "]");
 			Thread.sleep(100);
 			setSocket(new Socket(server, port));
+			setMessageOutput(getMessageOutput() + "  -O-");
+			Thread.sleep(1000);
 			return " -O- ";
 		} catch (IOException e) {
+			setMessageOutput(getMessageOutput() + "  --");
+			Thread.sleep(1000);
 			return " -- ";
 		}
 	}
