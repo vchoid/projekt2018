@@ -137,7 +137,7 @@ public class NetworkConnection {
 	 * und das Ergebnis wird in ein neue Array gespeichert. Nach jedem Durchlauf
 	 * wird ein Fortschritt des Gesamtdurchlaufes gespeichert.
 	 */
-	public void startConnectionRequest() {
+	public void saveConnectionRequest() {
 		ncService = new Service<>() {
 			@Override
 			protected Task<Object> createTask() {
@@ -182,13 +182,12 @@ public class NetworkConnection {
 								break;
 							}
 						}
-						setRunning(false);
-						if (getSocket() != null) {
-							setRunning(false);
-							closeSocket();
-						}
 						// TODO löschen
 						System.out.println(connectArray);
+						if (getSocket() != null) {
+							closeSocket();
+						}
+						setRunning(false);
 						return null;
 					}
 				};

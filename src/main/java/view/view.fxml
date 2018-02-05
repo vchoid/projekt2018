@@ -40,9 +40,8 @@
             <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="320.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 	<TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
                <columns>
-                  <TableColumn fx:id="server" prefWidth="75.0" text="Server" />
-                  <TableColumn prefWidth="75.0" text="Port1" />
-                  <TableColumn prefWidth="75.0" text="Port2" />
+                  <TableColumn fx:id="server" prefWidth="159.0" text="Server" />
+                  <TableColumn minWidth="0.0" prefWidth="90.0" text="Port1" />
                </columns></TableView>
             <Label contentDisplay="TOP" layoutX="-7.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textFill="#b2b2b2" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="108.0">
                <font>
@@ -69,7 +68,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="startButton" layoutX="40.0" layoutY="401.0" mnemonicParsing="false" onAction="#restartBuild" prefHeight="25.0" prefWidth="88.0" text="Start">
+            <Button fx:id="startButton" layoutX="40.0" layoutY="401.0" mnemonicParsing="false" onAction="#restartBuild" prefHeight="25.0" prefWidth="88.0" text="Start" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="40.0">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>

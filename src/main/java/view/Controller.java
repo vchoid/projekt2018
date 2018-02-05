@@ -59,7 +59,7 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	public void startBuild() {
-		nc.startConnectionRequest();
+		nc.saveConnectionRequest();
 		nc.setStoped(false);
 		startServices();
 	}
