@@ -37,7 +37,9 @@ public class NetworkConnection {
 	private boolean running;
 
 	// --> Fortschritt Ausgabe -------------------------------------------------
-	private String messageOutput;
+	private String statusOutput;
+	private String serverOutput;
+	private String portOutput;
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
@@ -181,7 +183,9 @@ public class NetworkConnection {
 						if (getSocket() != null) {
 							closeSocket();
 						}
-						setMessageOutput(" ");
+						setServerOutput(" "); 
+						setPortOutput(" "); 
+						setStatusOutput(" ");
 						setRunning(false);
 						return null;
 					}
@@ -197,18 +201,13 @@ public class NetworkConnection {
 	 */
 	public String openSocket(String server, int port, String serverName,
 			String portName) throws InterruptedException {
+		setServerOutput(serverName + " [" + server +"]"); 
+		setPortOutput(portName + " [" + port +"]"); 
+		Thread.sleep(100);
 		try {
-
-			setMessageOutput(serverName + " > " + portName + " [" + server + ":"
-					+ port + "]");
-			Thread.sleep(100);
 			setSocket(new Socket(server, port));
-			setMessageOutput(getMessageOutput() + "  -O-");
-			Thread.sleep(1000);
 			return " -O- ";
 		} catch (IOException e) {
-			setMessageOutput(getMessageOutput() + "  --");
-			Thread.sleep(1000);
 			return " -- ";
 		}
 	}
@@ -330,13 +329,31 @@ public class NetworkConnection {
 	}
 
 	// --> Message -------------------------------------------------------------
-
-	public String getMessageOutput() {
-		return messageOutput;
+	public String getStatusOutput() {
+		return statusOutput;
 	}
 
-	public void setMessageOutput(String messageOutput) {
-		this.messageOutput = messageOutput;
+	public void setStatusOutput(String statusOutput) {
+		this.statusOutput = statusOutput;
 	}
+
+	public String getServerOutput() {
+		return serverOutput;
+	}
+
+	public void setServerOutput(String serverOutput) {
+		this.serverOutput = serverOutput;
+	}
+
+	public String getPortOutput() {
+		return portOutput;
+	}
+
+	public void setPortOutput(String portOutput) {
+		this.portOutput = portOutput;
+	}
+
+
+	
 
 }

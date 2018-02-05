@@ -40,6 +40,7 @@ TableView, #portServerTable .column-header,#portServerTable .filler, #portServer
 	-fx-background-color: gray;
 	-fx-font-weight: bold;
 	-fx-border-width: 0.0px 0.0px 0.0px 0.0px;
+	-fx-font-color: yellow;
 }
 AnchorPane > #grauLabel{
 	-fx-background-color: gray ;
@@ -75,5 +76,6 @@ AnchorPane > #verlaufLabel{
 
 .progress-indicator>.determinate-indicator>.percentage {
 	-fx-fill: darkgray;
-	-fx-font-size: 9px;
+	-fx-font-size: 10px;
+	
 }

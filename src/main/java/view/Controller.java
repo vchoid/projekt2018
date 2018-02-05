@@ -33,7 +33,9 @@ public class Controller implements Initializable {
 	private ProgressIndicator progressInd;
 	// --> Message Output <-----------------------------------------------------
 	@FXML
-	private Label messageOutput;
+	private Label serverOutput;
+	@FXML
+	private Label portOutput;
 	// --> Button <-------------------------------------------------------------
 	@FXML
 	private Button startButton;
@@ -151,10 +153,11 @@ public class Controller implements Initializable {
 							progressInd.setVisible(true);
 							progressInd.setProgress(nc.getProgressIndicator());
 						}
+						
 						// nach Beendigung der Abfrage
-						pgBar.setProgress(1);
 						progressInd.setProgress(1);
-						Thread.sleep(100);
+						pgBar.setProgress(1);
+						Thread.sleep(300);
 						pgBar.setVisible(false);
 						progressInd.setVisible(false);
 						return null;
@@ -178,8 +181,8 @@ public class Controller implements Initializable {
 							Platform.runLater(new Runnable() {
 								@Override
 								public void run() {
-									messageOutput.textProperty()
-											.set(nc.getMessageOutput());
+									serverOutput.textProperty().set(nc.getServerOutput());
+									portOutput.textProperty().set(nc.getPortOutput());
 								}
 							});
 						return null;
