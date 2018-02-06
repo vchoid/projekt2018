@@ -82,12 +82,12 @@
       </AnchorPane>
       <AnchorPane prefHeight="63.0" prefWidth="700.0">
          <children>
-            <ProgressBar fx:id="pgBar" layoutY="18.0" prefHeight="63.0" prefWidth="655.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <ProgressIndicator fx:id="progressInd" layoutX="653.0" layoutY="16.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="1.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="653.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="16.0" />
-            <Label layoutX="38.0" layoutY="14.0" text="Server:" textFill="#ffffff66" />
-            <Label layoutX="38.0" layoutY="32.0" text="Port" textFill="#ffffff66" />
-            <Label fx:id="serverOutput" layoutX="100.0" layoutY="14.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" />
-            <Label fx:id="portOutput" layoutX="100.0" layoutY="32.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" />
+            <ProgressBar fx:id="pgBar" layoutX="38.0" layoutY="42.0" prefHeight="18.0" prefWidth="617.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="45.0" />
+            <ProgressIndicator fx:id="progressInd" layoutX="653.0" layoutY="31.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="0.55" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" />
+            <Label layoutX="38.0" layoutY="14.0" text="Server:" textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="38.0" AnchorPane.topAnchor="14.0" />
+            <Label layoutX="38.0" layoutY="32.0" text="Port" textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="38.0" />
+            <Label fx:id="serverOutput" layoutX="100.0" layoutY="14.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="14.0" />
+            <Label fx:id="portOutput" layoutX="100.0" layoutY="32.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="32.0" />
          </children>
       </AnchorPane>
    </children>

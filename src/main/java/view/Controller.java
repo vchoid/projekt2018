@@ -122,7 +122,7 @@ public class Controller implements Initializable {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call() throws Exception {
+					protected Object call(){
 						// während der Abfrage
 						while (nc.isRunning()) {
 							setStartButton(false);
@@ -145,7 +145,7 @@ public class Controller implements Initializable {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call() throws Exception {
+					protected Object call() {
 						// während der Abfrage
 						while (nc.isRunning()) {
 							pgBar.setVisible(true);
@@ -155,9 +155,6 @@ public class Controller implements Initializable {
 						}
 						
 						// nach Beendigung der Abfrage
-						progressInd.setProgress(1);
-						pgBar.setProgress(1);
-						Thread.sleep(300);
 						pgBar.setVisible(false);
 						progressInd.setVisible(false);
 						return null;
@@ -176,7 +173,7 @@ public class Controller implements Initializable {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call() throws Exception {
+					protected Object call() {
 						// während der Abfrage
 							Platform.runLater(new Runnable() {
 								@Override
