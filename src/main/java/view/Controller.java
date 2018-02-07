@@ -1,10 +1,14 @@
 package main.java.view;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -15,8 +19,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.util.Callback;
+import main.java.model.JSONFileHandler;
 import main.java.model.NetworkConnection;
 
 public class Controller implements Initializable {
@@ -26,9 +33,12 @@ public class Controller implements Initializable {
 	// #########################################################################
 	// --> Data <--------------------------------------------------------------
 	private NetworkConnection nc = new NetworkConnection();
+	
 	// --> Table <--------------------------------------------------------------
-	@FXML
-	private TableView<String> portServerTable;
+	@FXML private TableView<String> portServerTable;
+	@FXML private TableColumn<String, String> server;
+	private ArrayList<String> serverArr = new ArrayList<>();
+	private JSONFileHandler jfh = new JSONFileHandler();
 
 	// --> Progress Output <----------------------------------------------------
 	@FXML
@@ -66,6 +76,8 @@ public class Controller implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		addPorts();
+		addServer();
 		startBuild();
 
 	}
@@ -73,7 +85,45 @@ public class Controller implements Initializable {
 	// #########################################################################
 	// ## Daten verarbeiten ####################################################
 	// #########################################################################
-
+	// ## Server-Port Tabelle ##################################################
+		/**
+		 * Holt die Name der Ports aus der Liste und legt f�r jeden Namen eine
+		 * Spalte an und f�gt sie der Tabelle Ports hinzu.
+		 */
+		private void addPorts() {
+			for (int i = 0; i < nc.getPortNameList().size(); i++) {
+				TableColumn<String, String> col = new TableColumn<String, String>(
+						nc.getPortNameList().get(i));
+				portServerTable.getColumns().add(col);
+			}
+		}
+		/**
+		 * F�gt der Server Tabelle in der Spalte Server die Namen der der
+		 * ObserbableList hinzu.
+		 */
+		private void addServer() {
+			server.setCellValueFactory(
+					new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+						public ObservableValue<String> call(
+								CellDataFeatures<String, String> p) {
+							return new SimpleStringProperty(p.getValue());
+						}
+					});
+			portServerTable.setItems(createList());
+		}
+		/**
+		 * Holt die Namen der Server aus der Liste und speichert jeden Namen in das
+		 * ServerArray und gibt das Array als eine {@link ObservableList}
+		 * zur�ck.
+		 * 
+		 * @return
+		 */
+		private ObservableList<String> createList() {
+			for (int i = 0; i < nc.getServerNameList().size(); i++) {
+				serverArr.add(nc.getServerNameList().get(i));
+			}
+			return FXCollections.observableArrayList(serverArr);
+		}
 	/**
 	 * Verbindungsanfrage starten. Den Progress-Indicator auf sichtbar machen.
 	 * Den Stop-Wert auf false setzen, der aussagt, dass der Prozess noch nicht
