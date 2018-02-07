@@ -1,42 +1,114 @@
 {
 	"server": [
 		{
-			"name": "PreProd-Server",
-			"host": "lk101sw0397.ew1intra.de",
-			"ip": "10.33.246.213"
+			"name": "Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
 		},
 		{
-			"name": "Staging-Server",
-			"host": "lk101sw0396.ew1intra.de",
-			"ip": "10.33.246.212"
+			"name": "Google",
+			"host": "www.google.de",
+			"ip": "196.217.0.0"
 		},
 		{
-			"name": "Auslieferungsserver",
-			"host": "lk101sw0395.ew1intra.de",
-			"ip": "10.33.246.211"
+			"name": "2Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
 		},
 		{
-			"name": "Local-Server",
-			"host": "W0195W1038.dakentw007200.de",
-			"ip": "10.1.40.117"
+			"name": "2Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "3Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "3Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "4Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "4Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "5Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "5Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
+		},
+		{
+			"name": "6Brunnen Sauna",
+			"host": "telnet rpc.acronis.com",
+			"ip": "81.169.145.194"
+		},
+		{
+			"name": "6Google",
+			"host": "www.google.de",
+			"ip": "172.217.0.0"
 		}
 	],
 	"ports": [
 		{
-			"name": "RemoteServer",
-			"port": 8084
+			"name": "HTTP",
+			"port": 80
 		},
 		{
-			"name": "Tomcat",
-			"port": 8080
+			"name": "HTTPS",
+			"port": 443
 		},
 		{
-			"name": "FirstSpirit",
-			"port": 8000
+			"name": "2HTTP",
+			"port": 80
 		},
 		{
-			"name": "SE",
-			"port": 2409
+			"name": "2HTTPS",
+			"port": 443
+		},
+		{
+			"name": "3HTTP",
+			"port": 80
+		},
+		{
+			"name": "3HTTPS",
+			"port": 443
+		},
+		{
+			"name": "4HTTP",
+			"port": 80
+		},
+		{
+			"name": "4HTTPS",
+			"port": 443
+		},
+		{
+			"name": "5HTTP",
+			"port": 80
+		},
+		{
+			"name": "5HTTPS",
+			"port": 443
+		},
+		{
+			"name": "6HTTP",
+			"port": 80
+		},
+		{
+			"name": "6HTTPS",
+			"port": 443
 		}
 	]
 }
