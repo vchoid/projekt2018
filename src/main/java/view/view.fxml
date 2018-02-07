@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="700.0" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.Controller">
+<VBox prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.Controller">
    <children>
-      <MenuBar disable="true">
+      <MenuBar>
         <menus>
             <Menu mnemonicParsing="false" text="Server">
                <items>
@@ -37,11 +37,10 @@
       </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
          <children>
-            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="320.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0" />
 	<TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
                <columns>
-                  <TableColumn fx:id="server" prefWidth="159.0" text="Server" />
-                  <TableColumn minWidth="0.0" prefWidth="90.0" text="Port1" />
+                  <TableColumn fx:id="server" maxWidth="300.0" minWidth="140.0" prefWidth="160.0" text="..." />
                </columns></TableView>
             <Label contentDisplay="TOP" layoutX="-7.0" layoutY="108.0" prefHeight="25.0" prefWidth="68.0" rotate="-90.0" text="&lt; Server" textAlignment="CENTER" textFill="#b2b2b2" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="-7.0" AnchorPane.topAnchor="108.0">
                <font>
@@ -80,14 +79,32 @@
             
                </children>
       </AnchorPane>
-      <AnchorPane prefHeight="63.0" prefWidth="700.0">
+      <AnchorPane>
          <children>
-            <ProgressBar fx:id="pgBar" layoutX="38.0" layoutY="42.0" prefHeight="18.0" prefWidth="617.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="45.0" />
-            <ProgressIndicator fx:id="progressInd" layoutX="653.0" layoutY="31.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="25.0" progress="0.55" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" />
-            <Label layoutX="38.0" layoutY="14.0" text="Server:" textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="38.0" AnchorPane.topAnchor="14.0" />
-            <Label layoutX="38.0" layoutY="32.0" text="Port" textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="38.0" />
-            <Label fx:id="serverOutput" layoutX="100.0" layoutY="14.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="14.0" />
-            <Label fx:id="portOutput" layoutX="100.0" layoutY="32.0" prefHeight="15.0" prefWidth="553.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="32.0" />
+            <ProgressBar fx:id="pgBar" layoutX="38.0" layoutY="42.0" prefHeight="18.0" prefWidth="611.0" progress="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="51.0" />
+            <ProgressIndicator fx:id="progressInd" layoutX="648.0" layoutY="31.0" maxHeight="47.0" maxWidth="42.0" minHeight="23.0" minWidth="23.0" prefHeight="33.0" prefWidth="32.0" progress="1.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.rightAnchor="20.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="38.0" layoutY="14.0" prefHeight="15.0" prefWidth="51.0" text="Server:" textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="38.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label alignment="CENTER_RIGHT" layoutX="38.0" layoutY="32.0" prefHeight="15.0" prefWidth="51.0" text="Port" textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="38.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="serverNameOutput" layoutX="207.0" layoutY="14.0" prefHeight="17.0" prefWidth="168.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="207.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="14.0" />
+            <Label fx:id="portNameOutput" layoutX="207.0" layoutY="32.0" prefHeight="17.0" prefWidth="168.0" text="..." textFill="#ffffff66" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="207.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="32.0" />
+            <Label fx:id="serverOutput" alignment="CENTER" layoutX="101.0" layoutY="14.0" prefHeight="15.0" prefWidth="105.0" text="..." textFill="#ffffff66" />
+            <Label fx:id="portOutput" alignment="CENTER" layoutX="101.0" layoutY="32.0" prefHeight="15.0" prefWidth="105.0" text="..." textFill="#ffffff66" />
+            <ImageView fx:id="openPic" fitHeight="18.0" fitWidth="18.0" layoutX="555.0" layoutY="14.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="27.0">
+               <image>
+                  <Image url="@../../resources/Icons/26_lila/icons8-verbunden-26.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="closePic" fitHeight="18.0" fitWidth="18.0" layoutX="555.0" layoutY="14.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="27.0">
+               <image>
+                  <Image url="@../../resources/Icons/26_lila/icons8-getrennt-26.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

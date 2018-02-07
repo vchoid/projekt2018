@@ -32,7 +32,7 @@ public class NetworkConnection {
 
 	// --> Abfrage Prozess -----------------------------------------------------
 	private Socket socket;
-	private String connected = "";
+	private boolean connected;
 	private boolean stoped;
 	private boolean running;
 
@@ -40,6 +40,8 @@ public class NetworkConnection {
 	private String statusOutput;
 	private String serverOutput;
 	private String portOutput;
+	private String serverNameOutput;
+	private String portNameOutput;
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
@@ -56,7 +58,7 @@ public class NetworkConnection {
 	}
 
 	// #########################################################################
-	// ## Daten als f�r View
+	// ## Daten als für View
 	// ###################################################
 	// #########################################################################
 
@@ -162,7 +164,7 @@ public class NetworkConnection {
 														portAdr, serverName,
 														portName);
 												portConnArray.add(
-														connected.toString());
+														""+connected);
 												// Fortschritt +1
 												progress++;
 												calcProgress();
@@ -185,6 +187,8 @@ public class NetworkConnection {
 						}
 						setServerOutput(" "); 
 						setPortOutput(" "); 
+						setServerNameOutput(" "); 
+						setPortNameOutput(" "); 
 						setRunning(false);
 						return null;
 					}
@@ -198,16 +202,18 @@ public class NetworkConnection {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public String openSocket(String server, int port, String serverName,
-			String portName) throws InterruptedException {
-		setServerOutput(serverName + " [" + server +"]"); 
-		setPortOutput(portName + " [" + port +"]"); 
-		Thread.sleep(100);
+	public boolean openSocket(String server, int port, String serverName,
+			String portName) {
+		setServerOutput(server); 
+		setServerNameOutput(serverName);
+		setPortOutput(""+port); 
+		setPortNameOutput(portName);
 		try {
 			setSocket(new Socket(server, port));
-			return " -O- ";
-		} catch (IOException e) {
-			return " -- ";
+			Thread.sleep(50);
+			return true;
+		} catch (IOException | InterruptedException e) {
+			return false;
 		}
 	}
 	/**
@@ -250,10 +256,10 @@ public class NetworkConnection {
 	public ArrayList<ArrayList<String>> getConnectArray() {
 		return connectArray;
 	}
-	public String isConnected() {
+	public boolean isConnected() {
 		return connected;
 	}
-	public void setConnected(String connected) {
+	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
 	public ArrayList<String> getPortConnArray() {
@@ -350,6 +356,22 @@ public class NetworkConnection {
 
 	public void setPortOutput(String portOutput) {
 		this.portOutput = portOutput;
+	}
+
+	public String getServerNameOutput() {
+		return serverNameOutput;
+	}
+
+	public void setServerNameOutput(String serverNameOutput) {
+		this.serverNameOutput = serverNameOutput;
+	}
+
+	public String getPortNameOutput() {
+		return portNameOutput;
+	}
+
+	public void setPortNameOutput(String portNameOutput) {
+		this.portNameOutput = portNameOutput;
 	}
 
 

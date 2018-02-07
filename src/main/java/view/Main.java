@@ -20,8 +20,8 @@ public class Main extends Application {
 			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/main/resources/Icons/appIcon.png")));
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Netzwerk Monitor");
-			primaryStage.setMinWidth(700.00);
-			primaryStage.setMinHeight(450.00);
+			primaryStage.setMinWidth(600.00);
+			primaryStage.setMinHeight(500.00);
 			primaryStage.setAlwaysOnTop(true);
 			primaryStage.show();
 		} catch(Exception e) {

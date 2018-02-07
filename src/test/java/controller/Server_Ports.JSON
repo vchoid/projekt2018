@@ -1,0 +1,42 @@
+{
+	"server": [
+		{
+			"name": "PreProd-Server",
+			"host": "lk101sw0397.ew1intra.de",
+			"ip": "10.33.246.213"
+		},
+		{
+			"name": "Staging-Server",
+			"host": "lk101sw0396.ew1intra.de",
+			"ip": "10.33.246.212"
+		},
+		{
+			"name": "Auslieferungsserver",
+			"host": "lk101sw0395.ew1intra.de",
+			"ip": "10.33.246.211"
+		},
+		{
+			"name": "Local-Server",
+			"host": "W0195W1038.dakentw007200.de",
+			"ip": "10.1.40.117"
+		}
+	],
+	"ports": [
+		{
+			"name": "RemoteServer",
+			"port": 8084
+		},
+		{
+			"name": "Tomcat",
+			"port": 8080
+		},
+		{
+			"name": "FirstSpirit",
+			"port": 8000
+		},
+		{
+			"name": "SE",
+			"port": 2409
+		}
+	]
+}

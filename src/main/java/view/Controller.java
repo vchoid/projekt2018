@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -13,7 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
 import main.java.model.NetworkConnection;
 
 public class Controller implements Initializable {
@@ -26,16 +29,25 @@ public class Controller implements Initializable {
 	// --> Table <--------------------------------------------------------------
 	@FXML
 	private TableView<String> portServerTable;
-	// --> Progress <-----------------------------------------------------------
+
+	// --> Progress Output <----------------------------------------------------
 	@FXML
 	private ProgressBar pgBar;
 	@FXML
 	private ProgressIndicator progressInd;
+	@FXML
+	private ImageView openPic;
+	@FXML
+	private ImageView closePic;
 	// --> Message Output <-----------------------------------------------------
 	@FXML
 	private Label serverOutput;
 	@FXML
 	private Label portOutput;
+	@FXML
+	private Label serverNameOutput;
+	@FXML
+	private Label portNameOutput;
 	// --> Button <-------------------------------------------------------------
 	@FXML
 	private Button startButton;
@@ -55,7 +67,9 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		startBuild();
+
 	}
+
 	// #########################################################################
 	// ## Daten verarbeiten ####################################################
 	// #########################################################################
@@ -66,7 +80,7 @@ public class Controller implements Initializable {
 	 * gestoppt wurde.
 	 */
 	@FXML
-	public void startBuild() {
+	private void startBuild() {
 		nc.saveConnectionRequest();
 		nc.setStoped(false);
 		startServices();
@@ -80,7 +94,7 @@ public class Controller implements Initializable {
 	 * 
 	 * @param val
 	 */
-	public void setStartButton(boolean val) {
+	private void setStartButton(boolean val) {
 		startButton.setVisible(val);
 		stopButton.setVisible(!val);
 	}
@@ -89,7 +103,7 @@ public class Controller implements Initializable {
 	 * werden.
 	 */
 	@FXML
-	public void restartBuild() {
+	private void restartBuild() {
 		if (nc.isRunning() == false) {
 			startBuild();
 		}
@@ -99,11 +113,11 @@ public class Controller implements Initializable {
 	 * Progress-Indicator unsichtbar machen.
 	 */
 	@FXML
-	public void stopBuild() {
+	private void stopBuild() {
 		nc.setStoped(true);
 	}
 	// #########################################################################
-	// ## Threads ##############################################################
+	// ## Fortschritt ##########################################################
 	// #########################################################################
 	/**
 	 * Startet die Service-Threads.
@@ -114,6 +128,14 @@ public class Controller implements Initializable {
 		showProgress();
 	}
 	/**
+	 * Verändert sich Sichtbarkeit der openPic und closePic Elemente.
+	 * @param isOpen
+	 */
+	private void setOpenPic(boolean isOpen) {
+		openPic.setVisible(isOpen);
+		closePic.setVisible(!isOpen);
+	}
+	/**
 	 * Verändert die Sichtbarkeit der Start/Stop-Buttons.
 	 */
 	private void showStartStopButton() {
@@ -122,7 +144,7 @@ public class Controller implements Initializable {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call(){
+					protected Object call() {
 						// während der Abfrage
 						while (nc.isRunning()) {
 							setStartButton(false);
@@ -145,16 +167,20 @@ public class Controller implements Initializable {
 			protected Task<Object> createTask() {
 				return new Task<>() {
 					@Override
-					protected Object call() {
+					protected Object call() throws InterruptedException {
 						// während der Abfrage
 						while (nc.isRunning()) {
 							pgBar.setVisible(true);
 							pgBar.setProgress(nc.getProgressIndicator());
 							progressInd.setVisible(true);
 							progressInd.setProgress(nc.getProgressIndicator());
+							setOpenPic(nc.isConnected());
 						}
-						
+
 						// nach Beendigung der Abfrage
+						Thread.sleep(50);
+						openPic.setVisible(false);
+						closePic.setVisible(false);
 						pgBar.setVisible(false);
 						progressInd.setVisible(false);
 						return null;
@@ -175,13 +201,20 @@ public class Controller implements Initializable {
 					@Override
 					protected Object call() {
 						// während der Abfrage
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									serverOutput.textProperty().set(nc.getServerOutput());
-									portOutput.textProperty().set(nc.getPortOutput());
-								}
-							});
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								serverOutput.textProperty()
+										.set(nc.getServerOutput());
+								portOutput.textProperty()
+										.set(nc.getPortOutput());
+								serverNameOutput.textProperty()
+										.set(nc.getServerNameOutput());
+								portNameOutput.textProperty()
+										.set(nc.getPortNameOutput());
+								
+							}
+						});
 						return null;
 					}
 				};
