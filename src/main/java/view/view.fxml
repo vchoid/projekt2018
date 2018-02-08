@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.Controller">
+<VBox prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.Controller">
    <children>
       <MenuBar>
         <menus>
@@ -38,7 +38,7 @@
     <AnchorPane VBox.vgrow="ALWAYS">
          <children>
             <Label fx:id="verlaufLabel" layoutY="253.0" prefHeight="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0" />
-	<TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+	<TableView fx:id="portServerTable" layoutX="39.0" layoutY="37.0" onContextMenuRequested="#deletePortItem" prefHeight="278.0" prefWidth="540.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
                <columns>
                   <TableColumn fx:id="server" maxWidth="300.0" minWidth="140.0" prefWidth="160.0" />
                </columns></TableView>

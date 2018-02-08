@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -15,12 +17,16 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import main.java.model.JSONFileHandler;
@@ -33,13 +39,20 @@ public class Controller implements Initializable {
 	// #########################################################################
 	// --> Data <--------------------------------------------------------------
 	private NetworkConnection nc = new NetworkConnection();
-	
-	// --> Table <--------------------------------------------------------------
-	@FXML private TableView<String> portServerTable;
-	@FXML private TableColumn<String, String> server;
-	private ArrayList<String> serverArr = new ArrayList<>();
-	private JSONFileHandler jfh = new JSONFileHandler();
 
+	// --> Table <--------------------------------------------------------------
+	@FXML
+	private TableView<String> portServerTable;
+	@FXML
+	private TableColumn<String, String> server;
+	
+	private ArrayList<String> serverArr = new ArrayList<>();
+	
+	private Tooltip portTP;
+	private Label lToolTip;
+	
+	// --> Context-Menu <-------------------------------------------------------
+	ContextMenu cm;
 	// --> Progress Output <----------------------------------------------------
 	@FXML
 	private ProgressBar pgBar;
@@ -81,49 +94,7 @@ public class Controller implements Initializable {
 		startBuild();
 
 	}
-
-	// #########################################################################
-	// ## Daten verarbeiten ####################################################
-	// #########################################################################
-	// ## Server-Port Tabelle ##################################################
-		/**
-		 * Holt die Name der Ports aus der Liste und legt f�r jeden Namen eine
-		 * Spalte an und f�gt sie der Tabelle Ports hinzu.
-		 */
-		private void addPorts() {
-			for (int i = 0; i < nc.getPortNameList().size(); i++) {
-				TableColumn<String, String> col = new TableColumn<String, String>(
-						nc.getPortNameList().get(i));
-				portServerTable.getColumns().add(col);
-			}
-		}
-		/**
-		 * F�gt der Server Tabelle in der Spalte Server die Namen der der
-		 * ObserbableList hinzu.
-		 */
-		private void addServer() {
-			server.setCellValueFactory(
-					new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
-						public ObservableValue<String> call(
-								CellDataFeatures<String, String> p) {
-							return new SimpleStringProperty(p.getValue());
-						}
-					});
-			portServerTable.setItems(createList());
-		}
-		/**
-		 * Holt die Namen der Server aus der Liste und speichert jeden Namen in das
-		 * ServerArray und gibt das Array als eine {@link ObservableList}
-		 * zur�ck.
-		 * 
-		 * @return
-		 */
-		private ObservableList<String> createList() {
-			for (int i = 0; i < nc.getServerNameList().size(); i++) {
-				serverArr.add(nc.getServerNameList().get(i));
-			}
-			return FXCollections.observableArrayList(serverArr);
-		}
+	
 	/**
 	 * Verbindungsanfrage starten. Den Progress-Indicator auf sichtbar machen.
 	 * Den Stop-Wert auf false setzen, der aussagt, dass der Prozess noch nicht
@@ -134,6 +105,67 @@ public class Controller implements Initializable {
 		nc.saveConnectionRequest();
 		nc.setStoped(false);
 		startServices();
+	}
+	// #########################################################################
+	// ## Daten verarbeiten ####################################################
+	// #########################################################################
+
+	// ## Server-Port Tabelle ##################################################
+	/**
+	 * Holt die Name der Ports aus der Liste und legt f�r jeden Namen eine
+	 * Spalte an und fügt sie der Tabelle Ports hinzu.
+	 */
+	private void addPorts() {
+		
+		for (int i = 0; i < nc.getPortNameList().size(); i++) {
+			TableColumn<String, String> col = new TableColumn<String, String>();
+			col.setPrefWidth(40);
+			lToolTip = new Label(nc.getPortList().get(i));
+			portTP = new Tooltip(" ");
+			portTP.setText(nc.getPortNameList().get(i));
+			lToolTip.setTooltip(portTP);
+			col.setGraphic(lToolTip);
+			cm = new ContextMenu();
+			cm.setId(nc.getPortNameList().get(i));
+			MenuItem edit = new MenuItem("Bearbeiten");
+			edit.setId("edit" + nc.getPortNameList().get(i));
+			MenuItem delete = new MenuItem("Löschen");
+			delete.setId("delete" + nc.getPortNameList().get(i));
+			cm.getItems().add(delete);
+			cm.getItems().add(edit);
+			col.contextMenuProperty().set(cm);
+			portServerTable.getColumns().add(col);
+		}
+	}
+	/**
+	 * Fügt der Server Tabelle in der Spalte Server die Namen der der
+	 * ObserbableList hinzu.
+	 */
+	private void addServer() {
+		server.setCellValueFactory(
+				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+					public ObservableValue<String> call(
+							CellDataFeatures<String, String> p) {
+						return new SimpleStringProperty(p.getValue());
+					}
+				});
+		portServerTable.setItems(createList());
+	}
+	/**
+	 * Holt die Namen der Server aus der Liste und speichert jeden Namen in das
+	 * ServerArray und gibt das Array als eine {@link ObservableList} zurück.
+	 * 
+	 * @return
+	 */
+	private ObservableList<String> createList() {
+		for (int i = 0; i < nc.getServerNameList().size(); i++) {
+			serverArr.add(nc.getServerNameList().get(i));
+		}
+		return FXCollections.observableArrayList(serverArr);
+	}
+	
+	public void deletePortItem() {
+		System.out.println(cm.getId());
 	}
 	// #########################################################################
 	// ## Steuerelemente #######################################################
@@ -179,6 +211,7 @@ public class Controller implements Initializable {
 	}
 	/**
 	 * Verändert sich Sichtbarkeit der openPic und closePic Elemente.
+	 * 
 	 * @param isOpen
 	 */
 	private void setOpenPic(boolean isOpen) {
@@ -262,7 +295,7 @@ public class Controller implements Initializable {
 										.set(nc.getServerNameOutput());
 								portNameOutput.textProperty()
 										.set(nc.getPortNameOutput());
-								
+
 							}
 						});
 						return null;
