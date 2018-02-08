@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -45,14 +44,18 @@ public class Controller implements Initializable {
 	private TableView<String> portServerTable;
 	@FXML
 	private TableColumn<String, String> server;
-	
+	@FXML
+	private TableColumn<String, String> col;
+
 	private ArrayList<String> serverArr = new ArrayList<>();
-	
-	private Tooltip portTP;
-	private Label lToolTip;
-	
+
+	private Tooltip tTip;
+	private Label tTipLabel;
+
 	// --> Context-Menu <-------------------------------------------------------
-	ContextMenu cm;
+	private ContextMenu cm;
+	private MenuItem edit;
+	private MenuItem delete;
 	// --> Progress Output <----------------------------------------------------
 	@FXML
 	private ProgressBar pgBar;
@@ -89,12 +92,12 @@ public class Controller implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		startBuild();
 		addPorts();
 		addServer();
-		startBuild();
 
 	}
-	
+
 	/**
 	 * Verbindungsanfrage starten. Den Progress-Indicator auf sichtbar machen.
 	 * Den Stop-Wert auf false setzen, der aussagt, dass der Prozess noch nicht
@@ -116,25 +119,30 @@ public class Controller implements Initializable {
 	 * Spalte an und fügt sie der Tabelle Ports hinzu.
 	 */
 	private void addPorts() {
-		
+
 		for (int i = 0; i < nc.getPortNameList().size(); i++) {
-			TableColumn<String, String> col = new TableColumn<String, String>();
+			// -> Eine neue Spalte ---------------------------------
+			col = new TableColumn<String, String>();
+			// -> Tooltip zu jeder Spalte --------------------------
 			col.setPrefWidth(40);
-			lToolTip = new Label(nc.getPortList().get(i));
-			portTP = new Tooltip(" ");
-			portTP.setText(nc.getPortNameList().get(i));
-			lToolTip.setTooltip(portTP);
-			col.setGraphic(lToolTip);
+			tTipLabel = new Label(nc.getPortList().get(i));
+			tTip = new Tooltip(" ");
+			tTip.setText(nc.getPortNameList().get(i));
+			tTipLabel.setTooltip(tTip);
+			col.setGraphic(tTipLabel);
 			cm = new ContextMenu();
 			cm.setId(nc.getPortNameList().get(i));
-			MenuItem edit = new MenuItem("Bearbeiten");
-			edit.setId("edit" + nc.getPortNameList().get(i));
-			MenuItem delete = new MenuItem("Löschen");
-			delete.setId("delete" + nc.getPortNameList().get(i));
+			// -> KontextMenu zu jeder Spalte ----------------------
+			edit = new MenuItem("Bearbeiten");
+			edit.setId("e" + nc.getPortList().get(i));
+			delete = new MenuItem("Löschen");
+			delete.setId("d" + nc.getPortList().get(i));
 			cm.getItems().add(delete);
 			cm.getItems().add(edit);
 			col.contextMenuProperty().set(cm);
+			// -> Spalten der Tabelle hinzufügen -------------------
 			portServerTable.getColumns().add(col);
+			
 		}
 	}
 	/**
@@ -145,8 +153,15 @@ public class Controller implements Initializable {
 		server.setCellValueFactory(
 				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
 					public ObservableValue<String> call(
-							CellDataFeatures<String, String> p) {
-						return new SimpleStringProperty(p.getValue());
+							CellDataFeatures<String, String> cdf) {
+						return new SimpleStringProperty(cdf.getValue());
+					}
+				});
+		col.setCellValueFactory(
+				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+					public ObservableValue<String> call(
+							CellDataFeatures<String, String> cdf) {
+						return new SimpleStringProperty(cdf.getValue());
 					}
 				});
 		portServerTable.setItems(createList());
@@ -163,9 +178,10 @@ public class Controller implements Initializable {
 		}
 		return FXCollections.observableArrayList(serverArr);
 	}
-	
+
 	public void deletePortItem() {
-		System.out.println(cm.getId());
+		
+		
 	}
 	// #########################################################################
 	// ## Steuerelemente #######################################################
