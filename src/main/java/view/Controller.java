@@ -140,9 +140,15 @@ public class Controller implements Initializable {
 			cm.getItems().add(delete);
 			cm.getItems().add(edit);
 			col.contextMenuProperty().set(cm);
+			// -> Werte in die Spalten fügen
+			col.setCellValueFactory(
+					new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
+						public ObservableValue<String> call(CellDataFeatures<String, String> cdf) {
+							return new SimpleStringProperty(cdf.getValue());
+						}
+					});
 			// -> Spalten der Tabelle hinzufügen -------------------
 			portServerTable.getColumns().add(col);
-			
 		}
 	}
 	/**
@@ -157,13 +163,7 @@ public class Controller implements Initializable {
 						return new SimpleStringProperty(cdf.getValue());
 					}
 				});
-		col.setCellValueFactory(
-				new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
-					public ObservableValue<String> call(
-							CellDataFeatures<String, String> cdf) {
-						return new SimpleStringProperty(cdf.getValue());
-					}
-				});
+
 		portServerTable.setItems(createList());
 	}
 	/**
@@ -180,8 +180,7 @@ public class Controller implements Initializable {
 	}
 
 	public void deletePortItem() {
-		
-		
+
 	}
 	// #########################################################################
 	// ## Steuerelemente #######################################################
