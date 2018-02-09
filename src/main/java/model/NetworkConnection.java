@@ -45,6 +45,9 @@ public class NetworkConnection {
 	private double progress;
 	private double progressIndicator;
 	private double progress100;
+	private double progressPort;
+	private double progressIndicatorPort;
+	private double progress100Port;
 
 	// --> Thread --------------------------------------------------------------
 	private Service<Object> ncService;
@@ -109,14 +112,16 @@ public class NetworkConnection {
 	public void setDefaultProgressInfo() {
 		connectArray = new ArrayList<ArrayList<String>>();
 		setProgress100(serverNameList.size() * portNameList.size());
+		setProgress100Port(portNameList.size());
 		setProgress(0);
 		setProgressIndicator(0.0);
 	}
 	/**
 	 * Rechnet den Gesamtfortschritt aus
 	 */
-	private void calcProgress() {
+	private void calcProgress(int j) {
 		progressIndicator = progress / progress100;
+		progressIndicatorPort = j / progress100Port;
 	}
 	/**
 	 * Setzt verschiedene Status auf Ausgangswert zurück.
@@ -167,7 +172,7 @@ public class NetworkConnection {
 														""+connected);
 												// Fortschritt +1
 												progress++;
-												calcProgress();
+												calcProgress(j);
 												setRunning(true);
 											} else {
 												break;
@@ -331,6 +336,30 @@ public class NetworkConnection {
 
 	public void setProgressIndicator(double progressIndicator) {
 		this.progressIndicator = progressIndicator;
+	}
+	
+	public double getProgressPort() {
+		return progressPort;
+	}
+
+	public void setProgressPort(double progressPort) {
+		this.progressPort = progressPort;
+	}
+
+	public double getProgressIndicatorPort() {
+		return progressIndicatorPort;
+	}
+
+	public void setProgressIndicatorPort(double progressIndicatorPort) {
+		this.progressIndicatorPort = progressIndicatorPort;
+	}
+
+	public double getProgress100Port() {
+		return progress100Port;
+	}
+
+	public void setProgress100Port(double progress100Port) {
+		this.progress100Port = progress100Port;
 	}
 
 	// --> Message -------------------------------------------------------------

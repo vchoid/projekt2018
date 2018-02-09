@@ -12,23 +12,19 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
 import javafx.util.Callback;
-import main.java.model.JSONFileHandler;
 import main.java.model.NetworkConnection;
 
 public class Controller implements Initializable {
@@ -62,9 +58,10 @@ public class Controller implements Initializable {
 	@FXML
 	private ProgressIndicator progressInd;
 	@FXML
-	private ImageView openPic;
+	private ProgressBar pgBarPort;
 	@FXML
-	private ImageView closePic;
+	private ProgressIndicator progressIndPort;
+	
 	// --> Message Output <-----------------------------------------------------
 	@FXML
 	private Label serverOutput;
@@ -224,15 +221,7 @@ public class Controller implements Initializable {
 		showStartStopButton();
 		showProgress();
 	}
-	/**
-	 * Verändert sich Sichtbarkeit der openPic und closePic Elemente.
-	 * 
-	 * @param isOpen
-	 */
-	private void setOpenPic(boolean isOpen) {
-		openPic.setVisible(isOpen);
-		closePic.setVisible(!isOpen);
-	}
+	
 	/**
 	 * Verändert die Sichtbarkeit der Start/Stop-Buttons.
 	 */
@@ -272,15 +261,22 @@ public class Controller implements Initializable {
 							pgBar.setProgress(nc.getProgressIndicator());
 							progressInd.setVisible(true);
 							progressInd.setProgress(nc.getProgressIndicator());
-							setOpenPic(nc.isConnected());
+							pgBarPort.setVisible(true);
+							pgBarPort.setProgress(nc.getProgressIndicatorPort());
+							progressIndPort.setVisible(true);
+							progressIndPort.setProgress(nc.getProgressIndicatorPort());
 						}
 
+						pgBar.setProgress(1);
+						progressInd.setProgress(1);
+						progressIndPort.setProgress(1);
+						pgBarPort.setProgress(1);
 						// nach Beendigung der Abfrage
-						Thread.sleep(50);
-						openPic.setVisible(false);
-						closePic.setVisible(false);
+						Thread.sleep(100);
 						pgBar.setVisible(false);
 						progressInd.setVisible(false);
+						pgBarPort.setVisible(false);
+						progressIndPort.setVisible(false);
 						return null;
 					}
 				};
