@@ -52,6 +52,9 @@ AnchorPane > #verlaufLabel{
 	-fx-background-color: rgb(200.0, 200.0, 200.0) ;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2),10.0, 0.3, 0.0, 2.5);
 }
+.button:hover{
+	-fx-background-color: rgb(220.0, 220.0, 220.0) ;
+}
 .button:pressed{
 	-fx-background-color: rgb(180.0, 180.0, 180.0) ;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.5),5.0, 0.3, 0.0, 0.5);
